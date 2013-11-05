@@ -3,7 +3,7 @@ PHP-Login
 
 A simple login system with PHP, MySQL and jQuery (AJAX) using Bootstrap 3 for the form design.
 
-<img src="http://github.com/fethica/PHP-Login/blob/master/images/screenshot.png" alt="Login Page Screenshot" />
+<img src="https://github.com/fethica/PHP-Login/raw/master/images/screenshot.png" alt="Login Page Screenshot" />
 
 ### Creating the Database
 
