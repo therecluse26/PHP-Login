@@ -34,7 +34,7 @@ INSERT INTO `members` VALUES (1, 'fethi', '1234');
 
 ### Check the Username and the Password using jQuery (Ajax) :
 
-If the user has the right username and password, then the `checklogin.php` will send 'true' and register username and password in the session, and redirect to `login_success.php`.
+If the user has the right username and password, then the `checklogin.php` will send 'true', register the username and the password in a session, and redirect to `login_success.php`.
 If the username and/or the password are wrong the `checklogin.php` will send "Wrong Username or Password".
 
 In the `login.js` file :
