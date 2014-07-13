@@ -1,5 +1,7 @@
 <?php
-
+	ini_set('session.bug_compat_warn', 0);
+	ini_set('session.bug_compat_42', 0);
+	
 	ob_start();
 	include_once 'config.php';
 
