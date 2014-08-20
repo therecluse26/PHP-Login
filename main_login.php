@@ -1,8 +1,8 @@
 <?php
   session_start();
-  
+
   if(isset($_SESSION['username'])){
-    header("location:login_success.php");
+    header("location:index.php");
   }
 ?><!DOCTYPE html>
 <html lang="en">

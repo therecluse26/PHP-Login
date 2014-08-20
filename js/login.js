@@ -15,7 +15,7 @@ $(document).ready(function(){
         data: "myusername="+username+"&mypassword="+password,
         success: function(html){    
           if(html=='true') {
-            window.location="login_success.php";
+            window.location="index.php";
           }
           else {
             $("#message").html(html);
