@@ -1,8 +1,7 @@
 <?php
-	ini_set('session.bug_compat_warn', 0);
-	ini_set('session.bug_compat_42', 0);
 	
 	ob_start();
+	session_start();
 	include_once 'config.php';
 
 	// Connect to server and select databse.
@@ -29,8 +28,8 @@
 
 		// Register $myusername, $mypassword and print "true"
 		echo "true";
-		session_register("myusername");
-		session_register("mypassword");
+		$_SESSION['username'] = 'myusername';
+		$_SESSION['password'] = 'mypassword';
 		
 	}
 	else {
