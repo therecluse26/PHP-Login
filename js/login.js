@@ -4,18 +4,24 @@ $(document).ready(function(){
 
     var username = $("#myusername").val();
     var password = $("#mypassword").val();
-    
+
+      if(username != "" && password != "" && $("#checkme").prop("checked"))
+      {
+          //alert("Submit");
+          setCookie(username, password, "yes", 10);
+      }
     if((username == "") || (password == "")) {
       $("#message").html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Please enter a username and a password</div>");
     }
-    else {
+     else {
       $.ajax({
         type: "POST",
         url: "checklogin.php",
         data: "myusername="+username+"&mypassword="+password,
         success: function(html){    
           if(html=='true') {
-            window.location="index.php";
+              window.location="index.php";
+              //window.location="yWeb/test.html";
           }
           else {
             $("#message").html(html);
@@ -29,4 +35,31 @@ $(document).ready(function(){
     }
     return false;
   });
+    $("#checkme").click(function(){
+        if($("#checkme").prop("checked"))
+        {
+            //alert("checked");
+
+            //get the val of the input 
+            var usrn = $("#myusername").val();
+            var pwd  = $("#mypassword").val();
+
+            if(usrn == "" || pwd == "")
+            {
+                //alert("The input can't null");
+                //test the input 
+            }
+            else
+            {
+                //set the username,password,checked state
+                //and the outdate deadline 10 days 
+                setCookie(usrn, pwd, "yes", 10);
+            }
+        }
+        else
+        {
+            //alert("no check");
+            cleanCookie('usrname', 'password');
+        }
+    });
 });
