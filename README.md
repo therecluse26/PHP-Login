@@ -10,6 +10,10 @@ A simple login and register system with PHP, MySQL and jQuery (AJAX) using Boots
 Create database "login" and create table "members" :
 
 ```sql
+CREATE DATABASE `login`;
+
+USE DATABASE `login`;
+
 CREATE TABLE `members` (
 `id` int(4) NOT NULL auto_increment,
 `username` varchar(65) NOT NULL default '',
