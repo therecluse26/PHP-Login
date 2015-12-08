@@ -23,13 +23,13 @@
 	$myusername = stripslashes($myusername);
 	$mypassword = stripslashes($mypassword);
 		
-	$stmt = $db->query("SELECT * FROM $tbl_name WHERE username='$myusername' and password='$mypassword'");
+	$stmt = $db->query("SELECT * FROM $tbl_name WHERE username='$myusername'");
 
-	// rowCount() is counting table row
-	$count = $stmt->rowCount();
+	// Gets query result
+	$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-	// If result matched $myusername and $mypassword, table row must be 1 row
-	if($count == 1){
+	// Checks password entered against db password hash 
+	if(password_verify($mypassword, $result['password']) ){
 
 		// Register $myusername, $mypassword and print "true"
 		echo "true";

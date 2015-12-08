@@ -5,6 +5,8 @@ A simple login system with PHP, MySQL and jQuery (AJAX) using Bootstrap 3 for th
 
 <img src="https://github.com/fethica/PHP-Login/raw/master/images/screenshot.png" alt="Login Page Screenshot" />
 
+Credit to <a href="https://github.com/Synchro">Synchro</a> for <a href="https://github.com/Synchro/PHPMailer">PHPMailer</a>, used in new user verification!
+
 ### Creating the Database
 
 Create database "login" and create table "members" :
