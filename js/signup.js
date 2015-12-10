@@ -4,6 +4,7 @@ $(document).ready(function(){
 
     var username = $("#newuser").val();
     var password = $("#password1").val();
+    var password2 = $("#password2").val();
     var email = $("#email").val();
     
     if((username == "") || (password == "") || (email == "")) {
@@ -13,17 +14,17 @@ $(document).ready(function(){
       $.ajax({
         type: "POST",
         url: "createuser.php",
-        data: "newuser="+username+"&password1="+password+"&email="+email,
+        data: "newuser="+username+"&password1="+password+"&password2="+password2+"&email="+email,
         success: function(html){    
           if(html == "true"){
 			  
 			$("#message").html(html);
-			$(this).hide();
+			$('#submit').hide();
 			  
 		  }
 		else {
 			$("#message").html(html);
-			$(this).show();
+			$('#submit').show();
 
 		}
 

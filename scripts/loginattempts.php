@@ -4,8 +4,7 @@ THIS SCRIPT IS NOT COMPLETE. DO NOT USE!
 STILL NEEDS
 1) Preventing login (even if password is correct).
 2) Updating the last logged in time and checking against current time for the security delay.
-3) 
-4) Anything else I may be forgetting
+3) Anything else I may be forgetting
 ******/
 
 include_once 'config.php';
