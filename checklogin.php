@@ -1,46 +1,31 @@
 <?php
-	
-	ob_start();
-	session_start();
-	include_once 'config.php';
+ob_start();
+session_start();
+include_once 'config.php';
+require 'scripts/class.loginscript.php';
 
-	// Connect to server and select databse.
-	try
-	{
-		$pdo_options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-		$db = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
-	}
-	catch(Exception $e)
-	{
-		die('Error : ' . $e->getMessage());
-	}	
+// Define $myusername and $mypassword 
+$myusername = $_POST['myusername']; 
+$mypassword = $_POST['mypassword']; 
 
-	// Define $myusername and $mypassword 
-	$myusername = $_POST['myusername']; 
-	$mypassword = $_POST['mypassword']; 
+// To protect MySQL injection
+$myusername = stripslashes($myusername);
+$mypassword = stripslashes($mypassword);
 
-	// To protect MySQL injection
-	$myusername = stripslashes($myusername);
-	$mypassword = stripslashes($mypassword);
-		
-	$stmt = $db->query("SELECT * FROM $tbl_name WHERE username='$myusername'");
+// Connect to server and select databse.
+$login = new loginForm;
+$response = $login->checkLogin($tbl_name, $myusername, $mypassword);	
 
-	// Gets query result
-	$result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-	// Checks password entered against db password hash 
-	if(password_verify($mypassword, $result['password']) ){
-
-		// Register $myusername, $mypassword and print "true"
+	if ($response == 'true'){
 		echo "true";
 		$_SESSION['username'] = 'myusername';
 		$_SESSION['password'] = 'mypassword';
-		
 	}
 	else {
-		//return the error message
-		echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Wrong Username or Password</div>";
+
+		echo $response;
+
 	}
 
-	ob_end_flush();
+ob_end_flush();
 ?>

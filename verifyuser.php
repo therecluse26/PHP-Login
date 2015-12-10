@@ -7,56 +7,36 @@
     <title>Verify User</title>
   </head>
   <body>
-  
-  </body>
-</html>
 <?php
+require 'scripts/class.loginscript.php';
+include 'config.php';
+
 // Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
 $uid = $_GET['uid'];
 $verify = $_GET['v'];
 
-function verifyUser($uid, $verify) {
-	
-	include_once 'config.php';
-	
-	// Connect to server and select database.
-	try {
-		$verr = '';
+$e = new selectEmail;
+$eresult = $e->emailPull($uid);
 
-		$vconn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
+$email = $eresult['email'];
+$username = $eresult['username'];
 
-		$vconn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-		// prepare sql and bind parameters
-		$vstmt = $vconn->prepare("update members set verified = :verify where id = :uid");
-		$vstmt->bindParam(':uid', $uid);
-		$vstmt->bindParam(':verify', $verify);
-		$vstmt->execute();
-		
-	} catch(PDOException $v) {
-		$verr = "Error: " . $v->getMessage();
-	}
-	
-	//Determines returned value ('true' or error code)
-	if($verr == ''){
-		$vsuccess = 'true'; }
-	else{
-		$vsuccess = $verr; };
-	
-	return $vsuccess;
-	
-};
+$v = new verify;
 
 if (isset($uid) && !empty(str_replace(' ', '', $uid)) && isset($verify) && !empty(str_replace(' ', '', $verify)) ){
 
 	//Updates the verify column on user
-	$vresponse = verifyUser($uid, $verify);	
+	$vresponse = $v->verifyUser($uid, $verify);
 	
 	//Success
-	if($vresponse == 'true'){
+	if($vresponse == 'true'){		
 		
-		echo "Thank you for signing up! You may now log into your account!<br>";	
-						
+		echo $activemsg;	
+		
+		//Send verification email		
+		$m = new mailSender;	
+		$m->sendMail($email, $username, $uid, 'Active');
+		
 	}
 	//Failure
 	else {
@@ -73,3 +53,5 @@ else {
 };
 
 ?>
+</body>
+</html>

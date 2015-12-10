@@ -1,11 +1,11 @@
 PHP-Login
 =========
 
-A simple login system with PHP, MySQL and jQuery (AJAX) using Bootstrap 3 for the form design.
+A simple, secure login system with PHP, MySQL and jQuery (AJAX) using Bootstrap 3 for the form design.
 
 <img src="https://github.com/fethica/PHP-Login/raw/master/images/screenshot.png" alt="Login Page Screenshot" />
 
-Credit to <a href="https://github.com/Synchro">Synchro</a> for <a href="https://github.com/Synchro/PHPMailer">PHPMailer</a>, used in new user verification!
+Credit to <a href="https://github.com/Synchro">Synchro</a> for <a href="https://github.com/Synchro/PHPMailer">PHPMailer</a>, used in new user verification
 
 ### Creating the Database
 
@@ -13,24 +13,46 @@ Create database "login" and create table "members" :
 
 ```sql
 CREATE TABLE `members` (
-`id` int(4) NOT NULL auto_increment,
-`username` varchar(65) NOT NULL default '',
-`password` varchar(65) NOT NULL default '',
-PRIMARY KEY (`id`)
-);
-
-INSERT INTO `members` VALUES (1, 'fethi', '1234');
+  `id` char(23) NOT NULL,
+  `username` varchar(65) NOT NULL DEFAULT '',
+  `password` varchar(65) NOT NULL DEFAULT '',
+  `email` varchar(65) NOT NULL,
+  `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `password_UNIQUE` (`password`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
 ### Setup the `config.php` file :
 
 ```php
 <?php
-	$host="localhost"; // Host name 
-	$username="root"; // Mysql username 
-	$password="root"; // Mysql password 
-	$db_name="login"; // Database name 
-	$tbl_name="members"; // Table name
+	//Pull '$base_url' and '$signin_url' from this file
+	include 'globalcon.php';
+
+	//DATABASE CONNECTION VARIABLES
+	$host = "localhost"; // Host name 
+	$username = "root"; // Mysql username 
+	$password = "root"; // Mysql password 
+	$db_name = "login"; // Database name 
+	$tbl_name = "members"; // Table name
+	//SET THESE VARIABLES FOR GLOBAL USE 
+	$site_name = 'Test Site';
+	$base_url = 'http://' . $_SERVER['SERVER_NAME']; 
+	//Only set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
+	$mod_email = '';
+	//GLOBAL EMAIL VARIABLES (HTML Rendering Enabled)
+	$from_email = 'test@test.net'; //Webmaster email
+	$from_name = 'Test Email'; //"From name" displayed on email
+	//HTML Messages shown before URL in emails (the more 
+	$verifymsg = 'Click this link to verify your new account!<br>'; //Verify email message
+	$active_email = 'Your new account is now active! Click the link below to log in!<br>';//Active email message
+	//LOGIN FORM RESPONSE MESSAGES/ERRORS
+	$signupthanks = 'Thank you for signing up! You will receive an email shortly confirming the verification of your account.';
+	$activemsg = 'Your account has been verified! You may now login at <br><a href="'.$signin_url.'">'.$signin_url.'</a>';
 ?>
 ```
 
