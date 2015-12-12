@@ -1,13 +1,15 @@
 PHP-Login
 =========
 
-A simple, secure login system with PHP, MySQL and jQuery (AJAX) using Bootstrap 3 for the form design.
+A simple, secure login and signup system with PHP, MySQL and jQuery (AJAX) using Bootstrap 3 for the form design as well as PHP-Mailer for user account verification and confirmation
 
 <img src="https://github.com/fethica/PHP-Login/raw/master/images/screenshot.png" alt="Login Page Screenshot" />
 
-Credit to <a href="https://github.com/Synchro">Synchro</a> for <a href="https://github.com/Synchro/PHPMailer">PHPMailer</a>, used in new user verification
+## Installation
+### Clone the Repository (recursively to include PHP-Mailer submodule)
+    $ git clone --recursive https://github.com/therecluse26/PHP-Login.git
 
-### Creating the Database
+### Creating the MySQL Database
 
 Create database "login" and create table "members" :
 
@@ -39,7 +41,7 @@ CREATE TABLE `members` (
 	$tbl_name = "members"; // Table name
 	
 	//Set this for global site use
-	$site_name = 'Test Site';
+	$site_name = 'Your Site Name';
 	
 	//ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
 	$admin_email = '';
@@ -47,7 +49,7 @@ CREATE TABLE `members` (
 	//EMAIL SETTINGS 
 	//SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM RATING AND TIPS
 	$from_email = 'your_email@test.com'; //Webmaster email
-	$from_name = 'Test Email'; //"From name" displayed on email
+	$from_name = 'Your Email Name'; //"From name" displayed on email
 	
 	//Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
 	$mailServerType = 'smtp';
@@ -66,6 +68,16 @@ CREATE TABLE `members` (
 	$activemsg = 'Your account has been verified! You may now login at <br><a href="'.$signin_url.'">'.$signin_url.'</a>';
 
 	//IGNORE CODE BELOW THIS
+```
+### Place this code (from `index.php`) at the head of each page : 
+```php
+<?php
+  session_start();
+//PUT THIS HEADER ON TOP OF EACH UNIQUE PAGE
+  if(!isset($_SESSION['username'])){
+    header("location:login/main_login.php");
+  }
+?>
 ```
 
 ### Check the Username and the Password using jQuery (Ajax) :
