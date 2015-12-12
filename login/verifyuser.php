@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="css/main.css" rel="stylesheet" media="screen">
+    <link href="../css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="../css/main.css" rel="stylesheet" media="screen">
     <meta charset="UTF-8">
     <title>Verify User</title>
   </head>
@@ -27,28 +27,28 @@ if (isset($uid) && !empty(str_replace(' ', '', $uid)) && isset($verify) && !empt
 
 	//Updates the verify column on user
 	$vresponse = $v->verifyUser($uid, $verify);
-	
+
 	//Success
-	if($vresponse == 'true'){		
-		
-		echo $activemsg;	
-		
-		//Send verification email		
-		$m = new mailSender;	
+	if($vresponse == 'true'){
+
+		echo $activemsg;
+
+		//Send verification email
+		$m = new mailSender;
 		$m->sendMail($email, $username, $uid, 'Active');
-		
+
 	}
 	//Failure
 	else {
 		//Echoes error from MySQL
 		echo $vresponse;
 	}
-	
+
 }
 
 else {
 	//Validation error from empty form variables
-	echo 'An error occurred... click <a href="index.php">here</a> to go back.';	
+	echo 'An error occurred... click <a href="index.php">here</a> to go back.';
 
 };
 

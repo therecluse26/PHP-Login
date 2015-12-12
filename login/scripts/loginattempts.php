@@ -1,4 +1,4 @@
-<?php 
+<?php
 /******
 THIS SCRIPT IS NOT COMPLETE. DO NOT USE!
 STILL NEEDS
@@ -22,13 +22,13 @@ function logIP($ipaddress){
 
 	if ($result['Attempts'] >= 3){
 	//Needs something to actually stop login
-	
-		
+
+
 		echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Too many failed login attempts, please wait 5 minutes before logging in again</div>";
 	}
 	else {
-	//UPDATE SCRIPT	
-		
+	//UPDATE SCRIPT
+
 	}
 
 
