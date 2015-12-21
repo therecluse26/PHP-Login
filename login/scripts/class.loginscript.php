@@ -98,7 +98,7 @@ class mailSender {
 
 		// Create a new PHPMailer instance
 		// ADD sendmail_path = "env -i /usr/sbin/sendmail -t -i" to php.ini on UNIX servers
-		$mail = new PHPMailer(true);
+		$mail = new PHPMailer;
 		//Sets mail header so HTML renders
 		$mail->isHTML(true);
 		//Formatting options
