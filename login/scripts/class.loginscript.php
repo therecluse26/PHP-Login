@@ -15,6 +15,8 @@ class selectEmail extends dbConn {
 
 		public function emailPull($id) {
 
+		include 'config.php';
+
 		try {
 			$edb = new dbConn;
 			$eerr = '';
@@ -25,7 +27,7 @@ class selectEmail extends dbConn {
 		}
 
 		//Queries database
-		$estmt = $edb->conn->query("SELECT email, username FROM members WHERE id = '$id'");
+		$estmt = $edb->conn->query("SELECT email, username FROM $tbl_name WHERE id = '$id'");
 
 		$eresult = $estmt->fetch(PDO::FETCH_ASSOC);
 
@@ -165,13 +167,15 @@ class newUserForm extends dbConn {
 
 	public function createUser($usr, $uid, $email, $pw) {
 
+		include 'config.php';
+
 		try {
 
 			$db = new dbConn;
 
 			$err = '';
 			// prepare sql and bind parameters
-			$stmt = $db->conn->prepare("INSERT INTO members (id, username, password, email)
+			$stmt = $db->conn->prepare("INSERT INTO $tbl_name (id, username, password, email)
 			VALUES (:id, :username, :password, :email)");
 			$stmt->bindParam(':id', $uid);
 			$stmt->bindParam(':username', $usr);
@@ -207,7 +211,7 @@ class verify extends dbConn {
 		$verr = '';
 
 		// prepare sql and bind parameters
-		$vstmt = $vdb->conn->prepare("UPDATE members SET verified = :verify WHERE id = :uid");
+		$vstmt = $vdb->conn->prepare("UPDATE $tbl_name SET verified = :verify WHERE id = :uid");
 		$vstmt->bindParam(':uid', $uid);
 		$vstmt->bindParam(':verify', $verify);
 		$vstmt->execute();
