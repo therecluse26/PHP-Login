@@ -2,7 +2,7 @@
   session_start();
 
   if(isset($_SESSION['username'])){
-    header("location:index.php");
+    header("location:../index.php");
   }
 ?><!DOCTYPE html>
 <html lang="en">
@@ -11,10 +11,10 @@
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="css/main.css" rel="stylesheet" media="screen">
+    <link href="../css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="../css/main.css" rel="stylesheet" media="screen">
   </head>
-  
+
   <body>
     <div class="container">
 
@@ -40,6 +40,6 @@
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <!-- The AJAX login script -->
     <script src="js/login.js"></script>
-    
+
   </body>
 </html>
