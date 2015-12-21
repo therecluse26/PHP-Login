@@ -137,8 +137,8 @@ class mailSender {
 			$mail->SMTPAuth = true; //SMTP Authentication
 			$mail->Host = $smtp_server; //SMTP Host
 			//Defaults: Non-Encrypted = 25, SSL = 465, TLS = 587
-			$mail->SMTPSecure = 'ssl'; // Sets the prefix to the server
-			$mail->Port = 465; //SMTP Port
+			$mail->SMTPSecure = $smtp_security; // Sets the prefix to the server
+			$mail->Port = $smtp_port; //SMTP Port
 			//SMTP user auth
 			$mail->Username = $smtp_user; //SMTP Username
 			$mail->Password = $smtp_pw; //SMTP Password
