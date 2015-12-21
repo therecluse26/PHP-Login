@@ -17,15 +17,15 @@ $admin_email = '';
 
 //EMAIL SETTINGS
 //SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM SCORE
-$from_email = 'braddmagyar@gmail.com'; //Webmaster email
+$from_email = 'youremail@yahoo.com'; //Webmaster email
 $from_name = 'Test Email'; //"From name" displayed on email
 
 //Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
 $mailServerType = 'smtp';
 //IF $mailServerType = 'smtp'
-$smtp_server = 'smtp.gmail.com';
-$smtp_user = 'braddmagyar@gmail.com';
-$smtp_pw = 'sugarw0314';
+$smtp_server = 'smtp.mail.yahoo.com';
+$smtp_user = 'youremail@yahoo.com';
+$smtp_pw = 'yourpassword';
 $smtp_port = 465; //465 for ssl, 587 for tls, 25 for other
 $smtp_security = 'ssl';//ssl, tls or ''
 
