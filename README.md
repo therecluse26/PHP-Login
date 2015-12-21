@@ -3,7 +3,7 @@ PHP-Login
 
 A simple, secure login and signup system with PHP, MySQL and jQuery (AJAX) using Bootstrap 3 for the form design as well as PHP-Mailer for user account verification and confirmation
 
-<img src="https://github.com/fethica/PHP-Login/raw/master/images/screenshot.png" alt="Login Page Screenshot" />
+<img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/login/images/screenshot.png" alt="Login Page Screenshot" />
 
 ## Installation
 ### Clone the Repository (recursively to include PHP-Mailer submodule)
@@ -28,29 +28,29 @@ CREATE TABLE `members` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
 
-### Setup the `config.php` file 
+### Setup the `config.php` file
 <i>Read code comments for a description of each variable</i>
 
 ```php
 <?php
 	//DATABASE CONNECTION VARIABLES
-	$host = "localhost"; // Host name 
-	$username = "root"; // Mysql username 
-	$password = "root"; // Mysql password 
-	$db_name = "login"; // Database name 
+	$host = "localhost"; // Host name
+	$username = "root"; // Mysql username
+	$password = "root"; // Mysql password
+	$db_name = "login"; // Database name
 	$tbl_name = "members"; // Table name
-	
+
 	//Set this for global site use
 	$site_name = 'Your Site Name';
-	
+
 	//ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
 	$admin_email = '';
-	
-	//EMAIL SETTINGS 
+
+	//EMAIL SETTINGS
 	//SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM RATING AND TIPS
 	$from_email = 'your_email@test.com'; //Webmaster email
 	$from_name = 'Your Email Name'; //"From name" displayed on email
-	
+
 	//Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
 	$mailServerType = 'smtp';
 	//IF $mailServerType = 'smtp'
@@ -59,8 +59,8 @@ CREATE TABLE `members` (
 	$smtp_pw = 'your_password';
 	$smtp_port = 465; //465 for ssl, 587 for tls, 25 for other
 	$smtp_security = 'ssl';//ssl, tls or ''
-	
-	//HTML Messages shown before URL in emails (the more 
+
+	//HTML Messages shown before URL in emails (the more
 	$verifymsg = 'Click this link to verify your new account!'; //Verify email message
 	$active_email = 'Your new account is now active! Click this link to log in!';//Active email message
 	//LOGIN FORM RESPONSE MESSAGES/ERRORS
@@ -69,7 +69,7 @@ CREATE TABLE `members` (
 
 	//IGNORE CODE BELOW THIS
 ```
-### Place this code (from `index.php`) at the head of each page : 
+### Place this code (from `index.php`) at the head of each page :
 ```php
 <?php
   session_start();
