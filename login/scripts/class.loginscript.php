@@ -28,6 +28,8 @@ class selectEmail extends dbConn {
 
 		//Queries database
 		$estmt = $edb->conn->query("SELECT email, username FROM $tbl_name WHERE id = '$id'");
+            //http://www.w3schools.com/php/php_mysql_prepared_statements.asp
+        
 
 		$eresult = $estmt->fetch(PDO::FETCH_ASSOC);
 
@@ -52,7 +54,11 @@ class loginForm extends dbConn {
 			$err = "Error: " . $e->getMessage();
 		}
 
-		$stmt = $stmt = $db->conn->query("SELECT * FROM $tbl_name WHERE username='$myusername'");
+		$stmt = $stmt = $db->conn->prepare("SELECT * FROM $tbl_name WHERE username= :myusername");
+        $stmt->bindParm(':myusername', $myusrname);
+        $myusrname = $myusername;
+        stmt->execute();
+        
 
 		// Gets query result
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
