@@ -7,7 +7,7 @@ A simple, secure login and signup system with PHP, MySQL and jQuery (AJAX) using
 
 ## Installation
 ### Clone the Repository (recursively to include PHP-Mailer submodule)
-    $ git clone --recursive https://github.com/therecluse26/PHP-Login.git
+    $ git clone --recursive https://github.com/fethica/PHP-Login.git
 
 ### Creating the MySQL Database
 
