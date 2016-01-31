@@ -54,16 +54,14 @@ class loginForm extends dbConn {
 			$err = "Error: " . $e->getMessage();
 		}
 
-		$stmt = $stmt = $db->conn->prepare("SELECT * FROM $tbl_name WHERE username= :myusername");
-        $stmt->bindParm(':myusername', $myusrname);
-        $myusrname = $myusername;
-        stmt->execute();
-        
+		$stmt = $db->conn->prepare("SELECT * FROM $tbl_name WHERE username = :myusername");
+		$stmt->bindParam(':myusername', $myusername);
+		$stmt->execute();
 
 		// Gets query result
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-	// Checks password entered against db password hash
+		// Checks password entered against db password hash
 		if(password_verify($mypassword, $result['password']) && $result['verified'] == '1' ){
 
 			// Register $myusername, $mypassword and return "true"
