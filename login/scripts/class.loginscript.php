@@ -13,7 +13,7 @@ class dbConn {
 
 class selectEmail extends dbConn {
 
-		public function emailPull($tbl_name, $id) {
+		public function emailPull($id) {
 
 		include 'config.php';
 
