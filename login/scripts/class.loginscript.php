@@ -13,7 +13,7 @@ class dbConn {
 
 class selectEmail extends dbConn {
 
-		public function emailPull($id) {
+		public function emailPull($tbl_name, $id) {
 
 		include 'config.php';
 
@@ -26,10 +26,13 @@ class selectEmail extends dbConn {
 			$eerr = "Error: " . $e->getMessage();
 		}
 
-		//Queries database
-		$estmt = $edb->conn->query("SELECT email, username FROM $tbl_name WHERE id = '$id'");
-            //http://www.w3schools.com/php/php_mysql_prepared_statements.asp
-        
+		//Queries database with prepared statement
+		$stmt = $edb->conn->prepare("SELECT * FROM $tbl_name WHERE id = :myid");
+		$stmt->bindParam(':myid', $id);
+		$stmt->execute();
+
+      //http://www.w3schools.com/php/php_mysql_prepared_statements.asp
+
 
 		$eresult = $estmt->fetch(PDO::FETCH_ASSOC);
 
