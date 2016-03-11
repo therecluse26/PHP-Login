@@ -18,22 +18,25 @@ class selectEmail extends dbConn {
 		include 'config.php';
 
 		try {
-			$edb = new dbConn;
-			$eerr = '';
+			$db = new dbConn;
+			$err = '';
 			}
 
 		catch (PDOException $e) {
-			$eerr = "Error: " . $e->getMessage();
+			$err = "Error: " . $e->getMessage();
 		}
 
-		//Queries database
-		$estmt = $edb->conn->query("SELECT email, username FROM $tbl_name WHERE id = '$id'");
-            //http://www.w3schools.com/php/php_mysql_prepared_statements.asp
-        
+		//Queries database with prepared statement
+		$stmt = $db->conn->prepare("SELECT * FROM $tbl_name WHERE id = :myid");
+		$stmt->bindParam(':myid', $id);
+		$stmt->execute();
 
-		$eresult = $estmt->fetch(PDO::FETCH_ASSOC);
+      //http://www.w3schools.com/php/php_mysql_prepared_statements.asp
 
-		return $eresult;
+
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
 
 	}
 
