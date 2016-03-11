@@ -27,12 +27,9 @@ class selectEmail extends dbConn {
 		}
 
 		//Queries database with prepared statement
-		$stmt = $db->conn->prepare("SELECT * FROM $tbl_name WHERE id = :myid");
+		$stmt = $db->conn->prepare("SELECT email, username FROM $tbl_name WHERE id = :myid");
 		$stmt->bindParam(':myid', $id);
 		$stmt->execute();
-
-      //http://www.w3schools.com/php/php_mysql_prepared_statements.asp
-
 
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
