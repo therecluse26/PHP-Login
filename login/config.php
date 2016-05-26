@@ -1,16 +1,14 @@
 <?php
 //Pull '$base_url' and '$signin_url' from this file
 include 'globalcon.php';
-
-//DATABASE CONNECTION VARIABLES
-$host = "localhost"; // Host name
-$username = "root"; // Mysql username
-$password = "root"; // Mysql password
-$db_name = "login"; // Database name
-$tbl_name = "members"; // Table name
+//Pull database connection from this file
+include 'dbconn.php';
 
 //Set this for global site use
 $site_name = 'Test Site';
+
+//Maximum Login Attempts
+$max_attempts = 5;
 
 //ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
 $admin_email = '';
