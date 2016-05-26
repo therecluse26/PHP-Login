@@ -24,6 +24,7 @@ CREATE TABLE `members` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
   UNIQUE KEY `password_UNIQUE` (`password`),
+  UNIQUE KEY `email_UNIQUE` (`email`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ```
@@ -42,6 +43,9 @@ CREATE TABLE `members` (
 
 	//Set this for global site use
 	$site_name = 'Your Site Name';
+
+	//Maximum Login Attempts
+	$max_attempts = 5;
 
 	//ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
 	$admin_email = '';
@@ -87,14 +91,14 @@ If the username and/or the password are wrong the `checklogin.php` will send "Wr
 
 
 ###Signup/Login Workflow:
-> 1) Create new user using `signup.php` form   
-> (note: validation occurs both client and server side)    
-> &nbsp;&nbsp;&nbsp;&nbsp;<b>Validation requires: </b>   
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Passwords to match and be at least 4 characters    
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Valid email address     
-> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Unique username  
-> 2) Password gets hashed and new GUID is generated for User ID   
-> 3) User gets added to database as unverified  
-> 4) Email is sent to user email (or $admin_email if set) with verification link   
-> 5) User (or admin) clicks verification link which sends them to `verifyuser.php` and verifies user in the database    
+> 1) Create new user using `signup.php` form
+> (note: validation occurs both client and server side)
+> &nbsp;&nbsp;&nbsp;&nbsp;<b>Validation requires: </b>
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Passwords to match and be at least 4 characters
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Valid email address
+> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Unique username
+> 2) Password gets hashed and new GUID is generated for User ID
+> 3) User gets added to database as unverified
+> 4) Email is sent to user email (or $admin_email if set) with verification link
+> 5) User (or admin) clicks verification link which sends them to `verifyuser.php` and verifies user in the database
 > 6) Verified user may now log in

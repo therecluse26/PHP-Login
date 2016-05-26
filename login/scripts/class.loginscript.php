@@ -27,7 +27,7 @@ class selectEmail extends dbConn {
 		}
 
 		//Queries database with prepared statement
-		$stmt = $db->conn->prepare("SELECT email, username FROM $tbl_name WHERE id = :myid");
+		$stmt = $db->conn->prepare("SELECT email, username FROM ".$tbl_prefix."members WHERE id = :myid");
 		$stmt->bindParam(':myid', $id);
 		$stmt->execute();
 
@@ -43,6 +43,8 @@ class loginForm extends dbConn {
 
 	public function checkLogin($tbl_name, $myusername, $mypassword) {
 
+		include 'config.php';
+
 		try {
 
 			$db = new dbConn;
@@ -54,7 +56,7 @@ class loginForm extends dbConn {
 			$err = "Error: " . $e->getMessage();
 		}
 
-		$stmt = $db->conn->prepare("SELECT * FROM $tbl_name WHERE username = :myusername");
+		$stmt = $db->conn->prepare("SELECT * FROM ".$tbl_prefix."members WHERE username = :myusername");
 		$stmt->bindParam(':myusername', $myusername);
 		$stmt->execute();
 
@@ -86,7 +88,86 @@ class loginForm extends dbConn {
 		return $success;
 
 	}
-};
+
+	public function checkAttempts($ip_address, $username){
+
+		include 'config.php';
+
+		try {
+
+			$db = new dbConn;
+
+			$table = $tbl_prefix . 'loginAttempts';
+
+			$err = '';
+			$stmt = $db->conn->prepare("SELECT count(Attempts) as attempts, max(lastLogin) as lastlogin FROM ".$table." WHERE IP = :ip and Username = :username");
+			$stmt->bindParam(':ip', $ip_address);
+			$stmt->bindParam(':username', $username);
+			$stmt->execute();
+			$result = $stmt->fetch(PDO::FETCH_ASSOC);
+			print_r($result);
+			return $result;
+
+		}
+		catch (PDOException $e) {
+			$err = "Error: " . $e->getMessage();
+		}
+
+		//Determines returned value ('true' or error code)
+		if ($err == '') {
+			$resp = 'true';
+		}
+		else {
+			$resp = $err;
+		}
+
+		return $resp;
+	}
+
+	public function updateAttempts($ip_address, $username){
+		include 'config.php';
+		try {
+			$db = new dbConn;
+
+			$err = '';
+
+			$datetimeNow = date("Y-m-d H:i:s");
+
+			// prepare sql and bind parameters
+			$stmt2 = $db->conn->prepare("INSERT INTO ". $tbl_prefix ."loginAttempts (IP, Attempts, LastLogin, Username)
+			VALUES (:ip, :attempts, :lastlogin, :username)");
+			$stmt2->bindParam(':ip', $ip_address);
+			$stmt2->bindParam(':attempts', '1');
+			$stmt2->bindParam(':lastlogin', $datetimeNow);
+			$stmt2->bindParam(':username', $username);
+			$stmt2->execute();
+		}
+		catch (PDOException $e) {
+			$err = "Error: " . $e->getMessage();
+		}
+
+		//Determines returned value ('true' or error code)
+		if ($err == '') {
+			$resp = 'true';
+		}
+		else {
+			$resp = $err;
+		};
+
+		return $resp;
+	}
+
+	public function resetAttempts($ip_address){
+		include 'config.php';
+		$stmt = $db->conn->prepare("delete FROM ". $tbl_prefix ."loginAttempts WHERE ip = :ip and username = :username");
+			$stmt->bindParam(':ip', $ip_address);
+			$stmt->bindParam(':username', $username);
+			$stmt->execute();
+	}
+
+	};
+
+
 
 class mailSender {
 
@@ -181,7 +262,7 @@ class newUserForm extends dbConn {
 
 			$err = '';
 			// prepare sql and bind parameters
-			$stmt = $db->conn->prepare("INSERT INTO $tbl_name (id, username, password, email)
+			$stmt = $db->conn->prepare("INSERT INTO ".$tbl_prefix."members (id, username, password, email)
 			VALUES (:id, :username, :password, :email)");
 			$stmt->bindParam(':id', $uid);
 			$stmt->bindParam(':username', $usr);
@@ -217,7 +298,7 @@ class verify extends dbConn {
 		$verr = '';
 
 		// prepare sql and bind parameters
-		$vstmt = $vdb->conn->prepare("UPDATE $tbl_name SET verified = :verify WHERE id = :uid");
+		$vstmt = $vdb->conn->prepare("UPDATE ".$tbl_prefix."members SET verified = :verify WHERE id = :uid");
 		$vstmt->bindParam(':uid', $uid);
 		$vstmt->bindParam(':verify', $verify);
 		$vstmt->execute();
