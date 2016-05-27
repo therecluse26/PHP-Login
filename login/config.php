@@ -7,8 +7,9 @@ include 'dbconn.php';
 //Set this for global site use
 $site_name = 'Test Site';
 
-//Maximum Login Attempts
+//Maximum Login Attempts & Timeout (in seconds)
 $max_attempts = 5;
+$login_timeout = 300;
 
 //ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
 $admin_email = '';
@@ -43,4 +44,7 @@ elseif(!filter_var($admin_email, FILTER_VALIDATE_EMAIL) == true ){
 	unset($admin_email);
 	echo $invalid_mod;
 };
+//Makes readable version of timeout
+$timeout_minutes = round(($login_timeout / 60), 1);
+
 ?>

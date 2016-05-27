@@ -1,7 +1,7 @@
 <?php
 ob_start();
 session_start();
-include_once 'config.php';
+include 'config.php';
 require 'scripts/class.loginscript.php';
 
 // Define $myusername and $mypassword
@@ -15,42 +15,40 @@ $mypassword = stripslashes($mypassword);
 $response = '';
 
 $login = new loginForm;
-$attempts = $login->checkAttempts($ip_address, $myusername);
+$attemptinfo = $login->checkAttempts($myusername);
 
-if($attempts['lastlogin'] == ''){
-		$lastlogin = 'never';
+
+if($attemptinfo['lastlogin'] == ''){
+	$lastlogin = 'never';
+	$attempts = 0;
+	$response = $login->checkLogin($myusername, $mypassword);
 }
 else
 {
-	$lastlogin = $attempts['lastlogin'];
+	$lastlogin = $attemptinfo['lastlogin'];
+	$attempts = $attemptinfo['attempts'];
+	$response = $login->checkLogin($myusername, $mypassword);
 };
 
-echo $lastlogin;
-//print_r($attempts);
 
-
-if($attempts < $max_attempts){
-	$update_resp = $login->updateAttempts($ip_address, $myusername);
-	$response = $login->checkLogin($tbl_name, $myusername, $mypassword);
-	echo $response . 'doot';
+if($attempts < $max_attempts && $response != 'true'){
+	$update_resp = $login->updateAttempts($myusername);
+	echo $response;
 	echo $update_resp;
 
 }
+else if ($response == 'true' && $attempts < $max_attempts){
+	echo $response;
+	$_SESSION['username'] = 'myusername';
+	$_SESSION['password'] = 'mypassword';
+	$login->resetAttempts($myusername);
 
-	else if ($response == 'true' && $attempts < $max_attempts){
+}
+else {
 
-		echo $response;
-		$_SESSION['username'] = 'myusername';
-		$_SESSION['password'] = 'mypassword';
-		$login->resetAttempts($ip_address, $myusername);
+	echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again</div>";
 
-	}
-
-	else {
-
-		echo $response;
-
-	}
+}
 
 ob_end_flush();
 ?>
