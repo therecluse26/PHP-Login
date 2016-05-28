@@ -1,10 +1,29 @@
 <?php
+class globalConf {
+	public $conf;
+	public static $attempts;
+	public function __construct(){
+		require 'config.php';
+		$this->ip_address = $ip_address;
+		$this->login_timeout = $login_timeout;
+		$this->timeout_minutes = $timeout_minutes;
+		$this->base_url = $base_url;
+		$this->signin_url = $signin_url;
+		$this->max_attempts = $max_attempts;
+	}
+	public function addAttempt(){
+		$attempts++;
+	}
+	public function resetAttempts(){
+		$attempts = 0;
+	}
+}
 // Extend this class to re-use db connection
 class dbConn {
 	public $conn;
 	public function __construct(){
 
-		require 'config.php';
+		require 'dbconn.php';
 		$this->host = $host; // Host name
 		$this->username = $username; // Mysql username
 		$this->password = $password; // Mysql password
@@ -12,8 +31,6 @@ class dbConn {
 		$this->tbl_prefix = $tbl_prefix; // Prefix for all database tables
 		$this->tbl_members = $tbl_members;
 		$this->tbl_attempts = $tbl_attempts;
-		$this->ip_address = $ip_address;
-		$this->login_timeout = $login_timeout;
 
 		// Connect to server and select database.
 		$this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8',$username,$password);
@@ -24,7 +41,7 @@ class dbConn {
 
 class selectEmail extends dbConn {
 
-		public function emailPull($id) {
+	public function emailPull($id) {
 
 
 		try {
@@ -34,7 +51,6 @@ class selectEmail extends dbConn {
 			$stmt = $db->conn->prepare("SELECT email, username FROM ".$tbl_members." WHERE id = :myid");
 			$stmt->bindParam(':myid', $id);
 			$stmt->execute();
-
 			$result = $stmt->fetch(PDO::FETCH_ASSOC);
 			}
 
@@ -78,7 +94,7 @@ class loginForm extends dbConn {
 		if(password_verify($mypassword, $result['password']) && $result['verified'] == '1' ){
 
 			// Register $myusername, $mypassword and return "true"
-			$success = 'true';
+			$success = 'success';
 
 		}
 
@@ -93,7 +109,6 @@ class loginForm extends dbConn {
 			//return the error message
 			$success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Wrong Username or Password</div>";
 
-
 		}
 
 		return $success;
@@ -104,8 +119,9 @@ class loginForm extends dbConn {
 
 		try {
 			$db = new dbConn;
-			$ip_address = $db->ip_address;
+			$conf = new globalConf;
 			$tbl_attempts = $db->tbl_attempts;
+			$ip_address = $conf->ip_address;
 			$err = '';
 			$stmt = $db->conn->prepare("SELECT Attempts as attempts, lastlogin FROM ".$tbl_attempts." WHERE IP = :ip and Username = :username");
 			$stmt->bindParam(':ip', $ip_address);
@@ -115,7 +131,6 @@ class loginForm extends dbConn {
 			return $result;
 
 			$oldTime = strtotime($result['lastlogin']);
-
 			$newTime = strtotime($datetimeNow);
 
 			$timeDiff = $newTime - $oldTime;
@@ -138,12 +153,50 @@ class loginForm extends dbConn {
 		return $resp;
 	}
 
+	public function insertAttempt($username){
+		try {
+			$db = new dbConn;
+			$conf = new globalConf;
+			$tbl_attempts = $db->tbl_attempts;
+			$ip_address = $conf->ip_address;
+			$login_timeout = $conf->login_timeout;
+			$max_attempts = $conf->max_attempts;
+
+			$datetimeNow = date("Y-m-d H:i:s");
+
+			$stmt = $db->conn->prepare("INSERT INTO ".$tbl_attempts." (ip, attempts, lastlogin, username) values(:ip, 1, :lastlogin, :username)");
+			$stmt->bindParam(':ip', $ip_address);
+			$stmt->bindParam(':lastlogin', $datetimeNow);
+			$stmt->bindParam(':username', $username);
+			$stmt->execute();
+			$curr_attempts = $curr_attempts + 1;
+
+			}
+		catch (PDOException $e) {
+			$err = "Error: " . $e->getMessage();
+		}
+
+		//Determines returned value ('true' or error code)
+		if ($err == '') {
+			$resp = 'true';
+		}
+		else {
+			$resp = $err;
+		};
+
+		return $resp;
+
+	}
+
 	public function updateAttempts($username){
 		//include 'config.php';
 		try {
 			$db = new dbConn;
-			$ip_address = $db->ip_address;
+			$conf = new globalConf;
 			$tbl_attempts = $db->tbl_attempts;
+			$ip_address = $conf->ip_address;
+			$login_timeout = $conf->login_timeout;
+			$max_attempts = $conf->max_attempts;
 
 			$err = '';
 
@@ -156,40 +209,49 @@ class loginForm extends dbConn {
 			$curr_attempts = $attcheck['attempts'];
 
 			$oldTime = strtotime($attcheck['lastlogin']);
-
 			$newTime = strtotime($datetimeNow);
 
 			$timeDiff = $newTime - $oldTime;
 
-			echo $timeDiff;
-
-			if($curr_attempts < 1){
-				$stmt = $db->conn->prepare("INSERT INTO ".$tbl_attempts." (ip, attempts, lastlogin, username) values(:ip, 1, :lastlogin, :username)");
-				$stmt->bindParam(':ip', $ip_address);
-				$stmt->bindParam(':lastlogin', $datetimeNow);
-				$stmt->bindParam(':username', $username);
-				$stmt->execute();
-
-				$new_attempts = $curr_attempts + 1;
+			echo "Time Diff: ". $timeDiff ."<br>";
+			echo "Current attempts: ". $curr_attempts ."<br>";
 
 
-			}
-			else{
+				if($curr_attempts >= $max_attempts && $timeDiff < $login_timeout){
 
-				if( $timeDiff < $login_timeout ){
-						echo "What the frick";
+					echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again</div>";
+
+					if ($timediff >= $login_timeout) {
+
+						$sql = "UPDATE ".$tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
+						$curr_attempts = 0;
+
+					}
+
 				}
+
 				else {
-					$new_attempts = $curr_attempts + 1;
-					$stmt2 = $db->conn->prepare("UPDATE ".$tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username");
-					$stmt2->bindParam(':ip', $ip_address);
-					$stmt2->bindParam(':attempts', $new_attempts);
-					$stmt2->bindParam(':lastlogin', $datetimeNow);
-					$stmt2->bindParam(':username', $username);
-					$stmt2->execute();
-				}
 
-			}
+					if( $timeDiff < $login_timeout ){
+						$sql = "UPDATE ".$tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
+						$curr_attempts = $curr_attempts + 1;
+
+
+					}
+					else if ($timeDiff >= $login_timeout ) {
+
+						$sql = "UPDATE ".$tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
+						$curr_attempts = 0;
+
+					}
+
+				}
+						$stmt2 = $db->conn->prepare($sql);
+						$stmt2->bindParam(':attempts', $curr_attempts);
+						$stmt2->bindParam(':ip', $ip_address);
+						$stmt2->bindParam(':lastlogin', $datetimeNow);
+						$stmt2->bindParam(':username', $username);
+						$stmt2->execute();
 
 		}
 		catch (PDOException $e) {
@@ -207,14 +269,17 @@ class loginForm extends dbConn {
 		return $resp;
 	}
 
+
+
 	public function resetAttempts($username){
 		//include 'config.php';
 		try{
 			$db = new dbConn;
-			$ip_address = $db->ip_address;
+			$conf = new globalConf;
+			$ip_address = $conf->ip_address;
 			$tbl_attempts = $db->tbl_attempts;
-			$stmt = $db->conn->prepare("delete FROM ".$tbl_attempts." WHERE ip = :ip and username = :username");
-			$stmt->bindParam(':ip', $ip_address);
+			$stmt = $db->conn->prepare("delete FROM ".$tbl_attempts." WHERE username = :username");
+			//$stmt->bindParam(':ip', $ip_address);
 			$stmt->bindParam(':username', $username);
 			$stmt->execute();
 			$resp = 'Reset Attempts';

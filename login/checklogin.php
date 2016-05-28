@@ -5,49 +5,56 @@ include 'config.php';
 require 'scripts/class.loginscript.php';
 
 // Define $myusername and $mypassword
-$myusername = $_POST['myusername'];
-$mypassword = $_POST['mypassword'];
+$username = $_POST['myusername'];
+$password = $_POST['mypassword'];
 
 // To protect MySQL injection
-$myusername = stripslashes($myusername);
-$mypassword = stripslashes($mypassword);
+$username = stripslashes($username);
+$password = stripslashes($password);
 
 $response = '';
 
-$login = new loginForm;
-$attemptinfo = $login->checkAttempts($myusername);
+$loginCtl = new loginForm;
+$conf = new globalConf;
+$lastAttempt = $loginCtl->checkAttempts($username);
+$max_attempts = $conf->max_attempts;
 
-
-if($attemptinfo['lastlogin'] == ''){
+//First Attempt
+if($lastAttempt['lastlogin'] == ''){
 	$lastlogin = 'never';
-	$attempts = 0;
-	$response = $login->checkLogin($myusername, $mypassword);
+	echo $loginCtl->insertAttempt($username);
+}
+else if ($lastAttempt['attempts'] >= $max_attempts){
+
+	echo 'Exceeded max attempts';
+
 }
 else
 {
-	$lastlogin = $attemptinfo['lastlogin'];
-	$attempts = $attemptinfo['attempts'];
-	$response = $login->checkLogin($myusername, $mypassword);
+	$lastlogin = $lastAttempt['lastlogin'];
+	$attempts = $lastAttempt['attempts'];
+	$loginCtl->updateAttempts($username);
 };
 
+$response = $loginCtl->checkLogin($username, $password);
 
-if($attempts < $max_attempts && $response != 'true'){
-	$update_resp = $login->updateAttempts($myusername);
-	echo $response;
-	echo $update_resp;
+if($attempts < $max_attempts && $response != 'success'){
+	$loginCtl->updateAttempts($username);
+	echo "\$attempts < \$max_attempts && \$response != 'success'";
+	//echo $response;
+	//echo $update_resp;
 
 }
-else if ($response == 'true' && $attempts < $max_attempts){
-	echo $response;
-	$_SESSION['username'] = 'myusername';
-	$_SESSION['password'] = 'mypassword';
-	$login->resetAttempts($myusername);
+else if ($response == 'success' && $attempts < $max_attempts){
+	echo "successful login";
+	//echo $response;
+	$loginCtl->resetAttempts($username);
+	$_SESSION['username'] = $username;
+	$_SESSION['password'] = $password;
 
 }
 else {
-
-	echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again</div>";
-
+	echo "else";
 }
 
 ob_end_flush();

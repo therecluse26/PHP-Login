@@ -9,7 +9,7 @@ $site_name = 'Test Site';
 
 //Maximum Login Attempts & Timeout (in seconds)
 $max_attempts = 5;
-$login_timeout = 300;
+$login_timeout = 10;
 
 //ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
 $admin_email = '';
@@ -35,7 +35,7 @@ $active_email = 'Your new account is now active! Click this link to log in!';//A
 $signupthanks = 'Thank you for signing up! You will receive an email shortly confirming the verification of your account.';
 $activemsg = 'Your account has been verified! You may now login at <br><a href="'.$signin_url.'">'.$signin_url.'</a>';
 
-//DO NOT TOUCH
+//DO NOT TOUCH BELOW THIS LINE
 //Unsets $admin_email based on various conditions (left blank, not valid email, etc)
 if(trim($admin_email, ' ') == ''){
 	unset($admin_email);
@@ -44,7 +44,8 @@ elseif(!filter_var($admin_email, FILTER_VALIDATE_EMAIL) == true ){
 	unset($admin_email);
 	echo $invalid_mod;
 };
+$invalid_mod = '$adminemail is not a valid email address';
+
 //Makes readable version of timeout
 $timeout_minutes = round(($login_timeout / 60), 1);
-
 ?>
