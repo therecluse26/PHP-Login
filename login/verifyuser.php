@@ -15,7 +15,7 @@ include 'config.php';
 $uid = $_GET['uid'];
 $verify = $_GET['v'];
 
-$e = new selectEmail;
+$e = new SelectEmail;
 $eresult = $e->emailPull($uid);
 
 $email = $eresult['email'];
@@ -25,30 +25,30 @@ $v = new verify;
 
 if (isset($uid) && !empty(str_replace(' ', '', $uid)) && isset($verify) && !empty(str_replace(' ', '', $verify)) ){
 
-	//Updates the verify column on user
-	$vresponse = $v->verifyUser($uid, $verify);
+    //Updates the verify column on user
+    $vresponse = $v->verifyUser($uid, $verify);
 
-	//Success
-	if($vresponse == 'true'){
+    //Success
+    if($vresponse == 'true'){
 
-		echo $activemsg;
+        echo $activemsg;
 
-		//Send verification email
-		$m = new mailSender;
-		$m->sendMail($email, $username, $uid, 'Active');
+        //Send verification email
+        $m = new MailSender;
+        $m->sendMail($email, $username, $uid, 'Active');
 
-	}
-	//Failure
-	else {
-		//Echoes error from MySQL
-		echo $vresponse;
-	}
+    }
+    //Failure
+    else {
+        //Echoes error from MySQL
+        echo $vresponse;
+    }
 
 }
 
 else {
-	//Validation error from empty form variables
-	echo 'An error occurred... click <a href="index.php">here</a> to go back.';
+    //Validation error from empty form variables
+    echo 'An error occurred... click <a href="index.php">here</a> to go back.';
 
 };
 

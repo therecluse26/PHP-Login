@@ -13,14 +13,22 @@ $(document).ready(function(){
         type: "POST",
         url: "checklogin.php",
         data: "myusername="+username+"&mypassword="+password,
+		dataType: 'JSON',
         success: function(html){
-          if(html=='true') {
+		console.log(html.response + ' ' + html.username);
+          if(html.response=='true') {
             window.location="../index.php";
+			location.reload();
+			return html.username;
           }
           else {
-            $("#message").html(html);
+            $("#message").html(html.response);
           }
         },
+		error: function(textStatus, errorThrown) {
+                console.log('textStatus: ' + textStatus);
+                console.log('errorThrown: ' + errorThrown);
+            },
         beforeSend:function()
         {
           $("#message").html("<p class='text-center'><img src='images/ajax-loader.gif'></p>")

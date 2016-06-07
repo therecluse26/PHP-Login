@@ -1,9 +1,8 @@
 <?php
-  session_start();
-
-  if(isset($_SESSION['username'])){
+session_start();
+if (isset($_SESSION['username'])) {
     header("location:../index.php");
-  }
+}
 ?><!DOCTYPE html>
 <html lang="en">
   <head>
@@ -35,7 +34,7 @@
     </div> <!-- /container -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="js/jquery-2.2.4.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script type="text/javascript" src="js/bootstrap.js"></script>
     <!-- The AJAX login script -->
