@@ -7,4 +7,3 @@ $db_name = "login"; // Database name
 $tbl_prefix = ""; // Prefix for all database tables
 $tbl_members =  $tbl_prefix."members";
 $tbl_attempts =  $tbl_prefix."loginAttempts";
-?>

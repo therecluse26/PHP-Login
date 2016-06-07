@@ -2,7 +2,7 @@
 //Pull '$base_url' and '$signin_url' from this file
 include 'globalcon.php';
 //Pull database connection from this file
-include 'dbconn.php';
+include 'dbconf.php';
 
 //Set this for global site use
 $site_name = 'Test Site';
@@ -38,10 +38,9 @@ $activemsg = 'Your account has been verified! You may now login at <br><a href="
 
 //DO NOT TOUCH BELOW THIS LINE
 //Unsets $admin_email based on various conditions (left blank, not valid email, etc)
-if(trim($admin_email, ' ') == ''){
+if (trim($admin_email, ' ') == '') {
     unset($admin_email);
-}
-elseif(!filter_var($admin_email, FILTER_VALIDATE_EMAIL) == true ){
+} elseif (!filter_var($admin_email, FILTER_VALIDATE_EMAIL) == true) {
     unset($admin_email);
     echo $invalid_mod;
 };
@@ -49,4 +48,3 @@ $invalid_mod = '$adminemail is not a valid email address';
 
 //Makes readable version of timeout
 $timeout_minutes = round(($login_timeout / 60), 1);
-?>

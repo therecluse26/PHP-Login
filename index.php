@@ -2,8 +2,8 @@
 //PUT THIS HEADER ON TOP OF EACH UNIQUE PAGE
  session_start();
 //var_dump($_SESSION);
-  if(!isset($_SESSION['username'])){
-    header("location:login/main_login.php");
+  if (!isset($_SESSION['username'])) {
+      header("location:login/main_login.php");
   }
 ?>
 <!DOCTYPE html>
