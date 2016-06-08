@@ -1,4 +1,5 @@
 <?php
+
 //DO NOT ECHO ANYTHING ON THIS PAGE OTHER THAN RESPONSE
 //'true' triggers login success
 ob_start();
@@ -15,7 +16,6 @@ $username = stripslashes($username);
 $password = stripslashes($password);
 
 $response = '';
-
 $loginCtl = new LoginForm;
 $conf = new GlobalConf;
 $lastAttempt = checkAttempts($username);
@@ -24,38 +24,49 @@ $max_attempts = $conf->max_attempts;
 
 //First Attempt
 if ($lastAttempt['lastlogin'] == '') {
+
     $lastlogin = 'never';
     $loginCtl->insertAttempt($username);
     $response = $loginCtl->checkLogin($username, $password);
+
 } elseif ($lastAttempt['attempts'] >= $max_attempts) {
+
     //Exceeded max attempts
     $loginCtl->updateAttempts($username);
     $response = $loginCtl->checkLogin($username, $password);
+
 } else {
-    //echo 'else';
-    $lastlogin = $lastAttempt['lastlogin'];
+
+    //$lastlogin = $lastAttempt['lastlogin'];
+    //$loginCtl->updateAttempts($username);
     $response = $loginCtl->checkLogin($username, $password);
+
 };
 
 
 if ($lastAttempt['attempts'] < $max_attempts && $response != 'true') {
-    $loginCtl->updateAttempts($username);
 
+    $loginCtl->updateAttempts($username);
     $resp = new RespObj($username, $response);
     $jsonResp = json_encode($resp);
     echo $jsonResp;
+
 } elseif ($response == 'true' && $lastAttempt['attempts'] < $max_attempts) {
+
     $_SESSION['username'] = $username;
     $_SESSION['password'] = $password;
+
     $loginCtl->resetAttempts($username);
+    $resp = new RespObj($username, $response);
+    $jsonResp = json_encode($resp);
+    echo $jsonResp;
+
+} else {
 
     $resp = new RespObj($username, $response);
     $jsonResp = json_encode($resp);
     echo $jsonResp;
-} else {
-    $resp = new RespObj($username, $response);
-    $jsonResp = json_encode($resp);
-    echo $jsonResp;
+
 }
 
 unset($resp, $jsonResp);

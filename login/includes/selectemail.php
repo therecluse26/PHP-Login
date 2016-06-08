@@ -1,5 +1,6 @@
 <?php
-require_once 'dbconn.php';
+
+
 class SelectEmail extends DbConn
 {
     public function emailPull($id)
@@ -12,11 +13,15 @@ class SelectEmail extends DbConn
             $stmt->bindParam(':myid', $id);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
         } catch (PDOException $e) {
+
             $result = "Error: " . $e->getMessage();
+
         }
 
         //Queries database with prepared statement
         return $result;
+
     }
 }

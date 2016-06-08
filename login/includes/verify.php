@@ -1,6 +1,7 @@
 <?php
-require_once 'dbconn.php';
-class verify extends DbConn
+
+
+class Verify extends DbConn
 {
     public function verifyUser($uid, $verify)
     {
@@ -14,13 +15,17 @@ class verify extends DbConn
             $vstmt->bindParam(':uid', $uid);
             $vstmt->bindParam(':verify', $verify);
             $vstmt->execute();
+
         } catch (PDOException $v) {
+
             $verr = 'Error: ' . $v->getMessage();
+
         }
 
     //Determines returned value ('true' or error code)
     $resp = ($verr == '') ? 'true' : $verr;
 
         return $resp;
+
     }
 }

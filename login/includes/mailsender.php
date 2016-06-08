@@ -1,4 +1,6 @@
 <?php
+
+
 class MailSender
 {
     public function sendMail($email, $user, $id, $type)
@@ -30,21 +32,29 @@ class MailSender
 
         //Sets message body content based on type (verification or confirmation)
         if ($type == 'Verify') {
+
             //Set the subject line
             $mail->Subject = $user . ' Account Verification';
+
             //Set the body of the message
             $mail->Body = $verifymsg . '<br><a href="'.$verifyurl.'">'.$verifyurl.'</a>';
+
             $mail->AltBody  =  $verifymsg . $verifyurl;
+
         } elseif ($type == 'Active') {
+
             //Set the subject line
             $mail->Subject = $site_name . ' Account Created!';
+
             //Set the body of the message
             $mail->Body = $active_email . '<br><a href="'.$signin_url.'">'.$signin_url.'</a>';
             $mail->AltBody  =  $active_email . $signin_url;
+
         };
 
         //SMTP Settings
         if ($mailServerType == 'smtp') {
+
             $mail->IsSMTP(); //Enable SMTP
             $mail->SMTPAuth = true; //SMTP Authentication
             $mail->Host = $smtp_server; //SMTP Host
@@ -56,14 +66,21 @@ class MailSender
             $mail->Password = $smtp_pw; //SMTP Password
             //********************
             $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production)
+
         }
 
         try {
+
             $mail->Send();
+
         } catch (phpmailerException $e) {
+
             echo $e->errorMessage();// Error messages from PHPMailer
+
         } catch (Exception $e) {
+
             echo $e->getMessage();// Something else
+
         }
     }
 }
