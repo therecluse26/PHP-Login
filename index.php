@@ -1,10 +1,5 @@
-<?php
-  session_start();
-//PUT THIS HEADER ON TOP OF EACH UNIQUE PAGE
-  if(!isset($_SESSION['username'])){
-    header("location:login/main_login.php");
-  }
-?>
+<?php require "login/loginheader.php"; ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

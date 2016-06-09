@@ -21,8 +21,6 @@ $(document).ready(function(){
 			//Pulls hidden div that includes "true" in the success response
 			var response = text.substr(text.length - 4);
 
-			console.log(response);
-
           if(response == "true"){
 
 			$("#message").html(html);

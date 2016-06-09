@@ -1,31 +1,58 @@
 <?php
+//DO NOT ECHO ANYTHING ON THIS PAGE OTHER THAN RESPONSE
+//'true' triggers login success
 ob_start();
-session_start();
-include_once 'config.php';
-require 'scripts/class.loginscript.php';
+include 'config.php';
+require 'includes/functions.php';
 
 // Define $myusername and $mypassword
-$myusername = $_POST['myusername'];
-$mypassword = $_POST['mypassword'];
+$username = $_POST['myusername'];
+$password = $_POST['mypassword'];
 
 // To protect MySQL injection
-$myusername = stripslashes($myusername);
-$mypassword = stripslashes($mypassword);
+$username = stripslashes($username);
+$password = stripslashes($password);
 
-// Connect to server and select databse.
-$login = new loginForm;
-$response = $login->checkLogin($tbl_name, $myusername, $mypassword);
+$response = '';
+$loginCtl = new LoginForm;
+$conf = new GlobalConf;
+$lastAttempt = checkAttempts($username);
+$max_attempts = $conf->max_attempts;
 
-	if ($response == 'true'){
-		echo "true";
-		$_SESSION['username'] = 'myusername';
-		$_SESSION['password'] = 'mypassword';
-	}
-	else {
 
-		echo $response;
+//First Attempt
+if ($lastAttempt['lastlogin'] == '') {
 
-	}
+    $lastlogin = 'never';
+    $loginCtl->insertAttempt($username);
+    $response = $loginCtl->checkLogin($username, $password);
 
+} elseif ($lastAttempt['attempts'] >= $max_attempts) {
+
+    //Exceeded max attempts
+    $loginCtl->updateAttempts($username);
+    $response = $loginCtl->checkLogin($username, $password);
+
+} else {
+
+    $response = $loginCtl->checkLogin($username, $password);
+
+};
+
+if ($lastAttempt['attempts'] < $max_attempts && $response != 'true') {
+
+    $loginCtl->updateAttempts($username);
+    $resp = new RespObj($username, $response);
+    $jsonResp = json_encode($resp);
+    echo $jsonResp;
+
+} else {
+
+    $resp = new RespObj($username, $response);
+    $jsonResp = json_encode($resp);
+    echo $jsonResp;
+
+}
+
+unset($resp, $jsonResp);
 ob_end_flush();
-?>
