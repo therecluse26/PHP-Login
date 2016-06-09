@@ -171,24 +171,4 @@ class LoginForm extends DbConn
 
     }
 
-   /* public function resetAttempts($username)
-    {
-        try {
-            $db = new DbConn;
-            $conf = new GlobalConf;
-            $tbl_attempts = $db->tbl_attempts;
-            $stmt = $db->conn->prepare("UPDATE ".$tbl_attempts." SET attempts = 1 WHERE username = :username");
-            $stmt->bindParam(':username', $username);
-            $stmt->execute();
-            $resp = 'Reset Attempts';
-
-        } catch (PDOException $e) {
-
-            $resp = "Error: " . $e->getMessage();
-
-        }
-
-        return $resp;
-
-    } */
 }
