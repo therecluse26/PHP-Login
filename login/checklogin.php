@@ -1,9 +1,7 @@
 <?php
-
 //DO NOT ECHO ANYTHING ON THIS PAGE OTHER THAN RESPONSE
 //'true' triggers login success
 ob_start();
-session_start();
 include 'config.php';
 require 'includes/functions.php';
 
@@ -37,26 +35,13 @@ if ($lastAttempt['lastlogin'] == '') {
 
 } else {
 
-    //$lastlogin = $lastAttempt['lastlogin'];
-    //$loginCtl->updateAttempts($username);
     $response = $loginCtl->checkLogin($username, $password);
 
 };
 
-
 if ($lastAttempt['attempts'] < $max_attempts && $response != 'true') {
 
     $loginCtl->updateAttempts($username);
-    $resp = new RespObj($username, $response);
-    $jsonResp = json_encode($resp);
-    echo $jsonResp;
-
-} elseif ($response == 'true' && $lastAttempt['attempts'] < $max_attempts) {
-
-    $_SESSION['username'] = $username;
-    $_SESSION['password'] = $password;
-
-    $loginCtl->resetAttempts($username);
     $resp = new RespObj($username, $response);
     $jsonResp = json_encode($resp);
     echo $jsonResp;

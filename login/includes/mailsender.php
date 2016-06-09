@@ -1,6 +1,4 @@
 <?php
-
-
 class MailSender
 {
     public function sendMail($email, $user, $id, $type)

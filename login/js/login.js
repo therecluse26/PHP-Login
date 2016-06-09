@@ -15,8 +15,8 @@ $(document).ready(function () {
                 success: function (html) {
                     //console.log(html.response + ' ' + html.username);
                     if (html.response === 'true') {
-                        window.location.assign("../index.php");
-                        location.reload();
+                        //location.assign("../index.php");
+                       location.reload();
                         return html.username;
                     } else {
                         $("#message").html(html.response);

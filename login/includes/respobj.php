@@ -1,6 +1,4 @@
 <?php
-
-
 class RespObj
 {
     public $username;

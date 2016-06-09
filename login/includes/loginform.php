@@ -1,6 +1,4 @@
 <?php
-
-
 class LoginForm extends DbConn
 {
     public function checkLogin($myusername, $mypassword)
@@ -50,6 +48,10 @@ class LoginForm extends DbConn
 
                 //Success! Register $myusername, $mypassword and return "true"
                 $success = 'true';
+                    session_start();
+
+                    $_SESSION['username'] = $myusername;
+                    $_SESSION['password'] = $mypassword;
 
             } elseif (password_verify($mypassword, $result['password']) && $result['verified'] == '0') {
 
@@ -169,7 +171,7 @@ class LoginForm extends DbConn
 
     }
 
-    public function resetAttempts($username)
+   /* public function resetAttempts($username)
     {
         try {
             $db = new DbConn;
@@ -188,5 +190,5 @@ class LoginForm extends DbConn
 
         return $resp;
 
-    }
+    } */
 }

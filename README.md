@@ -23,69 +23,79 @@ CREATE TABLE `members` (
   `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username_UNIQUE` (`username`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `loginAttempts` (
+  `IP` varchar(20) NOT NULL,
+  `Attempts` int(11) NOT NULL,
+  `LastLogin` datetime NOT NULL,
+  `Username` varchar(65) DEFAULT NULL,
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+### Setup the `login/dbconf.php` file
+```php
+<?php
+    //DATABASE CONNECTION VARIABLES
+    $host = "localhost"; // Host name
+    $username = "user"; // Mysql username
+    $password = "password"; // Mysql password
+    $db_name = "login"; // Database name
+
 ```
 
-### Setup the `config.php` file
+### Setup the `login/config.php` file
 <i>Read code comments for a description of each variable</i>
 
 ```php
 <?php
-	//DATABASE CONNECTION VARIABLES
-	$host = "localhost"; // Host name
-	$username = "root"; // Mysql username
-	$password = "root"; // Mysql password
-	$db_name = "login"; // Database name
-	$tbl_name = "members"; // Table name
+    //Set this for global site use
+    $site_name = 'Test Site';
 
-	//Set this for global site use
-	$site_name = 'Your Site Name';
+    //Maximum Login Attempts
+    $max_attempts = 5;
+    //Timeout (in seconds) after max attempts are reached
+    $login_timeout = 300;
 
-	//Maximum Login Attempts
-	$max_attempts = 5;
+    //ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
+    $admin_email = '';
 
-	//ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
-	$admin_email = '';
+    //EMAIL SETTINGS
+    //SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM SCORE
+    $from_email = 'youremail@domain.com'; //Webmaster email
+    $from_name = 'Test Email'; //"From name" displayed on email
 
-	//EMAIL SETTINGS
-	//SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM RATING AND TIPS
-	$from_email = 'your_email@test.com'; //Webmaster email
-	$from_name = 'Your Email Name'; //"From name" displayed on email
+    //Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
+    $mailServerType = 'smtp';
+    //IF $mailServerType = 'smtp'
+    $smtp_server = 'smtp.mail.domain.com';
+    $smtp_user = 'youremail@domain.com';
+    $smtp_pw = 'yourEmailPassword';
+    $smtp_port = 465; //465 for ssl, 587 for tls, 25 for other
+    $smtp_security = 'ssl';//ssl, tls or ''
 
-	//Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
-	$mailServerType = 'smtp';
-	//IF $mailServerType = 'smtp'
-	$smtp_server = 'smtp.test.com';
-	$smtp_user = 'your_email@test.com';
-	$smtp_pw = 'your_password';
-	$smtp_port = 465; //465 for ssl, 587 for tls, 25 for other
-	$smtp_security = 'ssl';//ssl, tls or ''
+    //HTML Messages shown before URL in emails (the more
+    $verifymsg = 'Click this link to verify your new account!'; //Verify email message
+    $active_email = 'Your new account is now active! Click this link to log in!';//Active email message
+    //LOGIN FORM RESPONSE MESSAGES/ERRORS
+    $signupthanks = 'Thank you for signing up! You will receive an email shortly confirming the verification of your account.';
+    $activemsg = 'Your account has been verified! You may now login at <br><a href="'.$signin_url.'">'.$signin_url.'</a>';
 
-	//HTML Messages shown before URL in emails (the more
-	$verifymsg = 'Click this link to verify your new account!'; //Verify email message
-	$active_email = 'Your new account is now active! Click this link to log in!';//Active email message
-	//LOGIN FORM RESPONSE MESSAGES/ERRORS
-	$signupthanks = 'Thank you for signing up! You will receive an email shortly confirming the verification of your account.';
-	$activemsg = 'Your account has been verified! You may now login at <br><a href="'.$signin_url.'">'.$signin_url.'</a>';
-
-	//IGNORE CODE BELOW THIS
+    //IGNORE CODE BELOW THIS
 ```
 ### Place this code (from `index.php`) at the head of each page :
+> *** **Important** *** Checks to see if username $_SESSION variable is set. If not set, redirects to login page. 
+
 ```php
-<?php
-  session_start();
-//PUT THIS HEADER ON TOP OF EACH UNIQUE PAGE
-  if(!isset($_SESSION['username'])){
-    header("location:login/main_login.php");
-  }
-?>
+<?php require "login/loginheader.php"; ?>
 ```
 
 ### Check the Username and the Password using jQuery (Ajax) :
 
-If the user has the right username and password, then the `checklogin.php` will send 'true', register the username and the password in a session, and redirect to `login_success.php`.
+If the user has the right username and password, then the `checklogin.php` will send 'true', register the username and the password in a session, and redirect to `index.php`.
 If the username and/or the password are wrong the `checklogin.php` will send "Wrong Username or Password".
 
 

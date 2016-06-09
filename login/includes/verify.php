@@ -1,6 +1,4 @@
 <?php
-
-
 class Verify extends DbConn
 {
     public function verifyUser($uid, $verify)

@@ -1,6 +1,4 @@
 <?php
-
-
 class GlobalConf
 {
     public $conf;

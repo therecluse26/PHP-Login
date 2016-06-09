@@ -1,6 +1,4 @@
 <?php
-
-
 class SelectEmail extends DbConn
 {
     public function emailPull($id)

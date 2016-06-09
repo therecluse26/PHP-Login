@@ -1,6 +1,4 @@
 <?php
-
-
 class NewUserForm extends DbConn
 {
     public function createUser($usr, $uid, $email, $pw)
