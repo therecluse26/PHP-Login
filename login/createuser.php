@@ -1,6 +1,4 @@
 <?php
-
-
 require 'includes/functions.php';
 include_once 'config.php';
 
