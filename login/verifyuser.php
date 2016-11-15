@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <link href="../css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="../css/main.css" rel="stylesheet" media="screen">
-    <meta charset="UTF-8">
-    <title>Verify User</title>
-  </head>
-  <body>
 <?php
-require 'includes/functions.php';
+$page = 'verifyuser';
+$title = 'Verify User';
+require 'autoload.php';
+require 'class/functions.php';
 include 'config.php';
+require 'partials/pagehead.php';
 
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
 $uid = $_GET['uid'];
 $verify = $_GET['v'];
 
-$e = new SelectEmail;
-$eresult = $e->emailPull($uid);
+$e = new UserData;
+$eresult = $e->userDataPull($uid, 0);
 
 $email = $eresult['email'];
 $username = $eresult['username'];
@@ -29,7 +24,7 @@ if (isset($uid) && !empty(str_replace(' ', '', $uid)) && isset($verify) && !empt
     $vresponse = $v->verifyUser($uid, $verify);
 
     //Success
-    if ($vresponse == 'true') {
+    if ($vresponse == 1) {
         echo $activemsg;
 
         //Send verification email

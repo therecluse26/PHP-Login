@@ -1,5 +1,6 @@
 <?php
-require 'includes/functions.php';
+require 'autoload.php';
+require 'class/functions.php';
 include_once 'config.php';
 
 //Pull username, generate new ID and hash password
@@ -8,17 +9,8 @@ $newuser = $_POST['newuser'];
 $newpw = password_hash($_POST['password1'], PASSWORD_DEFAULT);
 $pw1 = $_POST['password1'];
 $pw2 = $_POST['password2'];
+$newemail = $_POST['email'];
 
-    //Enables moderator verification (overrides user self-verification emails)
-if (isset($admin_email)) {
-
-    $newemail = $admin_email;
-
-} else {
-
-    $newemail = $_POST['email'];
-
-}
 //Validation rules
 if ($pw1 != $pw2) {
 
@@ -49,7 +41,17 @@ if ($pw1 != $pw2) {
 
             //Send verification email
             $m = new MailSender;
-            $m->sendMail($newemail, $newuser, $newid, 'Verify');
+
+            //Enables moderator verification (overrides user self-verification emails)
+            if (isset($admin_email)) {
+
+                $m->sendMail($admin_email, $newuser, $newid, 'Verify');
+
+            } else {
+
+                $m->sendMail($newemail, $newuser, $newid, 'Verify');
+
+            }
 
         } else {
             //Failure

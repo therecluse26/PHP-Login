@@ -1,0 +1,181 @@
+body {
+    background-color: #eee;
+}
+
+.form-signin, .form-signup {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+.form-signin .form-signin-heading, .form-signup .form-signup-heading,
+.form-signin .checkbox, .form-signup .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin .checkbox, .form-signup .checkbox{
+    font-weight: normal;
+}
+.form-signin .form-control, .form-signup .form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.form-signin .form-control:focus, .form-signup .form-control:focus {
+    z-index: 2;
+}
+.form-signin input[type="text"], .form-signup input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.form-signin input[type="password"], .form-signup input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+.form-signin .btn, .form-signup .btn  {
+    margin-bottom: 10px;
+}
+
+.userdiv{
+    position: sticky;
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+}
+.userlist{
+    width: 100%;
+    margin: auto;
+    /*border-collapse: collapse;*/
+    border-spacing: 0;
+    empty-cells: show;
+    border: 1px solid #cbcbcb;
+
+}
+
+.userlist thead {
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+    border-bottom: none;
+}
+.userlist td {
+    padding: 5px 10px 5px 10px;
+
+}
+.userlist th {
+
+    padding: 5px 10px 5px 10px;
+    border-width: 0 0 1px 0;
+    border-bottom: 1px solid #cbcbcb;
+
+}
+.userlist tr {
+    border-bottom: 1px solid #cbcbcb;
+}
+.userlist tbody > tr:last-child > td {
+
+    border-bottom-width: 0;
+}
+.verbutton {
+    float: right;
+    -webkit-border-radius: 16;
+    -moz-border-radius: 16;
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 12px;
+    background: #32CD32;
+    padding: 4px 13px 4px 13px;
+    text-decoration: none;
+    border-style: none;
+    font-weight: bold;
+    outline: none;
+}
+.verbutton:hover {
+    background: #00FF00;
+}
+.verbutton:active {
+    background: #32CD32;
+}
+.delbutton {
+    float: left;
+    -webkit-border-radius: 16;
+    -moz-border-radius: 16;
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 12px;
+    background: #cc0000;
+    padding: 4px 10px 4px 10px;
+    text-decoration: none;
+    border-style: none;
+    font-weight: bold;
+    outline: none;
+}
+
+.delbutton:hover {
+    background: #e60000;
+}
+.delbutton:active {
+    background: #cc0000;
+}
+.readonlyinput {
+    border: none;
+    background: transparent;
+    width: 100%;
+}
+.message {
+    font-size: 14pt;
+    width: 100%;
+    text-align: center;
+}
+.adminajaximg {
+    z-index: 1000;
+    background: #e0e0e0;
+}
+.verloader {
+    height: 1.2rem;
+    width: 1.2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+.thAll {
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+    line-height: 0px;
+    transform: translate(0%, -10%);
+
+}
+.progressdiv {
+    display: float;
+    width: 50%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15%;
+    margin-bottom: auto;
+}
+    #progress {
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+      height: 30px;
+      margin-bottom: 20px;
+    }
+    #progress .bar {
+      background-color: #32CD32;
+      border-radius: 5px;
+      height: 28px;
+    }
+    #message {
+        font-size: 12px;
+        display: float;
+        text-align: center;
+    }
+    .valstatus {
+        padding-top: -10px;
+    }

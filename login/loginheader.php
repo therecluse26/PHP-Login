@@ -1,6 +1,6 @@
 <?php
 //PUT THIS HEADER ON TOP OF EACH UNIQUE PAGE
-session_start();
-if (!isset($_SESSION['username'])) {
-    header("location:login/main_login.php");
+if (!array_key_exists('username', $_SESSION) || (array_key_exists('username', $_SESSION)  && $ip != getenv ("REMOTE_ADDR")))
+ {
+    header("location:".$url."/login/index.php");
 }

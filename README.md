@@ -9,43 +9,25 @@ A simple, secure login and signup system with PHP, MySQL and jQuery (AJAX) using
 ### Clone the Repository (recursively to include PHP-Mailer submodule)
     $ git clone --recursive https://github.com/fethica/PHP-Login.git
 
-### Creating the MySQL Database
+### Install composer packages
+
+
+### Creating the MySQL Database and generating config files
+Open form in /install/index.php in browser, fill out necessary details and submit it. Requires a folder read/write permissions and a MySQL user with elevated privileges.
+
+    If web-based installer fails, can be manually installed by running MySQL script located in /install/installdb.sql and copying /install/dbconf.php file to /login/dbconf.php (filling out proper database credentials)
+
+    ```php
+    <?php
+        //DATABASE CONNECTION VARIABLES
+        $host = "localhost"; // Host name
+        $username = "user"; // Mysql username
+        $password = "password"; // Mysql password
+        $db_name = "login"; // Database name
+
+    ```
 
 Create database "login" and create tables "members" and "loginAttempts" :
-
-```sql
-CREATE TABLE `members` (
-  `id` char(23) NOT NULL,
-  `username` varchar(65) NOT NULL DEFAULT '',
-  `password` varchar(65) NOT NULL DEFAULT '',
-  `email` varchar(65) NOT NULL,
-  `verified` tinyint(1) NOT NULL DEFAULT '0',
-  `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username_UNIQUE` (`username`),
-  UNIQUE KEY `id_UNIQUE` (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE `loginAttempts` (
-  `IP` varchar(20) NOT NULL,
-  `Attempts` int(11) NOT NULL,
-  `LastLogin` datetime NOT NULL,
-  `Username` varchar(65) DEFAULT NULL,
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-```
-### Setup the `login/dbconf.php` file
-```php
-<?php
-    //DATABASE CONNECTION VARIABLES
-    $host = "localhost"; // Host name
-    $username = "user"; // Mysql username
-    $password = "password"; // Mysql password
-    $db_name = "login"; // Database name
-
-```
 
 ### Setup the `login/config.php` file
 <i>Read code comments for a description of each variable</i>
@@ -69,8 +51,8 @@ CREATE TABLE `loginAttempts` (
     $from_name = 'Test Email'; //"From name" displayed on email
 
     //Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
-    $mailServerType = 'smtp';
-    //IF $mailServerType = 'smtp'
+    $mail_server_type = 'smtp';
+    //IF $mail_server_type = 'smtp'
     $smtp_server = 'smtp.mail.domain.com';
     $smtp_user = 'youremail@domain.com';
     $smtp_pw = 'yourEmailPassword';
@@ -87,7 +69,7 @@ CREATE TABLE `loginAttempts` (
     //IGNORE CODE BELOW THIS
 ```
 ### Place this code (from `index.php`) at the head of each page :
-> *** **Important** *** Checks to see if username $_SESSION variable is set. If not set, redirects to login page. 
+> *** **Important** *** Checks to see if username $_SESSION variable is set. If not set, redirects to login page.
 
 ```php
 <?php require "login/loginheader.php"; ?>

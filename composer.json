@@ -1,0 +1,27 @@
+{
+    "name": "therecluse26/php-login",
+    "description": "A simple, standalone PHP login plugin",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Brad Magyar",
+            "email": "braddmagyar@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Fethi El Hassasna",
+            "email": "fethica@me.com",
+            "role": "Developer"
+        }
+    ],
+
+    "require": {
+        "components/jquery": "^3.1",
+        "components/bootstrap": "^3",
+        "firebase/php-jwt": "^4.0",
+        "phpmailer/phpmailer": "^5.2"
+    },
+    "config": {
+        "vendor-dir": "login/vendor"
+    }
+}
