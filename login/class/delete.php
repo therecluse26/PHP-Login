@@ -1,9 +1,10 @@
 <?php
 class Delete extends DbConn
 {
-    public function deleteUser($uid)
+    public static function deleteUser($uid)
     {
         try {
+            
             $ddb = new DbConn;
             $tbl_members = $ddb->tbl_members;
             $derr = '';

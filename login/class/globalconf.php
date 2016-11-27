@@ -7,9 +7,11 @@ class GlobalConf
     {
         $up_dir = realpath(__DIR__ . '/..');
 
-        if(file_exists($up_dir.'/config.php')){
+        if(file_exists($up_dir.'/config.php')) {
             require $up_dir.'/config.php';
-        } 
+        } else {
+            require 'config.php';
+        }
         
         $this->ip_address = $ip_address;
         $this->login_timeout = $login_timeout;
@@ -19,6 +21,7 @@ class GlobalConf
         $this->signin_url = $signin_url;
         $this->max_attempts = $max_attempts;
         $this->jwt_secret = $jwt_secret;
+        $this->activemsg = $activemsg;
     }
 
     public function addAttempt()

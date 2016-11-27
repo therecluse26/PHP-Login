@@ -1,9 +1,15 @@
 <?php
-session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
+
 if (array_key_exists('username', $_SESSION) && $_SESSION['ip_address'] == getenv ( "REMOTE_ADDR" )) {
   session_start();
   session_destroy();
 }
+
+$pagetype = 'loginpage';
 $title = 'Reset Password';
 require 'autoload.php';
 require 'partials/pagehead.php';

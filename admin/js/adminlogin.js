@@ -13,9 +13,8 @@ $(document).ready(function () {
                 data: "myusername=" + username + "&mypassword=" + password,
                 dataType: 'JSON',
                 success: function (html) {
-                    //console.log(html.response + ' ' + html.username);
+
                     if (html.response === 'true') {
-                        //location.assign("../index.php");
                        location.reload();
                         return html.username;
                     } else {
@@ -27,7 +26,7 @@ $(document).ready(function () {
                     console.log(errorThrown);
                 },
                 beforeSend: function () {
-                    $("#message").html("<p class='text-center'><img src='../images/ajax-loader.gif'></p>");
+                    $("#message").html("<p class='text-center'><img src='../login/images/ajax-loader.gif'></p>");
                 }
             });
         }

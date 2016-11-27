@@ -11,7 +11,8 @@
 </div>
 
 <?php
-$page = "resetpw";
+$pagetype = "loginpage";
+$title = "Reset Password";
 require "partials/jsinclude.php";
 ?>
 <script>

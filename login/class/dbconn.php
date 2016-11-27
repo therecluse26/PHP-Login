@@ -5,7 +5,14 @@ class DbConn
     public $conn;
     public function __construct()
     {
-        require 'dbconf.php';
+        $up_dir = realpath(__DIR__ . '/..');
+
+        if (file_exists('dbconf.php')) {
+            require 'dbconf.php';
+        } else {
+            require $up_dir.'/dbconf.php';
+        }
+
         $this->host = $host; // Host name
         $this->username = $username; // Mysql username
         $this->password = $password; // Mysql password

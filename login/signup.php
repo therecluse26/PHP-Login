@@ -1,9 +1,9 @@
 <?php
-if (array_key_exists('username', $_SESSION) ) {
+if ((isset($_SESSION)) && array_key_exists('username', $_SESSION) ) {
   session_destroy();
 }
 $title = 'Sign Up';
-$page = "signup";
+$pagetype = 'loginpage';
 require 'partials/pagehead.php';
 ?>
 <body>
@@ -24,7 +24,6 @@ require 'partials/pagehead.php';
 
     </div> <!-- /container -->
 
-<?php require "partials/jsinclude.php"; ?>
 
 <script>
 

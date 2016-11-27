@@ -1,44 +1,47 @@
+<div class="container">
 <?php
-$page = 'verifyuser';
+$pagetype = 'loginpage';
 $title = 'Verify User';
-require 'autoload.php';
-require 'class/functions.php';
-include 'config.php';
 require 'partials/pagehead.php';
+require 'autoload.php';
+
+$conf = new GlobalConf;
 
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
-$uid = $_GET['uid'];
-$verify = $_GET['v'];
 
-$e = new UserData;
-$eresult = $e->userDataPull($uid, 0);
+$uid_non_json = base64_decode($_GET['uid']);
+$idarr = Array($uid_non_json);
+$uids = json_encode($idarr);
 
-$email = $eresult['email'];
-$username = $eresult['username'];
+$userarr = UserData::userDataPull($uids, 0);
 
-$v = new Verify;
-
-if (isset($uid) && !empty(str_replace(' ', '', $uid)) && isset($verify) && !empty(str_replace(' ', '', $verify))) {
-
+try {
     //Updates the verify column on user
-    $vresponse = $v->verifyUser($uid, $verify);
+    $vresponse = Verify::verifyUser($userarr, 1);
 
     //Success
     if ($vresponse == 1) {
-        echo $activemsg;
+        
+        echo '<form class="form-signin" action="'.$conf->signin_url.'"><h4>'.$conf->activemsg.'</h4><br><input type="submit" class="btn btn-lg btn-primary btn-block" value="Click Here to Log In"></button></form>';
 
         //Send verification email
         $m = new MailSender;
-        $m->sendMail($email, $username, $uid, 'Active');
+        //SEND MAIL 
+        $m->sendMail($userarr, 'Active');
+
+
     } else {
         //Echoes error from MySQL
         echo $vresponse;
-    }
-} else {
-    //Validation error from empty form variables
-    echo 'An error occurred... click <a href="index.php">here</a> to go back.';
-};
+    } 
+
+} catch (Exception $ex) {
+
+    echo $ex->getMessage();
+
+}
 
 ?>
+</div>
 </body>
 </html>

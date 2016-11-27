@@ -4,7 +4,6 @@
 ob_start();
 include 'config.php';
 require 'autoload.php';
-require 'class/functions.php';
 
 // Define $myusername and $mypassword
 $username = $_POST['myusername'];
@@ -17,7 +16,7 @@ $password = stripslashes($password);
 $response = '';
 $loginCtl = new LoginForm;
 $conf = new GlobalConf;
-$lastAttempt = checkAttempts($username);
+$lastAttempt = Attempts::checkAtt($username);
 $max_attempts = $conf->max_attempts;
 
 //First Attempt

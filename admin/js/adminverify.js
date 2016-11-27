@@ -1,16 +1,19 @@
 function verifyUser(id, email, username, btnid){
+
+    var uidJSON = "[" + JSON.stringify(id) + "]";
+
     $.ajax({
         type: "GET",
         url: "ajax/verajax.php",
-        data: "uid="+ id,
+        data: "uid="+ uidJSON,
         dataType: 'HTML',
         beforeSend: function () {
-           $('#verbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../images/load.gif'></p>");
+           $('#verbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");
             $('#verbutton'+btnid).prop('disabled', true);
             $('#delbutton'+btnid).prop('disabled', true);
         },
         success: function (html) {
-            $('#verbutton'+btnid).closest('tr').css('background-color', '#32CD32');
+            $('#verbutton'+btnid).closest('tr').css('background-color', '#5cb85c');
             $('#verbutton'+btnid).closest('tr').fadeOut(400, function(){
 
                 $(this).remove();

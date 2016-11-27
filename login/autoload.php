@@ -5,13 +5,15 @@ spl_autoload_register(function ($className) {
 
     $path = __DIR__ . "/class/{$className}.php";
 
+
     if (file_exists($path)) {
 
         require_once($path);
 
     } else {
 
-        $path = "login/class/{$className}.php";
+        $path = __DIR__."/login/class/{$className}.php";
+
         
         if(file_exists($path)){
 

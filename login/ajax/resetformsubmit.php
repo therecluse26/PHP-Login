@@ -39,7 +39,7 @@ else {
 
         } else {
             //Failure
-            mySqlErrors($response);
+            MiscFunctions::mySqlErrors($response);
 
         }
     } else {

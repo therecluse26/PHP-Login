@@ -1,15 +1,15 @@
 <?php
 require 'autoload.php';
-require 'class/functions.php';
+require './vendor/autoload.php';
 include_once 'config.php';
 
 //Pull username, generate new ID and hash password
 $newid = uniqid(rand(), false);
 $newuser = $_POST['newuser'];
-$newpw = password_hash($_POST['password1'], PASSWORD_DEFAULT);
+$newemail = $_POST['email'];
 $pw1 = $_POST['password1'];
 $pw2 = $_POST['password2'];
-$newemail = $_POST['email'];
+$userarr = Array(Array('id'=>$newid, 'username'=>$newuser, 'email'=>$newemail, 'pw'=>$pw1));
 
 //Validation rules
 if ($pw1 != $pw2) {
@@ -30,32 +30,32 @@ if ($pw1 != $pw2) {
 
         //Tries inserting into database and add response to variable
 
-        $a = new NewUserForm;
+        $a = new NewUser;
 
-        $response = $a->createUser($newuser, $newid, $newemail, $newpw);
+        $response = $a->createUser($userarr);
 
         //Success
         if ($response == 'true') {
 
             echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'. $signupthanks .'</div><div id="returnVal" style="display:none;">true</div>';
 
-            //Send verification email
-            $m = new MailSender;
+            try { //Send verification email
+                $m = new MailSender;
 
-            //Enables moderator verification (overrides user self-verification emails)
-            if (isset($admin_email)) {
+                //Enables moderator verification (overrides user self-verification emails)
 
-                $m->sendMail($admin_email, $newuser, $newid, 'Verify');
+                $m->sendMail($userarr, 'Verify');
 
-            } else {
 
-                $m->sendMail($newemail, $newuser, $newid, 'Verify');
-
+            } catch (Exception $me) {
+                $me->getMessage();
+                echo $me;
             }
+
 
         } else {
             //Failure
-            mySqlErrors($response);
+            MiscFunctions::mySqlErrors($response);
 
         }
     } else {

@@ -1,8 +1,11 @@
 <?php
-session_start();
+if(!isset($_SESSION)) 
+{ 
+    session_start(); 
+} 
 
-if(!isset($page)){
-    $page = 'page';
+if(!isset($pagetype)){
+    $pagetype = 'page';
     $title = 'Page';
 }
 
@@ -15,12 +18,12 @@ if (file_exists($up_dir.'/autoload.php')) {
 
 $pageHead = new pageConstruct;
 
-$pageHead->buildHead($page);
+$pageHead->buildHead($pagetype, $title);
 
 if(array_key_exists('username', $_SESSION)){
-    $pageHead->buildInc($_SESSION['username'], $_SESSION['admin'], $page, $title);
+    $pageHead->buildInc($_SESSION['username'], $_SESSION['admin'], $pagetype);
 } else {
-    $pageHead->buildInc(null, 0, $page, $title);
+    $pageHead->buildInc(null, 0, $pagetype);
 
 }
 

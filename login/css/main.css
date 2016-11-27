@@ -6,6 +6,7 @@ body {
     max-width: 330px;
     padding: 15px;
     margin: 0 auto;
+    top: 50%;
 }
 .form-signin .form-signin-heading, .form-signup .form-signup-heading,
 .form-signin .checkbox, .form-signup .checkbox {
@@ -43,85 +44,16 @@ body {
 .userdiv{
     position: sticky;
     margin: auto;
-    width: 60%;
-    padding: 10px;
+    width: 75%;
 }
-.userlist{
-    width: 100%;
-    margin: auto;
-    /*border-collapse: collapse;*/
-    border-spacing: 0;
-    empty-cells: show;
-    border: 1px solid #cbcbcb;
-
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+.btn-fixed {
+    width: 55px;
+    height: 30px;
 }
 
-.userlist thead {
-    background-color: #e0e0e0;
-    color: #000;
-    text-align: left;
-    vertical-align: bottom;
-    border-bottom: none;
-}
-.userlist td {
-    padding: 5px 10px 5px 10px;
-
-}
-.userlist th {
-
-    padding: 5px 10px 5px 10px;
-    border-width: 0 0 1px 0;
-    border-bottom: 1px solid #cbcbcb;
-
-}
-.userlist tr {
-    border-bottom: 1px solid #cbcbcb;
-}
-.userlist tbody > tr:last-child > td {
-
-    border-bottom-width: 0;
-}
-.verbutton {
-    float: right;
-    -webkit-border-radius: 16;
-    -moz-border-radius: 16;
-    border-radius: 16px;
-    color: #ffffff;
-    font-size: 12px;
-    background: #32CD32;
-    padding: 4px 13px 4px 13px;
-    text-decoration: none;
-    border-style: none;
-    font-weight: bold;
-    outline: none;
-}
-.verbutton:hover {
-    background: #00FF00;
-}
-.verbutton:active {
-    background: #32CD32;
-}
-.delbutton {
-    float: left;
-    -webkit-border-radius: 16;
-    -moz-border-radius: 16;
-    border-radius: 16px;
-    color: #ffffff;
-    font-size: 12px;
-    background: #cc0000;
-    padding: 4px 10px 4px 10px;
-    text-decoration: none;
-    border-style: none;
-    font-weight: bold;
-    outline: none;
-}
-
-.delbutton:hover {
-    background: #e60000;
-}
-.delbutton:active {
-    background: #cc0000;
-}
 .readonlyinput {
     border: none;
     background: transparent;
@@ -159,23 +91,41 @@ body {
     margin-top: 15%;
     margin-bottom: auto;
 }
-    #progress {
-      width: 100%;
-      border-radius: 6px;
-      border: 1px solid #aaa;
-      height: 30px;
-      margin-bottom: 20px;
-    }
-    #progress .bar {
-      background-color: #32CD32;
-      border-radius: 5px;
-      height: 28px;
-    }
-    #message {
-        font-size: 12px;
-        display: float;
-        text-align: center;
-    }
-    .valstatus {
-        padding-top: -10px;
-    }
+#progress {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    height: 30px;
+    margin-bottom: 20px;
+}
+#progress .bar {
+    background-color: #5cb85c;
+    border-radius: 5px;
+    height: 28px;
+}
+#message {
+    font-size: 12px;
+    display: float;
+    text-align: center;
+}
+.valstatus {
+    padding-top: -10px;
+}
+.dropdown {
+    margin-top: 10px;
+    right: 10px;
+}
+td {
+  word-wrap:break-word;
+  word-break:break-word;
+}
+.checkedrow {
+    background-color: #dddddd;
+    transition: all .15s ease;
+}
+.headrow {
+    background-color: #eee;
+}
+tr:not(.checkedrow):hover {
+    background-color: #fefefe;
+}

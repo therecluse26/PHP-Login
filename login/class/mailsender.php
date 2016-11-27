@@ -1,17 +1,19 @@
 <?php
 class MailSender
 {
-    public function sendMail($email, $user, $id, $type)
+    public function sendMail($userarr, $type)
     {
-        include 'config.php';
-        require 'vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
-
-        $finishedtext = $active_email;
+        if (file_exists('config.php') && file_exists('vendor/phpmailer/phpmailer/PHPMailerAutoload.php')) {
+            require 'config.php';
+            require 'vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+        } else {
+            require '../config.php';
+            require '../vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+        }
 
         // ADD $_SERVER['SERVER_PORT'] TO $verifyurl STRING AFTER $_SERVER['SERVER_NAME'] FOR DEV URLS USING PORTS OTHER THAN 80
         // substr() trims "createuser.php" off of the current URL and replaces with verifyuser.php
         // Can pass 1 (verified) or 0 (unverified/blocked) into url for "v" parameter
-        $verifyurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "verifyuser.php?v=1&uid=" . $id;
 
         // Create a new PHPMailer object
         // ADD sendmail_path = "env -i /usr/sbin/sendmail -t -i" to php.ini on UNIX servers
@@ -21,34 +23,6 @@ class MailSender
         $mail->WordWrap = 80;
         $mail->setFrom($from_email, $from_name);
         $mail->AddReplyTo($from_email, $from_name);
-        /****
-        * Set who the message is to be sent to
-        * CAN BE SET TO addAddress(youremail@website.com, 'Your Name') FOR PRIVATE USER APPROVAL BY MODERATOR
-        * SET TO addAddress($email, $user) FOR USER SELF-VERIFICATION
-        *****/
-        $mail->addAddress($email, $user);
-
-        //Sets message body content based on type (verification or confirmation)
-        if ($type == 'Verify') {
-
-            //Set the subject line
-            $mail->Subject = $user . ' Account Verification';
-
-            //Set the body of the message
-            $mail->Body = $verifymsg . '<br><a href="'.$verifyurl.'">'.$verifyurl.'</a>';
-
-            $mail->AltBody  =  $verifymsg . $verifyurl;
-
-        } elseif ($type == 'Active') {
-
-            //Set the subject line
-            $mail->Subject = $site_name . ' Account Created!';
-
-            //Set the body of the message
-            $mail->Body = $active_email . '<br><a href="'.$signin_url.'">'.$signin_url.'</a>';
-            $mail->AltBody  =  $active_email . $signin_url;
-
-        };
 
         //SMTP Settings
         if ($mail_server_type == 'smtp') {
@@ -65,20 +39,64 @@ class MailSender
             //********************
             $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production)
 
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
+        }
+        /****
+        * Set who the message is to be sent to
+        * CAN BE SET TO AddBCC(youremail@website.com, 'Your Name') FOR PRIVATE USER APPROVAL BY MODERATOR
+        * SET TO AddBCC($email, $user) FOR USER SELF-VERIFICATION
+        *****/
+       
+        foreach($userarr as $usr){
+
+            $uid_64 = base64_encode($usr['id']);
+            
+            $verifyurl = $base_url . "/login/verifyuser.php?v=1&uid=" . $uid_64;
+
+            if($admin_verify == true){
+                    $mail->AddBCC($admin_email, $usr['username']);
+
+            } else {
+                    $mail->AddBCC($usr['email'], $usr['username']);
+            }
         }
 
-        try {
+            if ($type == 'Verify') {
 
-            $mail->Send();
+                    //Set the subject line
+                    $mail->Subject = $usr['username']. ' Account Verification';
 
-        } catch (phpmailerException $e) {
+                    //Set the body of the message
+                    $mail->Body = $verifymsg . '<br><a href="'.$verifyurl.'">'.$verifyurl.'</a>';
 
-            echo $e->errorMessage();// Error messages from PHPMailer
+                    $mail->AltBody  =  $verifymsg . $verifyurl;
 
-        } catch (Exception $e) {
+                } elseif ($type == 'Active') {
 
-            echo $e->getMessage();// Something else
+                    //Set the subject line
+                    $mail->Subject = $site_name . ' Account Created!';
 
-        }
+                    //Set the body of the message
+                    $mail->Body = $active_email . '<br><a href="'.$signin_url.'">'.$signin_url.'</a>';
+                    $mail->AltBody  =  $active_email . $signin_url;
+
+            };
+        
+            try {
+
+                $mail->Send();
+
+            } catch (phpmailerException $e) {
+
+                echo $e->errorMessage();// Error messages from PHPMailer
+
+            }
+        
     }
 }

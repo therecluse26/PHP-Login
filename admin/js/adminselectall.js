@@ -10,8 +10,6 @@ function verifyAll(){
 
     var idsJSON = JSON.stringify(searchIDs);
 
-    //console.log(idsJSON);
-
         $.ajax({
                 type: "GET",
                 url: "ajax/verajax.php",
@@ -20,7 +18,7 @@ function verifyAll(){
                 beforeSend: function () {
 
                     $.each(btnIDs, function(index, btnid){
-                        $('#verbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../images/load.gif'></p>");
+                        $('#verbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");
                         $('#verbutton'+btnid).prop('disabled', true);
                         $('#delbutton'+btnid).prop('disabled', true);
                     })
@@ -41,15 +39,13 @@ function verifyAll(){
                         })
 
                     });
-
-                    //location.reload();
-
+                    
+                    location.reload();
 
                 },
                 error: function (textStatus, errorThrown) {
 
                     location.reload();
-
                     console.log(textStatus);
                     console.log(errorThrown);
                 }
@@ -59,6 +55,12 @@ function verifyAll(){
 $(document).ready(function(){
     $("#selectAll").change(function () {
         $("input:checkbox").prop('checked', $(this).prop("checked"));
+        if ($("input:checkbox").is(":checked")) { 
+            $("input:checkbox").closest('tr').addClass("checkedrow"); 
+        } else {
+            $("input:checkbox").closest('tr').removeClass("checkedrow");
+        }
+
     });
 
 });

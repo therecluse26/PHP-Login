@@ -1,29 +1,41 @@
 <?php
 class Verify extends DbConn
 {
-    public function verifyUser($id, $verify)
+    public static function verifyUser($userarr, $verify)
     {
         try {
+
+            $idset = [];
+            
+            foreach($userarr as $user){
+                array_push($idset, $user['id']);
+            }
+            
+            $in  = str_repeat('?,', count($idset) - 1) . '?';
+            
             $vdb = new DbConn;
             $tbl_members = $vdb->tbl_members;
-            $verr = true;
 
             // prepare sql and bind parameters
-            $vstmt = $vdb->conn->prepare("UPDATE ".$tbl_members." SET verified = :verify WHERE id in (:ids)");
-            $vstmt->bindParam(':id', $id);
-            $vstmt->bindParam(':verify', $verify);
-            $vstmt->execute();
+            $vstmt = $vdb->conn->prepare("UPDATE ".$tbl_members." SET verified = ".$verify." WHERE id in ($in)");
+            $vstmt->execute($idset);
+
+            $vresp = 'true';
 
 
         } catch (PDOException $v) {
 
-            $verr = 'Error: ' . $v->getMessage();
+            $vresp = 'Error: ' . $v->getMessage();
 
         }
 
     //Determines returned value ('true' or error code)
-    $resp = $verr ? true : 'Failure';
-
+    //$resp = ($vresp == true) ? true : 'Failure';
+    if($vresp == 'true'){
+        $resp = true;
+    } else {
+        $resp = false;
+    }
         return $resp;
 
     }

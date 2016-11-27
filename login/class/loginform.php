@@ -8,7 +8,7 @@ class LoginForm extends DbConn
         $login_timeout = $conf->login_timeout;
         $max_attempts = $conf->max_attempts;
         $timeout_minutes = $conf->timeout_minutes;
-        $attcheck = checkAttempts($myusername);
+        $attcheck = Attempts::checkAtt($myusername);
         $curr_attempts = $attcheck['attempts'];
 
         $datetimeNow = date("Y-m-d H:i:s");
@@ -81,7 +81,7 @@ class LoginForm extends DbConn
             $max_attempts = $conf->max_attempts;
 
             $datetimeNow = date("Y-m-d H:i:s");
-            $attcheck = checkAttempts($username);
+            $attcheck = Attempts::checkAtt($username);
             $curr_attempts = $attcheck['attempts'];
 
             $stmt = $db->conn->prepare("INSERT INTO ".$tbl_attempts." (ip, attempts, lastlogin, username) values(:ip, 1, :lastlogin, :username)");
@@ -117,7 +117,7 @@ class LoginForm extends DbConn
             $timeout_minutes = $conf->timeout_minutes;
 
             $att = new LoginForm;
-            $attcheck = checkAttempts($username);
+            $attcheck = Attempts::checkAtt($username);
             $curr_attempts = $attcheck['attempts'];
 
             $datetimeNow = date("Y-m-d H:i:s");

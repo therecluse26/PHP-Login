@@ -1,16 +1,18 @@
-<nav class="navbar navbar-default navbar-static-top">
-    <div class="container-fluid">
+<div class="dropdown pull-right">
+  <button class="btn btn-default dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><?php echo $_SESSION['username']; ?>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="userDropdown">
+      
+    <li><a href="#">Edit Profile</a></li>
 
-<!-- Admin Controls -->
-<?php if ((array_key_exists('admin', $_SESSION)) && $_SESSION['admin'] == 1): ?>
-    <ul class="nav navbar-nav">
-        <li><a href="<?php echo $url; ?>/login/admin/adminverify.php">Verify Users</a></li>
-    </ul>
-<?php endif; ?>
+    <!-- Admin Controls -->
+    <?php if ((array_key_exists('admin', $_SESSION)) && $_SESSION['admin'] == 1): ?>
+        <li><a href="<?php echo $url; ?>/admin/verifyusers.php">Verify/Delete Users</a></li>
+    <?php endif; ?>
 
-    <ul class="nav navbar-nav navbar-right">
-        <li><?php echo $_SESSION['username']; ?></li>
-        <li><a href="<?php echo $url; ?>/login/logout.php">Logout</a></li>
-    </ul>
-    </div>
-</nav>
+    <li role="separator" class="divider"></li>
+    <li><a href="<?php echo $url; ?>/login/logout.php">Logout</a></li>
+
+  </ul>
+</div>

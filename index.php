@@ -1,5 +1,4 @@
-<?php session_start();
-$page = 'home';
+<?php 
 $title = 'Home';
 include "login/partials/pagehead.php";
 ?>

@@ -1,16 +1,19 @@
 function deleteUser(id, username, email, btnid){
+
+    var uidJSON = "[" + JSON.stringify(id) + "]";
+
     $.ajax({
         type: "GET",
         url: "ajax/delajax.php",
-        data: "uid="+ id + "&username=" + username + "&email=" + email +"&m=del",
+        data: "uid="+ uidJSON,
         dataType: 'HTML',
         beforeSend: function () {
-            $('#delbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../images/load.gif'></p>");
+            $('#delbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");
             $('#verbutton'+btnid).prop('disabled', true);
             $('#delbutton'+btnid).prop('disabled', true);
         },
         success: function (html) {
-            $('#delbutton'+btnid).closest('tr').css('background-color', '#cc0000');
+            $('#delbutton'+btnid).closest('tr').css('background-color', '#d9534f');
             $('#delbutton'+btnid).closest('tr').fadeOut(400, function(){
 
                 $(this).remove();
