@@ -1,7 +1,16 @@
 body {
-    background-color: #eee;
+    background-color: #f4f4f4;
 }
+img {
+  max-width: 100%;
+}
+.resp-message {
 
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+    top: 50%;
+}
 .form-signin, .form-signup {
     max-width: 330px;
     padding: 15px;
@@ -40,7 +49,6 @@ body {
 .form-signin .btn, .form-signup .btn  {
     margin-bottom: 10px;
 }
-
 .userdiv{
     position: sticky;
     margin: auto;
@@ -53,7 +61,6 @@ body {
     width: 55px;
     height: 30px;
 }
-
 .readonlyinput {
     border: none;
     background: transparent;
@@ -123,9 +130,11 @@ td {
     background-color: #dddddd;
     transition: all .15s ease;
 }
-.headrow {
-    background-color: #eee;
-}
+
 tr:not(.checkedrow):hover {
     background-color: #fefefe;
 }
+#profileForm {
+    position: static;
+}
+

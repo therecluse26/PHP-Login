@@ -11,7 +11,7 @@ class NewUser extends DbConn
             foreach($userarr as $user){
 
                 // encrypt password
-                $pw = password_hash($user['pw'], PASSWORD_DEFAULT);
+                $pw = PasswordCrypt::encryptPw($user['pw']);
 
                 // prepare sql and bind parameters
                 $stmt = $db->conn->prepare("INSERT INTO ".$tbl_members." (id, username, password, email) VALUES (:id, :username, :password, :email)");
@@ -24,25 +24,23 @@ class NewUser extends DbConn
 
             }
 
-            $err = '';
-
         } catch (PDOException $e) {
 
             $err = "Error: " . $e->getMessage();
 
         }
         //Determines returned value ('true' or error code)
-        if ($err == '') {
+        if (!isset($err)) {
 
-            $success = 'true';
+            $resp = true;
 
         } else {
 
-            $success = $err;
+            $resp = $err;
 
         };
 
-        return $success;
+        return $resp;
 
     }
 }

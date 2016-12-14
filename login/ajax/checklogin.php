@@ -1,9 +1,8 @@
 <?php
-//DO NOT ECHO ANYTHING ON THIS PAGE OTHER THAN RESPONSE
 //'true' triggers login success
 ob_start();
-include 'config.php';
-require 'autoload.php';
+include '../config.php';
+require '../autoload.php';
 
 // Define $myusername and $mypassword
 $username = $_POST['myusername'];

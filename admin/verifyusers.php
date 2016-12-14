@@ -1,26 +1,14 @@
 <?php
-session_start();
-require '../login/autoload.php';
-$conf = new GlobalConf;
-$base_url = $conf->base_url;
-
-if (!array_key_exists('admin', $_SESSION)  || $_SESSION['ip_address'] != getenv ( "REMOTE_ADDR" )) {
-    session_destroy();
-    header("location:".$base_url."/login/index.php");
-} else {
-  
-chdir('../');
 $pagetype = 'adminpage';
 $title = 'Admin Verification';
-include "login/partials/pagehead.php";
+require '../login/partials/pagehead.php';
 
-//include 'partials/adminpagehead.php';
 $users = AdminUserPull::UserList();
 $x = 0;
 ?>
-
+</head>
+<body>
 <div class="container">
-
 <?php
 echo "<h3>Verify/Delete Users</h3>";
 
@@ -37,7 +25,6 @@ echo "<h3>Verify/Delete Users</h3>";
         echo '<p class="message">No new users!</p>';
     };
 
-};
 
 ?>
     </table>

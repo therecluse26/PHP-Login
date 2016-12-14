@@ -11,7 +11,8 @@ $userarr = unserialize(base64_decode(urldecode($_GET["usr"])));
     } catch (Exception $e) {
 
         trigger_error($e->getMessage());
-
+        die();
+        
     }
 
 exit;

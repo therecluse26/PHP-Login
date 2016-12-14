@@ -3,27 +3,50 @@ $pagetype = 'loginpage';
 $title = 'Login';
 include 'partials/pagehead.php';
 ?>
+</head>
+
 <body>
     <div class="container logindiv">
 
-      <form class="form-signin loginbox" name="form1" method="post" action="checklogin.php">
-        <h2 class="form-signin-heading"></h2>
-        <input name="myusername" id="myusername" type="text" class="form-control" placeholder="Username" autofocus>
-        <input name="mypassword" id="mypassword" type="password" class="form-control" placeholder="Password">
-        <!-- The checkbox remember me is not implemented yet...
-        <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-        -->
-        <button name="Submit" id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <form class="text-center" name="form1" method="post" action="checklogin.php">
 
-        <div id="message"></div>
-      </form>
+                <h3 class="form-signin-heading"><?php echo $title;?></h3>
+                <br>
 
-    </div> 
-    
+                <div class="form-group">
+
+                    <input name="myusername" id="myusername" type="text" class="form-control input-lg" placeholder="Username" autofocus>
+                    <input name="mypassword" id="mypassword" type="password" class="form-control input-lg" placeholder="Password">
+
+                </div>
+
+                <div class="form-group">
+
+                    <button name="Submit" id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Log In</button>
+                </div>
+
+            </form>
+
+
+            <div id="message"></div>
+
+            <p class="text-center"><a href="forgotpassword.php">Forgot Password?</a></p>
+
+            <p class="text-center">or <a href="signup.php">Create an Account</a></p>
+
+
+        </div>
+
+        <div class="col-sm-4"></div>
+
+
+    </div>
+
     <!-- The AJAX login script -->
     <script src="js/login.js"></script>
 
-  </body>
+</body>
+
 </html>

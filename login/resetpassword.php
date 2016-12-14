@@ -1,81 +1,66 @@
 <?php
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+    $pagetype = 'loginpage';
+    $title = 'Reset Password';
+    require 'partials/pagehead.php';
+    require 'vendor/autoload.php';
+?>
+</head>
+<body>
+    <div class="container logindiv">
 
-if (array_key_exists('username', $_SESSION) && $_SESSION['ip_address'] == getenv ( "REMOTE_ADDR" )) {
-  session_start();
-  session_destroy();
-}
+<div class="col-sm-4"></div>
+<div class="col-sm-4">
 
-$pagetype = 'loginpage';
-$title = 'Reset Password';
-require 'autoload.php';
-require 'partials/pagehead.php';
-require 'vendor/autoload.php';
+<?php
 
+$jwt = $_GET['t'];
 
-$id = $_GET['id'];
-$userinf = new UserData;
 $conf = new GlobalConf;
 
-$key = $conf->jwt_secret;
-
-//$jwt = $_GET['token'];
+$secret = $conf->jwt_secret;
 
 use \Firebase\JWT\JWT;
 
-//****This would go in "forgot password" link... send out using email
-
 try {
-    $user = UserData::userDataPull($id, 0)['username'];
 
-    if(sizeof($user) == 0){
-        throw new Exception("No username found!");
-    }
+$decoded = JWT::decode($jwt, $secret, array('HS256'));
 
-    $token = array(
-    "iss" => $conf->base_url,
-    //"email" => $email,
-    "username" => $user,
-    "pw_reset" => "true"
-    );
+$email = $decoded->email;
+$tokenid = $decoded->tokenid;
+$userid = $decoded->userid;
+$pw_reset = $decoded->pw_reset;
 
-    $jwt = JWT::encode($token, $key);
+$validToken = TokenHandler::selectToken($tokenid, $userid, 0);
 
-    //$jwt = $_GET['jwt'];
 
-    JWT::$leeway = 60; // $leeway in seconds
+    if($validToken && ($decoded->pw_reset == "true")){
 
-    //echo $jwt . '<br>';
-
-    //**** end of "forgot password" link code
-
-    //Decoding token (error handling)
-    try {
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
-        //print_r($decoded);
-
-        if($decoded->pw_reset == "true"){
-
-            //Includes Reset Form
-            include "resetform.php";
-
-        }
-        else {
-            echo "Reset FORBIDDEN!";
-        };
+        require "partials/resetform.php";
 
     }
-    catch (Exception $e){
-        echo $e->getMessage();
-    }
+    else {
+
+        echo "Invalid or expired token, please resubmit <a href='".$conf->base_url."/login/forgotpassword.php'>forgot password form</a>";
+    };
+
+//print_r($decoded);
+
+} catch (Exception $e) {
+
+    echo $e->getMessage()."<br>Token failure, try re-sending request <a href='".$conf->base_url."/login/forgotpassword.php'>here</a>";
 
 }
-catch (Exception $f){
-    echo $f->getMessage();
-}
+
+?>
+
+<div id="message"></div>
+
+</div>
+
+<div class="col-sm-4"></div>
+
+</div>
+</body>
 
 
 

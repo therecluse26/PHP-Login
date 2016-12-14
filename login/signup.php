@@ -1,47 +1,72 @@
 <?php
 if ((isset($_SESSION)) && array_key_exists('username', $_SESSION) ) {
-  session_destroy();
+    session_destroy();
 }
-$title = 'Sign Up';
 $pagetype = 'loginpage';
+$title = 'Sign Up';
 require 'partials/pagehead.php';
 ?>
+</head>
 <body>
-<div class="container">
+    <div class="container logindiv">
 
-      <form class="form-signup" id="usersignup" name="usersignup" method="post" action="createuser.php">
-        <h2 class="form-signup-heading">Register</h2>
-        <input name="newuser" id="newuser" type="text" class="form-control" placeholder="Username" autofocus>
-        <input name="email" id="email" type="text" class="form-control" placeholder="Email">
-<br>
-        <input name="password1" id="password1" type="password" class="form-control" placeholder="Password">
-        <input name="password2" id="password2" type="password" class="form-control" placeholder="Repeat Password">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
 
-        <button name="Submit" id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+            <form class="text-center" id="usersignup" name="usersignup" method="post" action="ajax/createuser.php">
 
-        <div id="message"></div>
-      </form>
+                <h3 class="form-signup-heading"><?php echo $title;?></h3>
 
-    </div> <!-- /container -->
+                <br>
 
+                <input name="newuser" id="newuser" type="text" class="form-control input-lg" placeholder="Username" autofocus>
 
-<script>
+                <div class="form-group">
+                    <input name="email" id="email" type="text" class="form-control input-lg" placeholder="Email">
+                </div>
 
-$( "#usersignup" ).validate({
-  rules: {
-    email: {
-        email: true,
-        required: true
-    },
-    password1: {
-      required: true,
-      minlength: 4
-    },
-    password2: {
-      equalTo: "#password1"
-    }
-  }
-});
-</script>
+                <div class="form-group">
+                    <input name="password1" id="password1" type="password" class="form-control input-lg" placeholder="Password">
+                    <input name="password2" id="password2" type="password" class="form-control input-lg" placeholder="Repeat Password">
+                </div>
+
+                <div class="form-group">
+
+                    <button name="Submit" id="submitbtn" class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+                </div>
+
+            </form>
+
+            <div id="message"></div>
+
+            <p id="orlogin" class="text-center">or <a href="index.php">Login</a></p>
+
+            </div>
+
+        <div class="col-sm-4"></div>
+
+    </div>
+
+    <?php $conf = new GlobalConf; ?>
+
+    <script>
+        $("#usersignup").validate({
+            rules: {
+                email: {
+                    email: true,
+                    required: true
+                },
+                password1: {
+                    required: true,
+                    minlength: <?php echo $conf->pwminlength; ?>
+                },
+                password2: {
+                    equalTo: "#password1"
+                }
+            }
+        });
+
+    </script>
+
 </body>
 </html>

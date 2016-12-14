@@ -23,9 +23,18 @@ class DbConn
         $this->tbl_admins = $tbl_admins;
         $this->tbl_attempts = $tbl_attempts;
         $this->tbl_deleted = $tbl_deleted;
+        $this->tbl_tokens = $tbl_tokens;
 
         // Connect to server and select database.
-        $this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+
+            $this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        } catch (PDOException $e) {
+
+            print "Error!: " . $e->getMessage() . "<br/>";
+            die();
+        }
     }
 }

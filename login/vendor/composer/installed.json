@@ -217,5 +217,44 @@
             }
         ],
         "description": "PHPMailer is a full-featured email creation and transfer class for PHP"
+    },
+    {
+        "name": "fengyuanchen/cropper",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/Scalar4eg/cropper.git",
+            "reference": "ed5ee3075e5a12fd301b1843d81e12100c791aca"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/Scalar4eg/cropper/zipball/ed5ee3075e5a12fd301b1843d81e12100c791aca",
+            "reference": "ed5ee3075e5a12fd301b1843d81e12100c791aca",
+            "shasum": ""
+        },
+        "require": {
+            "components/jquery": ">=1.9.0"
+        },
+        "time": "2014-12-15 08:28:23",
+        "type": "component",
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "fengyuanchen",
+                "homepage": "http://fengyuanchen.github.io"
+            }
+        ],
+        "description": "A simple jQuery image cropping plugin",
+        "homepage": "http://fengyuanchen.github.io/cropper/",
+        "keywords": [
+            "cropper",
+            "image",
+            "jquery"
+        ]
     }
 ]

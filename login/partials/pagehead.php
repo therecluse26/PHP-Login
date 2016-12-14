@@ -1,30 +1,45 @@
 <?php
-if(!isset($_SESSION)) 
-{ 
-    session_start(); 
-} 
+/***
+Require this at the top of every page
+***/
+if (!isset($_SESSION)) {
 
-if(!isset($pagetype)){
-    $pagetype = 'page';
-    $title = 'Page';
+    session_start();
 }
 
-//"login" directory
-$up_dir = realpath(__DIR__ . '/..');
+//Recursively searches for autoload.php, enabling user to include this file in subdirectories
+$n = 0;
+do {
+    if (file_exists('login/autoload.php')) {
+        include_once('login/autoload.php');
+        break;
+    } else {
+        chdir('../');
+    }
+    $n++;
+} while (!file_exists('/login/autoload.php') && $n < 9);
 
-if (file_exists($up_dir.'/autoload.php')) {
-    include_once($up_dir.'/autoload.php');
-} 
+if (!isset($pagetype)) {
+
+    $pagetype = 'page';
+
+    if (!isset($title)) {
+
+        $title = 'Page';
+    }
+}
+
+$conf = new GlobalConf;
+$base_url = $conf->base_url;
 
 $pageHead = new pageConstruct;
-
 $pageHead->buildHead($pagetype, $title);
 
-if(array_key_exists('username', $_SESSION)){
-    $pageHead->buildInc($_SESSION['username'], $_SESSION['admin'], $pagetype);
+if (array_key_exists('username', $_SESSION)) {
+
+    $pageHead->pullNav($_SESSION['username'], $_SESSION['admin'], $pagetype);
+
 } else {
-    $pageHead->buildInc(null, 0, $pagetype);
 
+    $pageHead->pullNav(null, 0, $pagetype);
 }
-
-

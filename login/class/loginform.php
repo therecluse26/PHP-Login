@@ -28,7 +28,7 @@ class LoginForm extends DbConn
 
         }
 
-        $stmt = $db->conn->prepare("SELECT * FROM ".$tbl_members." WHERE username = :myusername");
+        $stmt = $db->conn->prepare("SELECT id, username, email, password, verified, admin FROM ".$tbl_members." WHERE username = :myusername");
         $stmt->bindParam(':myusername', $myusername);
         $stmt->execute();
 
@@ -44,18 +44,19 @@ class LoginForm extends DbConn
 
              //If max attempts not exceeded, continue
             // Checks password entered against db password hash
-            if (password_verify($mypassword, $result['password']) && $result['verified'] == '1') {
+            if (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '1') {
 
                 //Success! Register $myusername, $mypassword and return "true"
                 $success = 'true';
-                
+
                     session_start();
 
+                    $_SESSION['uid'] = $result['id'];
                     $_SESSION['admin'] = $result['admin'];
-                    $_SESSION['username'] = $myusername;
+                    $_SESSION['username'] = $result['username'];
                     $_SESSION['ip_address'] = getenv ( "REMOTE_ADDR" );
 
-            } elseif (password_verify($mypassword, $result['password']) && $result['verified'] == '0') {
+            } elseif (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
 
                 //Account not yet verified
                 $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Your account has been created, but you cannot log in until it has been verified</div>";

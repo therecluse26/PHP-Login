@@ -3,8 +3,12 @@
 $pagetype = 'loginpage';
 $title = 'Verify User';
 require 'partials/pagehead.php';
-require 'autoload.php';
+?>
 
+</head>
+<body>
+
+<?php
 $conf = new GlobalConf;
 
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url

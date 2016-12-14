@@ -14,7 +14,7 @@ $currdir = dirname(getcwd());
     <script src="ajax/instvalidate.js"></script>
 </head>
 <body>
-
+<div class="container">
 <div class="table">
 <table class="table table-bordered table-striped table-highlight">
 <tr>
@@ -60,8 +60,16 @@ $currdir = dirname(getcwd());
 
     </table>
     <tr>
-    <button id="submitbtn">Submit</button>
+
+      <ul class="pager">
+    <li class="previous"><a href="#">Previous</a></li>
+    <li class="next"><a href="#">Next</a></li>
+  </ul>
+
+  
+    <button id="submitbtn" class="btn btn-primary">Submit</button>
 </tr>
+</div>
 </div>
 
 </form>

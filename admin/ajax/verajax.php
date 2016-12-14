@@ -31,8 +31,6 @@ if (isset($ids) && sizeof($ids) >= 1) {
                     //Send to email queue (to run in background)
                     $mailQueue = shell_exec('curl '.$base_url.'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
 
-                    trigger_error($mailQueue);
-
                     } else {
                         //Validation error from empty form variables
                         header('HTTP/1.1 400 Bad Request');
