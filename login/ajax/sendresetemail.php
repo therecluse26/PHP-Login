@@ -6,9 +6,7 @@ require_once '../vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
 
-//$email = $_POST['e'];
 $email = $_POST['email'];
-$userinf = new UserData;
 $conf = new GlobalConf;
 $resp = array();
 
@@ -54,7 +52,7 @@ try {
         $mailResult = $mail->sendResetMail($reset_url, $user['email'], $user['username']);
 
         $resp['status'] = 1;
-        $resp['response'] = $mailResult;
+        $resp['response'] = $mailResult['message'];
         echo json_encode($resp);
 
     }

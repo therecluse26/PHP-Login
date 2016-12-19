@@ -1,13 +1,12 @@
 <?php
 class LoginForm extends DbConn
 {
-    public function checkLogin($myusername, $mypassword)
+    public function checkLogin($myusername, $mypassword, $cookie = 0)
     {
         $conf = new GlobalConf;
         $ip_address = $conf->ip_address;
         $login_timeout = $conf->login_timeout;
         $max_attempts = $conf->max_attempts;
-        $timeout_minutes = $conf->timeout_minutes;
         $attcheck = Attempts::checkAtt($myusername);
         $curr_attempts = $attcheck['attempts'];
 
@@ -15,6 +14,8 @@ class LoginForm extends DbConn
         $oldTime = strtotime($attcheck['lastlogin']);
         $newTime = strtotime($datetimeNow);
         $timeDiff = $newTime - $oldTime;
+
+        $timeout_minutes = round(($login_timeout / 60), 1);
 
         try {
 
@@ -55,6 +56,11 @@ class LoginForm extends DbConn
                     $_SESSION['admin'] = $result['admin'];
                     $_SESSION['username'] = $result['username'];
                     $_SESSION['ip_address'] = getenv ( "REMOTE_ADDR" );
+
+                if ($cookie == 1) {
+                    //Creates cookie
+                    include_once $conf->base_dir."/login/ajax/cookiecreate.php";
+                }
 
             } elseif (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
 
@@ -115,7 +121,6 @@ class LoginForm extends DbConn
             $ip_address = $conf->ip_address;
             $login_timeout = $conf->login_timeout;
             $max_attempts = $conf->max_attempts;
-            $timeout_minutes = $conf->timeout_minutes;
 
             $att = new LoginForm;
             $attcheck = Attempts::checkAtt($username);

@@ -10,7 +10,7 @@ $base_url = "http://localhost/PHP-Login";
 
 /***DO NOT CHANGE ***/
 $signin_url = $base_url . "/login";
-if(!isset($ip_address)){
+if (!isset($ip_address)) {
     $ip_address = $_SERVER["REMOTE_ADDR"];
 }; /**************/
 
@@ -20,11 +20,11 @@ $htmlhead = "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta na
 //EMAIL SETTINGS
 //SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM SCORE
 $from_email = "example@email.com"; //Webmaster email
-$from_name = "Website"; //"From name" displayed on email
+$from_name = "Website Name"; //"From name" displayed on email
 //SMTP Settings: Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
 $mail_server_type = "smtp";
 //IF $mail_server_type = "smtp"
-$smtp_server = "smtp.gmail.com";
+$smtp_server = "smtp.email.com";
 $smtp_user = "example@email.com";
 $smtp_pw = "P@ssw0rd!";
 $smtp_port = 587; //465 for ssl, 587 for tls, 25 for other
@@ -35,11 +35,15 @@ $max_attempts = 5;
 //Timeout (in seconds) after max attempts are reached
 $login_timeout = 300;
 
+//Cookie expiration in seconds (default is 1 month). 0 = expire at end of session
+$cookie_expire = 3600 * 24 * 30;
+
 //Password Policy Settings
 $password_policy_enforce = true;
 $password_min_length = 6;
 
 //Image Settings
+//Avatar directory (without base directory)
 $avatar_dir = "/user/avatars";
 
 //HTML Messages shown before URL in emails (the more
@@ -51,29 +55,17 @@ $active_email = "Your new account is now active! Click this link to log in!";
 //Form response messages
 $activemsg = "Your account has been verified!";
 
-//ONLY set this if you want a moderator to verify users and not the users themselves, otherwise leave blank or comment out
-$admin_email = "";
+//Admin verification
+$admin_verify = false;
 
-//DO NOT TOUCH BELOW THIS LINE
-//Unsets $admin_email based on various conditions (left blank, not valid email, etc)
-$invalid_mod = "{$admin_email} is not a valid email address";
-if (trim($admin_email, " ") == "") {
-    //NO MODERATOR VERIFICATION
-    unset($admin_email);
-    $admin_verify = false;
+if ($admin_verify == false) {
+    //Message if user can self verify
     $verifymsg = "Click this link to verify your new account!";
-} elseif (!filter_var($admin_email, FILTER_VALIDATE_EMAIL) == true) {
-    // INVALID MODERATOR EMAIL
-    unset($admin_email);
-    echo $invalid_mod;
+
 } else {
-    // IF YOU WANT MODERATOR VERIFICATION
-    $admin_verify = true;
+    //Message if user cannot self verify and requires admin approval
     $verifymsg = "Thank you for signing up! Your account will be reviewed by a moderator shortly";
 }
 
-//JWT secret for "forgot password" resets and user verification. Can be anything.
+//JWT secret for "forgot password" resets, cookies and user verification. Can be anything. Longer is better.
 $jwt_secret = "php-login";
-
-//Makes readable version of timeout (in minutes). Do not change.
-$timeout_minutes = round(($login_timeout / 60), 1);

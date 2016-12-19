@@ -25,7 +25,7 @@ class TokenHandler extends DbConn {
 
     public static function replaceToken($userid, $tokenid, $expire){
 
-        try{
+        try {
 
             $db = new DbConn;
 

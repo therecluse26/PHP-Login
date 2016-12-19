@@ -4,21 +4,26 @@ $(document).ready(function () {
 
         var username = $("#myusername").val(), password = $("#mypassword").val();
 
+        if ($("#remember").is(":checked")){
+            var remember = 1;
+        } else {
+            var remember = 0;
+        }
+
         if ((username === "") || (password === "")) {
           $("#message").fadeOut(0, function (){
             $(this).html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Please enter a username and a password</div>").fadeIn();
-          });
+        });
 
         } else {
             $.ajax({
                 type: "POST",
                 url: "ajax/checklogin.php",
-                data: "myusername=" + username + "&mypassword=" + password,
+                data: "myusername=" + username + "&mypassword=" + password + "&remember=" + remember,
                 dataType: 'JSON',
                 success: function (html) {
-                    //console.log(html.response + ' ' + html.username);
+
                     if (html.response === 'true') {
-                        //location.assign("../index.php");
                        location.reload();
                         return html.username;
                     } else {

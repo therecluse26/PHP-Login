@@ -13,11 +13,15 @@ function ajaxSend(formData){
         success: function (html) {
 
           if (html == 1) {
-            $("#message").html("<div class=\"alert alert-success alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Changes saved!</div>");
+            $("#message").fadeOut(0, function (){
+                $(this).html("<div class=\"alert alert-success alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Changes saved!</div>").fadeIn();
+            })
             $('#submit').hide();
           }
           else {
-            $("#message").html(html);
+            $("#message").fadeOut(0, function (){
+                $(this).html(html).fadeIn();
+            })
             $('#submit').show();
 
             $.ajax({
@@ -26,24 +30,20 @@ function ajaxSend(formData){
               data: "",
               success: function (img) {
 
-                console.log(img);
-
-
                 croppedimg.croppie('destroy');
 
                 $("#imgholder").html("<img src='" + img + "?i="+ new Date().getTime() +"' class='img-thumbnail' id='imgthumb'></img>");
 
-
               }
-
             })
-
           }
         },
         beforeSend: function () {
-          $("#message").html("<p class='text-center'><img src='../login/images/ajax-loader.gif'></p>")
+            $("#message").fadeOut(0, function (){
+                $(this).html("<p class='text-center'><img src='../login/images/ajax-loader.gif'></p>").fadeIn();
+            })
         }
-      });
+    });
 }
 
 function croppiegen(e){

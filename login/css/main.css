@@ -137,4 +137,12 @@ tr:not(.checkedrow):hover {
 #profileForm {
     position: static;
 }
-
+#imgholder {
+  margin-right: auto;
+  margin-left: auto;
+  max-height: 325px;
+  max-width: 325px;
+}
+.editprofile {
+    margin-bottom: 10px;
+}

@@ -14,7 +14,6 @@ class GlobalConf
         $this->site_name = $site_name;
         $this->ip_address = $ip_address;
         $this->login_timeout = $login_timeout;
-        $this->timeout_minutes = $timeout_minutes;
         $this->base_dir = $base_dir;
         $this->base_url = $base_url;
         $this->signin_url = $signin_url;
@@ -26,6 +25,7 @@ class GlobalConf
         $this->pwpolicy = $password_policy_enforce;
         $this->pwminlength = $password_min_length;
         $this->avatar_dir = $avatar_dir;
+        $this->cookie_expire = $cookie_expire;
      }
 
     public function addAttempt()

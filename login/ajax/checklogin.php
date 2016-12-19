@@ -33,7 +33,7 @@ if ($lastAttempt['lastlogin'] == '') {
 
 } else {
 
-    $response = $loginCtl->checkLogin($username, $password);
+    $response = $loginCtl->checkLogin($username, $password, $_POST['remember']);
 
 };
 

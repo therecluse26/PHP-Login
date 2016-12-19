@@ -26,7 +26,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating <span class='dbtable'>" . $tblprefix . "members</span> table";
-                $sqlmembers = "CREATE TABLE {$dbname}." . $tblprefix . "members (\n      id char(23) NOT NULL,\n      username varchar(65) NOT NULL DEFAULT '',\n      password varchar(65) NOT NULL DEFAULT '',\n      email varchar(65) NOT NULL,\n      verified tinyint(1) NOT NULL DEFAULT '0',\n      admin tinyint(1) NOT NULL DEFAULT '0',\n      mod_timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n      PRIMARY KEY (id),\n      UNIQUE KEY username_UNIQUE (username),\n      UNIQUE KEY id_UNIQUE (id),\n      UNIQUE KEY email_UNIQUE (email)\n    ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
+                $sqlmembers = "CREATE TABLE {$dbname}." . $tblprefix . "members (`id` char(23) NOT NULL, `username` varchar(65) NOT NULL DEFAULT '', `password` varchar(255) NOT NULL DEFAULT '', `email` varchar(65) NOT NULL, `verified` tinyint(1) NOT NULL DEFAULT '0', `admin` tinyint(1) NOT NULL DEFAULT '0', `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`), UNIQUE KEY `username_UNIQUE` (`username`), UNIQUE KEY `id_UNIQUE` (`id`), UNIQUE KEY `email_UNIQUE` (`email`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
                 $m = $conn->exec($sqlmembers);
                 if ($m) {
                     unset($m);
@@ -41,7 +41,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating <span class='dbtable'>" . $tblprefix . "admins</span> table";
-                $sqladmins = "CREATE TABLE {$dbname}." . $tblprefix . "admins (\n      adminid char(23) NOT NULL,\n      userid char(23) NOT NULL,\n      active bit(1) NOT NULL DEFAULT b'0',\n      superadmin bit(1) NOT NULL DEFAULT b'0',\n      PRIMARY KEY (adminid,userid),\n      UNIQUE KEY adminid_UNIQUE (adminid),\n      UNIQUE KEY userid_UNIQUE (userid),\n      CONSTRAINT fk_userid_admins FOREIGN KEY (userid) REFERENCES " . $tblprefix . "members (id) ON UPDATE CASCADE\n    ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
+                $sqladmins = "CREATE TABLE {$dbname}." . $tblprefix . "admins ( `adminid` char(23) NOT NULL DEFAULT 'uuid_short();', `userid` char(23) NOT NULL, `active` bit(1) NOT NULL DEFAULT b'0', `superadmin` bit(1) NOT NULL DEFAULT b'0', PRIMARY KEY (`adminid`,`userid`), UNIQUE KEY `adminid_UNIQUE` (`adminid`), UNIQUE KEY `userid_UNIQUE` (`userid`), CONSTRAINT `fk_userid_admins` FOREIGN KEY (`userid`) REFERENCES `members` (`id`) ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
                 $a = $conn->exec($sqladmins);
                 if ($a) {
                     unset($a);
@@ -56,7 +56,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating <span class='dbtable'>" . $tblprefix . "deletedMembers</span> table";
-                $sqldeletedMembers = "CREATE TABLE {$dbname}." . $tblprefix . "deletedMembers (\n      id char(23) NOT NULL,\n      username varchar(65) NOT NULL DEFAULT '',\n      password varchar(65) NOT NULL DEFAULT '',\n      email varchar(65) NOT NULL,\n      verified tinyint(1) NOT NULL DEFAULT '0',\n      admin tinyint(1) NOT NULL DEFAULT '0',\n      mod_timestamp timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n      PRIMARY KEY (id),\n      UNIQUE KEY id_UNIQUE (id)\n    ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
+                $sqldeletedMembers = "CREATE TABLE {$dbname}." . $tblprefix . "deletedMembers ( `id` char(23) NOT NULL, `username` varchar(65) NOT NULL DEFAULT '', `password` varchar(65) NOT NULL DEFAULT '', `email` varchar(65) NOT NULL, `verified` tinyint(1) NOT NULL DEFAULT '0', `admin` tinyint(1) NOT NULL DEFAULT '0', `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`), UNIQUE KEY `id_UNIQUE` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
                 $dm = $conn->exec($sqldeletedMembers);
                 if ($dm) {
                     unset($dm);
@@ -71,7 +71,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating <span class='dbtable'>" . $tblprefix . "loginAttempts</span> table";
-                $sqlloginAttempts = "CREATE TABLE {$dbname}." . $tblprefix . "loginAttempts (\n      IP varchar(20) NOT NULL,\n      Attempts int(11) NOT NULL,\n      LastLogin datetime NOT NULL,\n      Username varchar(65) DEFAULT NULL,\n      ID int(11) NOT NULL AUTO_INCREMENT,\n      PRIMARY KEY (ID)\n    ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8; GO;";
+                $sqlloginAttempts = "CREATE TABLE {$dbname}." . $tblprefix . "loginAttempts ( `ID` int(11) NOT NULL AUTO_INCREMENT, `Username` varchar(65) DEFAULT NULL, `IP` varchar(20) NOT NULL, `Attempts` int(11) NOT NULL, `LastLogin` datetime NOT NULL, PRIMARY KEY (`ID`) ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8; GO;";
                 $la = $conn->exec($sqlloginAttempts);
                 if ($la) {
                     unset($la);
@@ -86,7 +86,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating <span class='dbtable'>" . $tblprefix . "memberInfo</span> table";
-                $sqlmemberInfo = "CREATE TABLE {$dbname}." . $tblprefix . "memberInfo (\n      userid char(23) NOT NULL,\n      firstname varchar(45) NOT NULL,\n      lastname varchar(55) DEFAULT NULL,\n      phone varchar(20) DEFAULT NULL,\n      address1 varchar(45) DEFAULT NULL,\n      address2 varchar(45) DEFAULT NULL,\n      city varchar(45) DEFAULT NULL,\n      state varchar(30) DEFAULT NULL,\n      country varchar(45) DEFAULT NULL,\n      bio varchar(65000) DEFAULT NULL,\n      userimage blob,\n      UNIQUE KEY userid_UNIQUE (userid),\n      KEY fk_userid_idx (userid),\n      CONSTRAINT fk_userid FOREIGN KEY (userid) REFERENCES " . $tblprefix . "members\n      (id) ON DELETE CASCADE ON UPDATE NO ACTION\n    ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
+                $sqlmemberInfo = "CREATE TABLE {$dbname}." . $tblprefix . "memberInfo ( `userid` char(23) NOT NULL, `firstname` varchar(45) NOT NULL, `lastname` varchar(55) DEFAULT NULL, `phone` varchar(20) DEFAULT NULL, `address1` varchar(45) DEFAULT NULL, `address2` varchar(45) DEFAULT NULL, `city` varchar(45) DEFAULT NULL, `state` varchar(30) DEFAULT NULL, `country` varchar(45) DEFAULT NULL, `bio` varchar(60000) DEFAULT NULL, `userimage` varchar(255) DEFAULT NULL, UNIQUE KEY `userid_UNIQUE` (`userid`), KEY `fk_userid_idx` (`userid`), CONSTRAINT `fk_userid` FOREIGN KEY (`userid`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
                 $mi = $conn->exec($sqlmemberInfo);
                 if ($mi) {
                     unset($mi);
@@ -98,6 +98,36 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     break 1;
                 }
             case 7:
+                $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
+                $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                $status = "Creating <span class='dbtable'>" . $tblprefix . "cookies</span> table";
+                $sqlcookies = "CREATE TABLE {$dbname}." . $tblprefix . "cookies ( `cookieid` char(23) NOT NULL, `userid` char(23) NOT NULL, `tokenid` char(25) NOT NULL, `expired` tinyint(1) NOT NULL DEFAULT '0', `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`userid`), CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
+                $cook = $conn->exec($sqlcookies);
+                if ($cook) {
+                    unset($cook);
+                    break 1;
+                    sleep(1);
+                } else {
+                    throw new \Exception("Failed to create <span class='dbtable'>" . $tblprefix . "cookies</span> table");
+                    $failure = 1;
+                    break 1;
+                }
+            case 8:
+                $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
+                $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+                $status = "Creating <span class='dbtable'>" . $tblprefix . "tokens</span> table";
+                $sqltokens = "CREATE TABLE {$dbname}." . $tblprefix . "tokens ( `tokenid` char(25) NOT NULL, `userid` char(23) NOT NULL, `expired` tinyint(1) NOT NULL DEFAULT '0', `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`tokenid`), UNIQUE KEY `tokenid_UNIQUE` (`tokenid`), UNIQUE KEY `userid_UNIQUE` (`userid`), CONSTRAINT `userid_t` FOREIGN KEY (`userid`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=latin1; GO;";
+                $tkn = $conn->exec($sqltokens);
+                if ($tkn) {
+                    unset($tkn);
+                    break 1;
+                    sleep(1);
+                } else {
+                    throw new \Exception("Failed to create <span class='dbtable'>" . $tblprefix . "tokens</span> table");
+                    $failure = 1;
+                    break 1;
+                }
+            case 9:
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating triggers";
@@ -112,7 +142,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 8:
+            case 10:
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating triggers";
@@ -127,7 +157,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 9:
+            case 11:
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating triggers";
@@ -142,7 +172,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 10:
+            case 12:
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating <span class='dbtable'>cleanupOldDeleted</span> event";
@@ -157,7 +187,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 11:
+            case 13:
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating superadmin user";
@@ -176,7 +206,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 12:
+            case 14:
                 $conn = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                 $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 $status = "Creating superadmin user";

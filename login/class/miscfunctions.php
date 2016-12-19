@@ -5,7 +5,6 @@ class MiscFunctions
     {
         //Returns custom error messages instead of MySQL errors
 
-        trigger_error($response);
         switch (substr($response, 0, 22)) {
 
             case 'Error: SQLSTATE[23000]':

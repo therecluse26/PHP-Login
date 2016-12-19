@@ -24,8 +24,9 @@ class DbConn
         $this->tbl_attempts = $tbl_attempts;
         $this->tbl_deleted = $tbl_deleted;
         $this->tbl_tokens = $tbl_tokens;
+        $this->tbl_cookies = $tbl_cookies;
 
-        // Connect to server and select database.
+        // Connect to server and select database
         try {
 
             $this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);

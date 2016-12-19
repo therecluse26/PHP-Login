@@ -1,6 +1,6 @@
 <?php
 $usr = profileData::pullUserFields($_SESSION['uid'], Array('firstname', 'lastname'));
-if(is_array($usr)){
+if(is_array($usr) && trim($usr['firstname']) != '' && trim($usr['lastname']) != ''){
     $user = $usr['firstname']. ' ' .$usr['lastname'];
 } else {
     $user = $_SESSION['username'];

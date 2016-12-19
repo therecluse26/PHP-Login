@@ -1,14 +1,14 @@
 <?php
 if(!isset($_SESSION)) {
-    session_start(); 
-} 
+    session_start();
+}
 
 require "installscript.php";
 require "instcomposer.php";
 
 $resp = '';
 $failure = 0;
-$total = 15;
+$total = 1;
 $i = 0;
 $status = '';
 
@@ -30,10 +30,10 @@ while ($i < $total) {
         break;
     }
     else {
-        if($i < 13) {
+        if($i < 15) {
             $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw);
         }
-        else if ($i == 13) {
+        else if ($i == 15) {
             $statobj = composerInstall();
             sleep(1);
         }

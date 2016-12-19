@@ -1,0 +1,4 @@
+curl
+shell_exec enabled
+composer enabled
+ability to execute phar files

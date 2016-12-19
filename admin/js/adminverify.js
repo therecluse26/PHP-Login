@@ -23,7 +23,6 @@ function verifyUser(id, email, username, btnid){
                     location.reload();
                 }
             });
-
         },
         error: function (textStatus, errorThrown) {
            $('#verbutton'+btnid).html('Verify');

@@ -61,7 +61,32 @@ class UserData extends DbConn
 
             try {
 
-                $sql = "SELECT id, email, username FROM ".$tbl_members." WHERE id = :id LIMIT 1";
+                $sql = "SELECT id, email, username, admin FROM ".$tbl_members." WHERE id = :id LIMIT 1";
+                $stmt = $db->conn->prepare($sql);
+                $stmt->bindParam(':id', $id);
+                $stmt->execute();
+
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            } catch (PDOException $e) {
+
+                $result = "Error: " . $e->getMessage();
+
+            }
+
+        return $result;
+
+    }
+
+    public static function pullUserPassword($id)
+    {
+        $db = new DbConn;
+        $tbl_members = $db->tbl_members;
+        $result = array();
+
+            try {
+
+                $sql = "SELECT password FROM ".$tbl_members." WHERE id = :id LIMIT 1";
                 $stmt = $db->conn->prepare($sql);
                 $stmt->bindParam(':id', $id);
                 $stmt->execute();
@@ -80,37 +105,46 @@ class UserData extends DbConn
 
     public static function upsertAccountInfo($uid, $dataarray) {
 
+            unset($dataarray['id']);
+
         //Remove potentially hacked array values
-        unset($dataarray['admin']);
-        unset($dataarray['verified']);
-        unset($dataarray['mod_timestamp']);
-        unset($dataarray['username']);
-        unset($dataarray['id']);
+        if(!empty($dataarray)){
 
-        $datafields = implode(', ', array_keys($dataarray));
+            unset($dataarray['admin']);
+            unset($dataarray['verified']);
+            unset($dataarray['mod_timestamp']);
+            unset($dataarray['username']);
 
-        $insdata = implode('\', \'', $dataarray);
+            $datafields = implode(', ', array_keys($dataarray));
 
-        foreach($dataarray as $key => $value){
-            if (isset($updata)){
-                $updata = $updata.$key.' = \''.$value.'\', ';
-            } else {
-                $updata = $key.' = \''.$value.'\', ';
+            $insdata = implode('\', \'', $dataarray);
+
+            foreach($dataarray as $key => $value){
+                if (isset($updata)){
+                    $updata = $updata.$key.' = \''.$value.'\', ';
+                } else {
+                    $updata = $key.' = \''.$value.'\', ';
+                }
             }
+
+            $updata = rtrim($updata, ", ");
+
+            //Upsert user data
+            $db = new DbConn;
+            $tbl_members = $db->tbl_members;
+
+            // prepare sql and bind parameters
+            $stmt = $db->conn->prepare("INSERT INTO ".$tbl_members." (id, $datafields) values ('$uid', '$insdata') ON DUPLICATE KEY UPDATE $updata");
+
+            $status = $stmt->execute();
+
+            return $status;
+
+        } else {
+
+            return false;
         }
 
-        $updata = rtrim($updata, ", ");
-
-        //Upsert user data
-        $db = new DbConn;
-        $tbl_members = $db->tbl_members;
-
-        // prepare sql and bind parameters
-        $stmt = $db->conn->prepare("INSERT INTO ".$tbl_members." (id, $datafields) values ('$uid', '$insdata') ON DUPLICATE KEY UPDATE $updata");
-
-        $status = $stmt->execute();
-
-        return $status;
     }
 
 }

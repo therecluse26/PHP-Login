@@ -12,3 +12,4 @@ $tbl_admins = $tbl_prefix."admins";
 $tbl_attempts = $tbl_prefix."loginAttempts";
 $tbl_deleted = $tbl_prefix."deletedMembers";
 $tbl_tokens = $tbl_prefix."tokens";
+$tbl_cookies = $tbl_prefix."cookies";

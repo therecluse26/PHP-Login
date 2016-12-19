@@ -44,6 +44,8 @@ switch ($title) {
         echo '<script src="'.$url.'/login/vendor/components/jquery/jquery.min.js"></script><script src="'.$url.'/login/vendor/components/bootstrap/js/bootstrap.min.js"></script>';
         echo '<script src="'.$url.'/user/js/accountupdate.js"></script>';
         echo '<link href="'.$url.'/login/vendor/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"><link href="'.$url.'/login/css/main.css" rel="stylesheet" media="screen">';
+        echo '<script src="http://jqueryvalidation.org/files/dist/jquery.validate.min.js"></script>';
+        echo '<script src="http://jqueryvalidation.org/files/dist/additional-methods.min.js"></script>';
         break;
 
     default:

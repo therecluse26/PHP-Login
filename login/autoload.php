@@ -13,13 +13,13 @@ spl_autoload_register(function ($className) {
 
         $path = __DIR__."/login/class/{$className}.php";
 
-        
-        if(file_exists($path)){
+
+        if (file_exists($path)) {
 
             require_once($path);
 
         } else {
-                
+
             die("The file {$className}.php could not be found.");
         }
     }

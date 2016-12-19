@@ -9,11 +9,10 @@ $userid = $_POST['userid'];
 $pw1 = $_POST['password1'];
 $pw2 = $_POST['password2'];
 
-$userjson = "[".json_encode($userid)."]";
 
 try {
 
-    $user = UserData::userDataPull($userjson, 0);
+    $user = UserData::pullUserById($userid);
 
     $pwresp = PasswordPolicy::validate($pw1, $pw2, $conf->pwpolicy, $conf->pwminlength);
 
@@ -24,7 +23,8 @@ try {
 
         $a = new PasswordForm;
 
-        $response = $a->resetPw($user[0]['id'], $pw1);
+
+        $response = $a->resetPw($user['id'], $pw1);
 
         //Success
         if ($response['status'] == true) {
