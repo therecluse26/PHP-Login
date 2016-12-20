@@ -14,8 +14,12 @@ class DbConn
         $this->tbl_members = $tbl_members;
         $this->tbl_attempts = $tbl_attempts;
 
-        // Connect to server and select database.
-        $this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
-        $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+			// Connect to server and select database.
+			$this->conn = new PDO('mysql:host=' . $host . ';dbname=' . $db_name . ';charset=utf8', $username, $password);
+			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		} catch (\Exception $e) {
+			die('Database connection error');
+		}
     }
 }
