@@ -1,6 +1,8 @@
 <?php
 /***
 Require this at the top of every page
+This is the master page that includes
+all other controls and classes
 ***/
 if (!isset($_SESSION)) {
 
@@ -27,12 +29,9 @@ if (!isset($pagetype)) {
         $title = 'Page';
     }
 }
-
-$conf = new GlobalConf;
-define("BASE_URL", $conf->base_url);
-
-$pageHead = new pageConstruct;
-$pageHead->buildHead($pagetype, $title);
+//This class extends AppConfig, so AppConfig variables can be pulled from it
+$conf = new PageConstruct;
+$conf->buildHead($pagetype, $title);
 
 //Checks for cookie
 if (isset($_COOKIE['usertoken'])) {
@@ -42,9 +41,9 @@ if (isset($_COOKIE['usertoken'])) {
 //Pulls nav dropdown
 if (array_key_exists('username', $_SESSION)) {
 
-    $pageHead->pullNav($_SESSION['username'], $_SESSION['admin'], $pagetype);
+    $conf->pullNav($_SESSION['username'], $_SESSION['admin'], $pagetype);
 
 } else {
 
-    $pageHead->pullNav(null, 0, $pagetype);
+    $conf->pullNav(null, 0, $pagetype);
 }

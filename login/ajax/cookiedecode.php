@@ -3,7 +3,6 @@ require $conf->base_dir."/login/vendor/autoload.php";
 
 use \Firebase\JWT\JWT;
 
-$conf = new GlobalConf;
 $resp = array();
 
 try {
@@ -14,7 +13,7 @@ try {
 
         $cookiedata = JWT::decode($cookie["value"], $conf->jwt_secret, array('HS256'));
 
-        $cookieDbPull = CookieHandler::validateCookie($cookiedata->userid, $cookiedata->cookieid, $cookiedata->tokenid, $conf->cookie_expire);
+        $cookieDbPull = CookieHandler::validateCookie($cookiedata->userid, $cookiedata->cookieid, $cookiedata->tokenid, (int)$conf->cookie_expire_seconds);
 
         if (!isset($cookieDbPull['tokenid'])) {
 

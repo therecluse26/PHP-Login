@@ -54,7 +54,7 @@ class MailSender extends MailConf
 
             $verifyurl = $this->base_url . "/login/verifyuser.php?v=1&uid=" . $uid_64;
 
-            if($this->admin_verify == true){
+            if ($this->admin_verify == true) {
                     $mail->AddBCC($this->admin_email, $usr['username']);
 
             } else {
@@ -64,21 +64,26 @@ class MailSender extends MailConf
 
             if ($type == 'Verify') {
 
+                include $this->base_dir."/login/partials/mailtemplates/verifyemail.php";
+
                     //Set the subject line
                     $mail->Subject = $usr['username']. ' Account Verification';
 
                     //Set the body of the message
-                    $mail->Body = $this->verifymsg . '<br><a href="'.$verifyurl.'">'.$verifyurl.'</a>';
+                    $mail->Body = $verify_template;
 
-                    $mail->AltBody  =  $this->verifymsg . $verifyurl;
+                    $mail->AltBody  =  $this->verify_email . $verifyurl;
 
                 } elseif ($type == 'Active') {
+
+                    include $this->base_dir."/login/partials/mailtemplates/activeemail.php";
 
                     //Set the subject line
                     $mail->Subject = $this->site_name . ' Account Created!';
 
                     //Set the body of the message
-                    $mail->Body = $this->active_email . '<br><a href="'.$this->signin_url.'">'.$this->signin_url.'</a>';
+                    $mail->Body = $active_template;
+
                     $mail->AltBody  =  $this->active_email . $this->signin_url;
 
                 };

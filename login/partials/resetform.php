@@ -10,7 +10,7 @@
 $("#resetform").validate({
     rules: {
         password1: {
-            required: true <?php if($conf->pwpolicy ==true){echo ", minlength: ". $conf->pwminlength;};?>
+            required: true <?php if( $conf["password_policy_enforce"] == "true"){echo ", minlength: ". $conf["password_min_length"];};?>
         }
         , password2: {
             required: true

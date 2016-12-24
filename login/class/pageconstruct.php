@@ -1,19 +1,17 @@
 <?php
 //Page head constructor
-class pageConstruct extends GlobalConf {
+class PageConstruct extends AppConfig {
 
     public function buildHead($pagetype = 'page', $title = 'Page') {
 
-        $url = $this->base_url;
-        $dir = $this->base_dir;
-        $ip = $this->ip_address;
+        $ip = $_SERVER["REMOTE_ADDR"];
 
-        require_once $dir . "/login/partials/secureheader.php";
+        require_once $this->base_dir . "/login/partials/secureheader.php";
 
         echo $this->htmlhead;
         echo "<title>".$title."</title>";
 
-        require_once $dir . "/login/partials/libincludes.php";  
+        require_once $this->base_dir . "/login/partials/libincludes.php";
 
     }
 
@@ -21,11 +19,11 @@ class pageConstruct extends GlobalConf {
     public function pullNav($username = null, $admin = 0, $pagetype = 'page') {
 
             $url = $this->base_url;
-            $dir = $this->base_dir;
+            $mainlogo = $this->mainlogo;
 
        if (!is_null($username)) {
 
-            include $dir . "/login/partials/nav.php";
-        } 
+            include $this->base_dir . "/login/partials/nav.php";
+        }
     }
 }

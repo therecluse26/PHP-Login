@@ -4,7 +4,6 @@ class PasswordForm extends DbConn
     public function resetPw ($uid, $password_raw)
     {
         try {
-            $conf = new GlobalConf;
             $resp = array();
 
             $password = PasswordCrypt::encryptPw($password_raw);
@@ -17,7 +16,7 @@ class PasswordForm extends DbConn
             $stmt->bindParam(':password', $password);
             $stmt->execute();
 
-            $resp['message'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Password Reset! <a href="'.$conf->signin_url.'">Click here to sign in!</a></div><div id="returnVal" style="display:none;">true</div>';
+            $resp['message'] = '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Password Reset! <a href="'.AppConfig::pullSetting("signin_url").'">Click here to sign in!</a></div><div id="returnVal" style="display:none;">true</div>';
             $resp['status'] = true;
 
             return $resp;

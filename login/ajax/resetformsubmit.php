@@ -2,19 +2,20 @@
 $pagetype = 'loginpage';
 require_once '../autoload.php';
 require_once '../vendor/autoload.php';
-$conf = new GlobalConf;
+$config = new AppConfig;
 
 //Pull username, generate new ID and hash password
 $userid = $_POST['userid'];
 $pw1 = $_POST['password1'];
 $pw2 = $_POST['password2'];
 
-
 try {
+
+    $conf = $config->pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
 
     $user = UserData::pullUserById($userid);
 
-    $pwresp = PasswordPolicy::validate($pw1, $pw2, $conf->pwpolicy, $conf->pwminlength);
+    $pwresp = PasswordPolicy::validate($pw1, $pw2, (bool) $conf['password_policy_enforce'], (int) $conf['password_min_length']);
 
     //Validation passed
     if ($pwresp['status'] == true) {
@@ -22,7 +23,6 @@ try {
         //Tries inserting into database and add response to variable
 
         $a = new PasswordForm;
-
 
         $response = $a->resetPw($user['id'], $pw1);
 

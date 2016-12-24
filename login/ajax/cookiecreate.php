@@ -1,11 +1,9 @@
 <?php
 require "../autoload.php";
-$conf = new GlobalConf;
+$conf = new AppConfig;
 require $conf->base_dir."/login/vendor/autoload.php";
 
 use \Firebase\JWT\JWT;
-
-//$conf = new GlobalConf;
 
 $uid = $_SESSION['uid'];
 
@@ -31,7 +29,8 @@ try {
 
     $token = JWT::encode($payload, $secret);
 
-    $cookie = CookieHandler::generateCookie($cookieid, $userid, $tokenid, $token, $conf->cookie_expire);
+    $cookie = CookieHandler::generateCookie($cookieid, $userid, $tokenid, $token, (int)$conf->cookie_expire_seconds);
+
 
 } catch (Exception $e) {
     echo $e->getMessage();

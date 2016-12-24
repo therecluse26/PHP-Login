@@ -103,6 +103,31 @@ class UserData extends DbConn
 
     }
 
+    public static function pullAdmin($id)
+    {
+        $db = new DbConn;
+        $tbl_admins = $db->tbl_admins;
+        $result = array();
+
+            try {
+
+                $sql = "SELECT adminid, active, superadmin FROM ".$tbl_admins." WHERE userid = :id LIMIT 1";
+                $stmt = $db->conn->prepare($sql);
+                $stmt->bindParam(':id', $id);
+                $stmt->execute();
+
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            } catch (PDOException $e) {
+
+                $result = "Error: " . $e->getMessage();
+
+            }
+
+        return $result;
+
+    }
+
     public static function upsertAccountInfo($uid, $dataarray) {
 
             unset($dataarray['id']);
@@ -144,7 +169,5 @@ class UserData extends DbConn
 
             return false;
         }
-
     }
-
 }

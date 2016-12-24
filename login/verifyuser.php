@@ -9,7 +9,8 @@ require 'partials/pagehead.php';
 <body>
 
 <?php
-$conf = new GlobalConf;
+$config = new AppConfig;
+$conf = $config->pullMultiSettings("signin_url", "active_msg");
 
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
 $uid_non_json = base64_decode($_GET['uid']);
@@ -25,7 +26,7 @@ try {
     //Success
     if ($vresponse == 1) {
 
-        echo '<form class="form-signin" action="'.$conf->signin_url.'"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$conf->activemsg.'</div><br><input type="submit" class="btn btn-lg btn-primary btn-block" value="Click Here to Log In"></button></form>';
+        echo '<form class="form-signin" action="'.$conf["signin_url"].'"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$conf["activemsg"].'</div><br><input type="submit" class="btn btn-lg btn-primary btn-block" value="Click Here to Log In"></button></form>';
 
         //Send verification email
         $m = new MailSender;

@@ -8,7 +8,7 @@ require "instcomposer.php";
 
 $resp = '';
 $failure = 0;
-$total = 1;
+$total = 20;
 $i = 0;
 $status = '';
 
@@ -24,18 +24,22 @@ $sapw = $_POST['sapw'];
 
 $arr_content = array();
 
+$settingsArr = array();
+
 while ($i < $total) {
 
     if ($failure == 1) {
         break;
     }
     else {
-        if($i < 15) {
+        if($i < 17) {
             $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw);
-        }
-        else if ($i == 15) {
+        } else if ($i == 18) {
+            $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw, $settingsArr);
+            sleep(0.5);
+        } else if ($i == 19) {
             $statobj = composerInstall();
-            sleep(1);
+            sleep(0.5);
         }
 
 

@@ -7,8 +7,6 @@ require 'login/autoload.php';
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
 $uid = $_GET['uid'];
 
-$conf = new GlobalConf;
-
 $ids = MiscFunctions::assembleUids($uid);
 
 if (isset($ids) && sizeof($ids) >= 1) {
@@ -38,11 +36,11 @@ $userarr = $e->userDataPull($uid, 0);
 
             if (func_enabled("shell_exec")) {
                 //shell_exec enabled
-                $mailQueue = shell_exec('curl '.$conf->base_url.'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
+                $mailQueue = shell_exec('curl '.AppConfig::pullSetting("base_url").'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
 
             } else {
                 //shell_exec is disabled
-                include $conf->base_dir.'/login/ajax/emailqueue.php';
+                include AppConfig::pullSetting("base_dir").'/login/ajax/emailqueue.php';
 
             }
 

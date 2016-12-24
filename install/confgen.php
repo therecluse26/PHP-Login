@@ -9,17 +9,16 @@ try {
     $username = "'.$dbuser.'"; // Mysql username
     $password = "'.$dbpw.'"; // Mysql password
     $db_name = "'.$dbname.'"; // Database name
-    $superadmin = "'.$superadmin.'"; // Superadmin name
 
-    //DO NOT CHANGE BELOW THIS LINE UNLESS YOU CHANGE THE NAMES OF THE MEMBERS AND LOGINATTEMPTS TABLES
-
-    $tbl_prefix = "'.$tblprefix.'"; //***PLANNED FEATURE, LEAVE VALUE BLANK FOR NOW*** Prefix for all database tables
+    $tbl_prefix = "'.$tblprefix.'"; //Prefix for all database tables
     $tbl_members = $tbl_prefix."members";
     $tbl_memberinfo = $tbl_prefix."memberInfo";
     $tbl_admins = $tbl_prefix."admins";
     $tbl_attempts = $tbl_prefix."loginAttempts";
     $tbl_deleted = $tbl_prefix."deletedMembers";
-    ';
+    $tbl_tokens = $tbl_prefix."tokens";
+    $tbl_cookies = $tbl_prefix."cookies";
+    $tbl_appConfig = $tbl_prefix."appConfig";';
 
     fwrite($dbconf_file, $dbconf_text);
     fclose($dbconf_file);
@@ -30,7 +29,7 @@ try {
     echo "Failed to write dbconf.php file" , $f->getMessage(), "\n";
 }
 //CREATES config.php FILE
-try {
+/* try {
     $status = "Generating config.php file";
     $config_file = fopen('../login/testconfig.php', 'w') or die('Unable to open file!');
     $config_text = '<?php
@@ -109,4 +108,4 @@ $timeout_minutes = round(($login_timeout / 60), 1);';
 
 } catch (Exception $f) {
     echo "Failed to write config.php file" , $f->getMessage(), "\n";
-}
+} */

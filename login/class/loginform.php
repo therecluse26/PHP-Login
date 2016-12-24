@@ -1,12 +1,12 @@
 <?php
-class LoginForm extends DbConn
+class LoginForm extends AppConfig
 {
     public function checkLogin($myusername, $mypassword, $cookie = 0)
     {
-        $conf = new GlobalConf;
-        $ip_address = $conf->ip_address;
-        $login_timeout = $conf->login_timeout;
-        $max_attempts = $conf->max_attempts;
+        //$conf = new AppConfig;
+        $ip_address = $_SERVER["REMOTE_ADDR"];
+        $login_timeout = (int)$this->login_timeout;
+        $max_attempts = (int)$this->max_attempts;
         $attcheck = Attempts::checkAtt($myusername);
         $curr_attempts = $attcheck['attempts'];
 
@@ -19,8 +19,8 @@ class LoginForm extends DbConn
 
         try {
 
-            $db = new DbConn;
-            $tbl_members = $db->tbl_members;
+            //$db = new DbConn;
+            $tbl_members = $this->tbl_members;
             $err = '';
 
         } catch (PDOException $e) {
@@ -29,7 +29,7 @@ class LoginForm extends DbConn
 
         }
 
-        $stmt = $db->conn->prepare("SELECT id, username, email, password, verified, admin FROM ".$tbl_members." WHERE username = :myusername");
+        $stmt = $this->conn->prepare("SELECT id, username, email, password, verified, admin FROM ".$tbl_members." WHERE username = :myusername");
         $stmt->bindParam(':myusername', $myusername);
         $stmt->execute();
 
@@ -57,9 +57,14 @@ class LoginForm extends DbConn
                     $_SESSION['username'] = $result['username'];
                     $_SESSION['ip_address'] = getenv ( "REMOTE_ADDR" );
 
+                if ($result['admin'] == 1){
+                    $admin = UserData::pullAdmin($_SESSION['uid']);
+                    $_SESSION['superadmin'] = $admin['superadmin'];
+                }
+
                 if ($cookie == 1) {
                     //Creates cookie
-                    include_once $conf->base_dir."/login/ajax/cookiecreate.php";
+                    include_once $this->base_dir."/login/ajax/cookiecreate.php";
                 }
 
             } elseif (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
@@ -80,18 +85,18 @@ class LoginForm extends DbConn
     public function insertAttempt($username)
     {
         try {
-            $db = new DbConn;
-            $conf = new GlobalConf;
-            $tbl_attempts = $db->tbl_attempts;
-            $ip_address = $conf->ip_address;
-            $login_timeout = $conf->login_timeout;
-            $max_attempts = $conf->max_attempts;
+            //$db = new DbConn;
+            //$conf = new AppConfig;
+            $tbl_attempts = $this->tbl_attempts;
+            $ip_address = $_SERVER["REMOTE_ADDR"];
+            $login_timeout = (int)$this->login_timeout;
+            $max_attempts = (int)$this->max_attempts;
 
             $datetimeNow = date("Y-m-d H:i:s");
             $attcheck = Attempts::checkAtt($username);
             $curr_attempts = $attcheck['attempts'];
 
-            $stmt = $db->conn->prepare("INSERT INTO ".$tbl_attempts." (ip, attempts, lastlogin, username) values(:ip, 1, :lastlogin, :username)");
+            $stmt = $this->conn->prepare("INSERT INTO ".$tbl_attempts." (ip, attempts, lastlogin, username) values(:ip, 1, :lastlogin, :username)");
             $stmt->bindParam(':ip', $ip_address);
             $stmt->bindParam(':lastlogin', $datetimeNow);
             $stmt->bindParam(':username', $username);
@@ -115,14 +120,13 @@ class LoginForm extends DbConn
     public function updateAttempts($username)
     {
         try {
-            $db = new DbConn;
-            $conf = new GlobalConf;
-            $tbl_attempts = $db->tbl_attempts;
-            $ip_address = $conf->ip_address;
-            $login_timeout = $conf->login_timeout;
-            $max_attempts = $conf->max_attempts;
+            //$db = new DbConn;
+            //$conf = new AppConfig;
+            $tbl_attempts = $this->tbl_attempts;
+            $ip_address = $_SERVER["REMOTE_ADDR"];
+            $login_timeout = (int)$this->login_timeout;
+            $max_attempts = (int)$this->max_attempts;
 
-            $att = new LoginForm;
             $attcheck = Attempts::checkAtt($username);
             $curr_attempts = $attcheck['attempts'];
 
@@ -157,7 +161,7 @@ class LoginForm extends DbConn
 
                 }
 
-                $stmt2 = $db->conn->prepare($sql);
+                $stmt2 = $this->conn->prepare($sql);
                 $stmt2->bindParam(':attempts', $curr_attempts);
                 $stmt2->bindParam(':ip', $ip_address);
                 $stmt2->bindParam(':lastlogin', $datetimeNow);

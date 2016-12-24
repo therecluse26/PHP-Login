@@ -7,10 +7,11 @@ A simple, secure login and signup system with PHP, MySQL and jQuery (AJAX) using
 
 ## Installation
 ### Clone the Repository (recursively to include PHP-Mailer submodule)
-    $ git clone --recursive https://github.com/fethica/PHP-Login.git
+    $ git clone https://github.com/fethica/PHP-Login.git
 
 ### Install composer packages
 
+	
 
 ### Creating the MySQL Database and generating config files
 Open form in /install/index.php in browser, fill out necessary details and submit it. Requires a folder read/write permissions and a MySQL user with elevated privileges.
@@ -60,7 +61,7 @@ Create database "login" and create tables "members" and "loginAttempts" :
     $smtp_security = 'ssl';//ssl, tls or ''
 
     //HTML Messages shown before URL in emails (the more
-    $verifymsg = 'Click this link to verify your new account!'; //Verify email message
+    $verify_email = 'Click this link to verify your new account!'; //Verify email message
     $active_email = 'Your new account is now active! Click this link to log in!';//Active email message
     //LOGIN FORM RESPONSE MESSAGES/ERRORS
     $signupthanks = 'Thank you for signing up! You will receive an email shortly confirming the verification of your account.';
@@ -72,7 +73,7 @@ Create database "login" and create tables "members" and "loginAttempts" :
 > *** **Important** *** Checks to see if username $_SESSION variable is set. If not set, redirects to login page.
 
 ```php
-<?php require "login/loginheader.php"; ?>
+<?php require "login/partials/pagehead.php"; ?>
 ```
 
 ### Check the Username and the Password using jQuery (Ajax) :

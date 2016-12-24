@@ -14,9 +14,8 @@ $password = stripslashes($password);
 
 $response = '';
 $loginCtl = new LoginForm;
-$conf = new GlobalConf;
 $lastAttempt = Attempts::checkAtt($username);
-$max_attempts = $conf->max_attempts;
+$max_attempts = AppConfig::pullSetting("max_attempts", "unsigned");
 
 //First Attempt
 if ($lastAttempt['lastlogin'] == '') {

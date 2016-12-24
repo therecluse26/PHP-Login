@@ -8,8 +8,12 @@ $site_name = "Test Site";
 $base_dir = "/Applications/MAMP/htdocs/PHP-Login";
 $base_url = "http://localhost/PHP-Login";
 
+//URL of main site logo
+$mainlogo = "";
+
 /***DO NOT CHANGE ***/
 $signin_url = $base_url . "/login";
+
 if (!isset($ip_address)) {
     $ip_address = $_SERVER["REMOTE_ADDR"];
 }; /**************/
@@ -19,14 +23,14 @@ $htmlhead = "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><meta na
 
 //EMAIL SETTINGS
 //SEND TEST EMAILS THROUGH FORM TO https://www.mail-tester.com GENERATED ADDRESS FOR SPAM SCORE
-$from_email = "example@email.com"; //Webmaster email
+$from_email = "braddmagyar@gmail.com"; //Webmaster email
 $from_name = "Website Name"; //"From name" displayed on email
 //SMTP Settings: Find specific server settings at https://www.arclab.com/en/kb/email/list-of-smtp-and-pop3-servers-mailserver-list.html
 $mail_server_type = "smtp";
 //IF $mail_server_type = "smtp"
-$smtp_server = "smtp.email.com";
-$smtp_user = "example@email.com";
-$smtp_pw = "P@ssw0rd!";
+$smtp_server = "smtp.gmail.com";
+$smtp_user = "braddmagyar@gmail.com";
+$smtp_pw = "Sugarw0314!";
 $smtp_port = 587; //465 for ssl, 587 for tls, 25 for other
 $smtp_security = "tls";//ssl, tls or ""
 
@@ -60,11 +64,11 @@ $admin_verify = false;
 
 if ($admin_verify == false) {
     //Message if user can self verify
-    $verifymsg = "Click this link to verify your new account!";
+    $verify_email = "Click this link to verify your new account!";
 
 } else {
     //Message if user cannot self verify and requires admin approval
-    $verifymsg = "Thank you for signing up! Your account will be reviewed by a moderator shortly";
+    $verify_email = "Thank you for signing up! Your account will be reviewed by a moderator shortly";
 }
 
 //JWT secret for "forgot password" resets, cookies and user verification. Can be anything. Longer is better.

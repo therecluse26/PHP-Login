@@ -45,7 +45,7 @@ $usr = UserData::pullUserById($uid);
         $("#profileForm").validate({
             rules: {
                 password1: {
-                    <?php if ($conf->pwpolicy == true) {echo "minlength: ". $conf->pwminlength;};?>
+                    <?php if ((bool) $conf->password_policy_enforce == true) {echo "minlength: ". $conf->password_min_length;};?>
                 }
                 , password2: {
                      equalTo: "#password1"

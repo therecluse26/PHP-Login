@@ -13,10 +13,6 @@ class DbConn
             require $up_dir.'/dbconf.php';
         }
 
-        $this->host = $host; // Host name
-        $this->username = $username; // Mysql username
-        $this->password = $password; // Mysql password
-        $this->db_name = $db_name; // Database name
         $this->tbl_prefix = $tbl_prefix; // Prefix for all database tables
         $this->tbl_members = $tbl_members;
         $this->tbl_memberinfo = $tbl_memberinfo;
@@ -25,17 +21,17 @@ class DbConn
         $this->tbl_deleted = $tbl_deleted;
         $this->tbl_tokens = $tbl_tokens;
         $this->tbl_cookies = $tbl_cookies;
+        $this->tbl_appConfig = $tbl_appConfig;
 
         // Connect to server and select database
         try {
-
             $this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         } catch (PDOException $e) {
 
-            print "Error!: " . $e->getMessage() . "<br/>";
-            die();
+            die($e->getMessage());
+
         }
     }
 }

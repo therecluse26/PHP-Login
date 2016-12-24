@@ -1,14 +1,13 @@
 <?php
-class Attempts extends DbConn 
+class Attempts extends DbConn
 {
     public static function checkAtt($username)
     {
         try {
 
             $db = new DbConn;
-            $conf = new GlobalConf;
             $tbl_attempts = $db->tbl_attempts;
-            $ip_address = $conf->ip_address;
+            $ip_address = $_SERVER["REMOTE_ADDR"];
             $err = '';
 
             $sql = "SELECT Attempts as attempts, lastlogin FROM ".$tbl_attempts." WHERE IP = :ip and Username = :username";
@@ -26,7 +25,7 @@ class Attempts extends DbConn
 
         } catch (PDOException $e) {
 
-            $err = "Error: " . $e->getMessage(); 
+            $err = "Error: " . $e->getMessage();
 
         }
 

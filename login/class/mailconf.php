@@ -25,6 +25,7 @@ class MailConf
         $this->admin_verify = $admin_verify;
         $this->active_email = $active_email;
         $this->signin_url = $signin_url;
-        $this->verifymsg = $verifymsg;
+        $this->verify_email = $verify_email;
+        $this->mainlogo = $mainlogo;
     }
 }

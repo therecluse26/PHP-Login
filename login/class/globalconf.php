@@ -22,6 +22,7 @@ class GlobalConf
         $this->activemsg = $activemsg;
         $this->signupthanks = $signupthanks;
         $this->htmlhead = $htmlhead;
+        $this->mainlogo = $mainlogo;
         $this->pwpolicy = $password_policy_enforce;
         $this->pwminlength = $password_min_length;
         $this->avatar_dir = $avatar_dir;

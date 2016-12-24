@@ -2,6 +2,7 @@
 // Start the session.
 session_start();
 
+/*
 $dbhost = $_POST['dbhost'];
 $dbuser = $_POST['dbuser'];
 $dbpw = $_POST['dbpw'];
@@ -13,6 +14,19 @@ $said = uniqid(rand(), false);
 $sapw = password_hash($_POST['sapw'], PASSWORD_DEFAULT);
 $site_name = $_SERVER['SERVER_NAME'];
 $sapw = password_hash($_POST['sapw'], PASSWORD_DEFAULT);
+*/
+
+$dbhost = "localhost";
+$dbuser = "root";
+$dbpw = "root";
+$dbname = "login3";
+$tblprefix = "";
+$superadmin = "braddmagyar";
+$saemail = "braddmagyar@gmail.com";
+$said = uniqid(rand(), false);
+$site_name = $_SERVER['SERVER_NAME'];
+$sapw = password_hash("blahblah", PASSWORD_DEFAULT);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -40,13 +54,13 @@ $sapw = password_hash($_POST['sapw'], PASSWORD_DEFAULT);
     function refreshProgress() {
 
       $.ajax({
-        url: "instchecker.php?file=<?php 
+        url: "instchecker.php?file=<?php
 echo session_id();
 ?>",
         success:function(data){
 
           $(".bar").animate({ width: data.percent + "%"});
-          
+
           $("#message").html(data.message);
 
           if (data.percent >= 100 && data.failure == 0) {

@@ -4,7 +4,9 @@ if (!isset($_SESSION)) {
 }
 require '../../login/autoload.php';
 
-$conf = new GlobalConf;
+$config = new AppConfig;
+$conf = $config->pullMultiSettings(array("password_policy_enforce", "password_min_length"));
+
 $uid = $_SESSION['uid'];
 $resp = array();
 $oldpw = UserData::pullUserPassword($uid);
@@ -12,7 +14,6 @@ $oldpw = UserData::pullUserPassword($uid);
 try {
 
     if (!empty($_POST)) {
-
 
         if (((trim($_POST['password1']) == '' || trim($_POST['password1']) == ''))) {
                 unset($_POST['password1']);
@@ -22,7 +23,7 @@ try {
         if (array_key_exists('password1', $_POST) && array_key_exists('password2', $_POST)) {
 
 
-                $pwvalid = PasswordPolicy::validate($_POST['password1'], $_POST['password2'], $conf->pwpolicy, $conf->pwminlength);
+                $pwvalid = PasswordPolicy::validate($_POST['password1'], $_POST['password2'], $conf["password_policy_enforce"], $conf["password_min_length"]);
 
 
             if ($pwvalid['status'] == true) {

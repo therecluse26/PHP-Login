@@ -29,7 +29,7 @@ require 'partials/pagehead.php';
         </div>
         <div class="col-sm-4"></div>
     </div>
-    <?php $conf = new GlobalConf; ?>
+    <?php $conf = new AppConfig; ?>
         <script>
             $("#usersignup").validate({
                 rules: {
@@ -39,7 +39,7 @@ require 'partials/pagehead.php';
                     }
                     , password1: {
                         required: true
-                        , minlength: <?php echo $conf->pwminlength; ?>
+                        <?php if ($conf->password_policy_enforce == true) { echo ", minlength: ". $conf->password_min_length;}; ?>
                     }
                     , password2: {
                         equalTo: "#password1"

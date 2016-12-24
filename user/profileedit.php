@@ -3,7 +3,6 @@ $title = 'Edit Profile';
 require '../login/partials/pagehead.php';
 $uid = $_SESSION['uid'];
 $usr = profileData::pullAllUserInfo($uid);
-
 if (@get_headers($usr['userimage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['userimage'] == '') {
     $imgpath = "no_user.jpg";
 } else {
@@ -22,7 +21,7 @@ if (@get_headers($usr['userimage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['user
                         <div class="col-sm-6">
                             <label class="label label-default">Select Your Image</label>
                             <br/>
-                            <input type="file" name="userimage" id="userimage" accept="image/*" />
+                            <input type="file" name="userimage" id="userimage" accept="image/*" class="custom-file-input" />
                             <div id="imgholder"> <img id="imgthumb" class="img-thumbnail" src="<?php echo $imgpath."?i=".rand(5, 30000);?>" /> </div>
                             <input id="base64image" hidden></input>
                             <br/> </div>
@@ -60,7 +59,7 @@ if (@get_headers($usr['userimage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['user
                     <div class="row">
                         <div class="col-sm-12">
                             <div id="message"></div>
-                            <button type="submit" class="btn btn-primary" id="submitbtn">Submit</button>  </div>
+                            <button type="submit" class="btn btn-primary" id="submitbtn">Save Changes</button>  </div>
                     </div>
             </form>
             </div>

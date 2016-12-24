@@ -107,7 +107,7 @@ $("#userimage").on('change', function () {
         croppedimg.croppie('result', {
         type: 'base64',
         format: 'jpeg',
-        quality: '0.95',
+        quality: '0.85',
         size: {
             width: 500,
             height: 500

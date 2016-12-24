@@ -7,8 +7,10 @@ require_once '../vendor/autoload.php';
 use \Firebase\JWT\JWT;
 
 $email = $_POST['email'];
-$conf = new GlobalConf;
+$config = new AppConfig;
 $resp = array();
+
+$conf = $config->pullMultiSettings(array("jwt_secret","base_url"));
 
 try {
     $user = UserData::pullUserByEmail($email);
@@ -18,7 +20,7 @@ try {
         throw new Exception("No user found!");
     }
 
-    $secret = $conf->jwt_secret;
+    $secret = $conf["jwt_secret"];
     $tokenid = uniqid('t_', true);
     $intltime = time();
     $nbftime = $intltime + 5;
@@ -28,7 +30,7 @@ try {
 
     //Data passed in JWT
     $payload = array(
-        "iss" => $conf->base_url,
+        "iss" => $conf["base_url"],
         "nbf" => $nbftime,
         "exp" => $exptime,
         "tokenid"=>$tokenid,
@@ -40,7 +42,7 @@ try {
 
     $jwt = JWT::encode($payload, $secret);
 
-    $reset_url = $conf->base_url."/login/resetpassword.php?t=".$jwt;
+    $reset_url = $conf["base_url"]."/login/resetpassword.php?t=".$jwt;
 
     $tokenInsert = TokenHandler::replaceToken($user['id'], $tokenid, 0);
 
@@ -62,6 +64,5 @@ try {
     $resp['status'] = 0;
     $resp['response'] = $f->getMessage();
     echo json_encode($resp);
-
 
 }
