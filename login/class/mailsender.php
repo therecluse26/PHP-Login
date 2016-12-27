@@ -1,10 +1,9 @@
 <?php
-class MailSender extends MailConf
+class MailSender extends AppConfig
 {
     public function sendMail($userarr, $type)
     {
         $resp = array();
-        require $this->base_dir.'/login/config.php';
         require $this->base_dir.'/login/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
         /* ADD $_SERVER['SERVER_PORT'] TO $verifyurl STRING AFTER $_SERVER['SERVER_NAME'] FOR DEV URLS USING PORTS OTHER THAN 80 */
@@ -19,18 +18,15 @@ class MailSender extends MailConf
         $mail->AddReplyTo($this->from_email, $this->from_name);
 
         //SMTP Settings
-        if ($mail_server_type == 'smtp') {
+        if ($this->mail_server_type == 'smtp') {
 
-            $mail->IsSMTP(); //Enable SMTP
-            $mail->SMTPAuth = true; //SMTP Authentication
-            $mail->Host = $this->smtp_server; //SMTP Host
-            //Defaults: Non-Encrypted = 25, SSL = 465, TLS = 587
-            $mail->SMTPSecure = $this->smtp_security; // Sets the prefix to the server
-            $mail->Port = $this->smtp_port; //SMTP Port
-            //SMTP user auth
-            $mail->Username = $this->smtp_user; //SMTP Username
-            $mail->Password = $this->smtp_pw; //SMTP Password
-            //********************
+            $mail->IsSMTP();
+            $mail->SMTPAuth = true;
+            $mail->Host = $this->mail_server;
+            $mail->SMTPSecure = $this->mail_security;
+            $mail->Port = $this->mail_port;
+            $mail->Username = $this->mail_user;
+            $mail->Password = $this->mail_pw;
             $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production)
 
             $mail->SMTPOptions = array(
@@ -42,76 +38,85 @@ class MailSender extends MailConf
             );
         }
 
-        /****
-        * Set who the message is to be sent to
-        * CAN BE SET TO AddBCC(youremail@website.com, 'Your Name') FOR PRIVATE USER APPROVAL BY MODERATOR
-        * SET TO AddBCC($email, $user) FOR USER SELF-VERIFICATION
-        *****/
+        if ($type == 'Verify') {
 
-        foreach($userarr as $usr){
+            $admins = UserData::adminEmailList();
 
-            $uid_64 = base64_encode($usr['id']);
+            foreach($userarr as $usr){
 
-            $verifyurl = $this->base_url . "/login/verifyuser.php?v=1&uid=" . $uid_64;
+                $uid_64 = base64_encode($usr['id']);
 
-            if ($this->admin_verify == true) {
-                    $mail->AddBCC($this->admin_email, $usr['username']);
+                $verifyurl = $this->base_url . "/login/verifyuser.php?v=1&uid=" . $uid_64;
 
-            } else {
+                $mail->AddBCC($usr['email'], $usr['username']);
+
+                if ($this->admin_verify == true) {
+
+                    foreach ($admins as $admin) {
+                        $mail->AddBCC($admin['email'], $usr['username']);
+                    }
+
+                }
+            }
+
+            include $this->base_dir."/login/partials/mailtemplates/verifyemail.php";
+
+                //Set the subject line
+                $mail->Subject = $usr['username']. ' Account Verification';
+
+                //Set the body of the message
+                $mail->Body = $verify_template;
+
+                if ($this->admin_verify == true) {
+                    $mail->AltBody = $this->verify_email_admin;
+                } else {
+
+                    $mail->AltBody = $this->verify_email_noadmin . $verifyurl;
+                }
+
+            } elseif ($type == 'Active') {
+
+
+                foreach($userarr as $usr){
+
                     $mail->AddBCC($usr['email'], $usr['username']);
-            }
+
+                }
+
+                include $this->base_dir."/login/partials/mailtemplates/activeemail.php";
+
+                //Set the subject line
+                $mail->Subject = $this->site_name . ' Account Created!';
+
+                //Set the body of the message
+                $mail->Body = $active_template;
+
+                $mail->AltBody  =  $this->active_email . $this->signin_url;
+
+            };
+
+        try {
+
+            $mail->Send();
+
+            $resp['status'] = true;
+            $resp['message'] = '';
+
+            return $resp;
+
+        } catch (phpmailerException $e) {
+
+            $resp['status'] = false;
+            $resp['message'] = $e->errorMessage();
+
+            return $resp;
+
         }
-
-            if ($type == 'Verify') {
-
-                include $this->base_dir."/login/partials/mailtemplates/verifyemail.php";
-
-                    //Set the subject line
-                    $mail->Subject = $usr['username']. ' Account Verification';
-
-                    //Set the body of the message
-                    $mail->Body = $verify_template;
-
-                    $mail->AltBody  =  $this->verify_email . $verifyurl;
-
-                } elseif ($type == 'Active') {
-
-                    include $this->base_dir."/login/partials/mailtemplates/activeemail.php";
-
-                    //Set the subject line
-                    $mail->Subject = $this->site_name . ' Account Created!';
-
-                    //Set the body of the message
-                    $mail->Body = $active_template;
-
-                    $mail->AltBody  =  $this->active_email . $this->signin_url;
-
-                };
-
-            try {
-
-                $mail->Send();
-
-                $resp['status'] = true;
-                $resp['message'] = '';
-
-                return $resp;
-
-            } catch (phpmailerException $e) {
-
-                $resp['status'] = false;
-                $resp['message'] = $e->errorMessage();
-
-                return $resp;
-
-            }
-
     }
 
     public function sendResetMail($reset_url, $to_email, $username) {
 
         $resp = array();
-        require $this->base_dir.'/login/config.php';
         require $this->base_dir.'/login/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
         try {
@@ -124,17 +129,17 @@ class MailSender extends MailConf
         $mail->AddReplyTo($this->from_email, $this->from_name);
 
         //SMTP Settings
-        if ($mail_server_type == 'smtp') {
+        if ($this->mail_server_type == 'smtp') {
 
             $mail->IsSMTP(); //Enable SMTP
             $mail->SMTPAuth = true; //SMTP Authentication
-            $mail->Host = $this->smtp_server; //SMTP Host
+            $mail->Host = $this->mail_server; //SMTP Host
             //Defaults: Non-Encrypted = 25, SSL = 465, TLS = 587
-            $mail->SMTPSecure = $this->smtp_security; // Sets the prefix to the server
-            $mail->Port = $this->smtp_port; //SMTP Port
+            $mail->SMTPSecure = $this->mail_security; // Sets the prefix to the server
+            $mail->Port = $this->mail_port; //SMTP Port
             //SMTP user auth
-            $mail->Username = $this->smtp_user; //SMTP Username
-            $mail->Password = $this->smtp_pw; //SMTP Password
+            $mail->Username = $this->mail_user; //SMTP Username
+            $mail->Password = $this->mail_pw; //SMTP Password
             //********************
             $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production)
 
@@ -151,11 +156,14 @@ class MailSender extends MailConf
 
 
         //Set the subject line
-        $mail->Subject = $site_name . ' Password Reset';
+        $mail->Subject = $this->site_name . ' Password Reset';
+
+        include $this->base_dir."/login/partials/mailtemplates/resetemail.php";
+
 
         //Set the body of the message
-        $mail->Body = "Click the link below to reset your password:<br><a href='".$reset_url."'>".$reset_url."</a>";
-        $mail->AltBody  =  $active_email . $signin_url;
+        $mail->Body = $reset_template;
+        $mail->AltBody = $this->reset_email . $this->signin_url;
 
         $mail->Send();
 

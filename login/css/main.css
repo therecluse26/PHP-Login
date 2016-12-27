@@ -1,9 +1,6 @@
 body {
     background-color: #f4f4f4;
 }
-img {
-  max-width: 100%;
-}
 .resp-message {
 
     max-width: 330px;
@@ -118,10 +115,6 @@ img {
 .valstatus {
     padding-top: -10px;
 }
-.dropdown {
-    margin-top: 10px;
-    right: 10px;
-}
 td {
   word-wrap:break-word;
   word-break:break-word;
@@ -145,4 +138,56 @@ tr:not(.checkedrow):hover {
 }
 .editprofile {
     margin-bottom: 10px;
+}
+/*.navbar {
+    height: 60px;
+}
+.dropdown {
+    margin-top: 14px;
+    right: 10px;
+}
+.navbar-brand {
+    font-size: 20px;
+    line-height: 1;
+
+}
+.navbar .nav > li > a {
+    line-height: 19px;
+    margin-top: -10px;
+    margin-right: -10px;
+    margin-bottom: 0px;
+}
+
+.sitetitle {
+    margin-top: 14px;
+}
+.mainlogo {
+    margin: 5px 0 0 0;
+}
+*/
+.navbar-brand { position: relative; z-index: 2; }
+
+.navbar-nav.navbar-right .btn { position: relative; z-index: 2; padding: 4px 20px; margin: 10px auto; }
+
+.navbar .navbar-collapse { position: relative; }
+.navbar .navbar-collapse .navbar-right > li:last-child { padding-left: 22px; }
+
+.navbar .nav-collapse { position: absolute; z-index: 1; top: 0; left: 0; right: 0; bottom: 0; margin: 0; padding-right: 120px; padding-left: 80px; width: 100%; }
+.navbar.navbar-default .nav-collapse { background-color: #f8f8f8; }
+.navbar.navbar-inverse .nav-collapse { background-color: #222; }
+.navbar .nav-collapse .navbar-form { border-width: 0; box-shadow: none; }
+.nav-collapse>li { float: right; }
+
+.btn.btn-circle { border-radius: 50px; }
+.btn.btn-outline { background-color: transparent; }
+
+@media screen and (max-width: 767px) {
+    .navbar .navbar-collapse .navbar-right > li:last-child { padding-left: 15px; padding-right: 15px; }
+
+    .navbar .nav-collapse { margin: 7.5px auto; padding: 0; }
+    .navbar .nav-collapse .navbar-form { margin: 0; }
+    .nav-collapse>li { float: none; }
+}
+.mainlogo {
+    margin-top: -6px;
 }

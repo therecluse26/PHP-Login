@@ -1,6 +1,5 @@
 <?php
 class PasswordPolicy {
-
     public static function validate ($pw1, $pw2, $policy_enforce, $minlength) {
 
         try {

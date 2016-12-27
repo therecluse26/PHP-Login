@@ -3,7 +3,7 @@ $pagetype = 'adminpage';
 $title = 'Admin Verification';
 require '../login/partials/pagehead.php';
 
-$users = AdminUserPull::UserList();
+$users = UserData::userVerifyList();
 $x = 0;
 ?>
 </head>

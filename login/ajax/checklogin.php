@@ -1,7 +1,6 @@
 <?php
 //'true' triggers login success
 ob_start();
-include '../config.php';
 require '../autoload.php';
 
 // Define $myusername and $mypassword
@@ -13,8 +12,8 @@ $username = stripslashes($username);
 $password = stripslashes($password);
 
 $response = '';
-$loginCtl = new LoginForm;
-$lastAttempt = Attempts::checkAtt($username);
+$loginCtl = new LoginHandler;
+$lastAttempt = $loginCtl->checkAttempts($username);
 $max_attempts = AppConfig::pullSetting("max_attempts", "unsigned");
 
 //First Attempt

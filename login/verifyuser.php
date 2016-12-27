@@ -1,20 +1,16 @@
-<div class="container">
 <?php
 $pagetype = 'loginpage';
 $title = 'Verify User';
 require 'partials/pagehead.php';
 ?>
-
 </head>
 <body>
+<div class="container">
 
 <?php
-$config = new AppConfig;
-$conf = $config->pullMultiSettings("signin_url", "active_msg");
-
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
-$uid_non_json = base64_decode($_GET['uid']);
-$idarr = array($uid_non_json);
+$uid_decoded = base64_decode($_GET['uid']);
+$idarr = array($uid_decoded);
 $uids = json_encode($idarr);
 
 $userarr = UserData::userDataPull($uids, 0);
@@ -24,27 +20,25 @@ try {
     $vresponse = Verify::verifyUser($userarr, 1);
 
     //Success
-    if ($vresponse == 1) {
+    if ($vresponse['status'] == true) {
 
-        echo '<form class="form-signin" action="'.$conf["signin_url"].'"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$conf["activemsg"].'</div><br><input type="submit" class="btn btn-lg btn-primary btn-block" value="Click Here to Log In"></button></form>';
+        echo '<form class="form-signin" action="'.$conf->signin_url.'"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$conf->active_msg.'</div><br><input type="submit" class="btn btn-lg btn-primary btn-block" value="Click Here to Log In"></button></form>';
 
         //Send verification email
         $m = new MailSender;
+
         //SEND MAIL
         $m->sendMail($userarr, 'Active');
 
-
     } else {
         //Echoes error from MySQL
-        echo $vresponse;
+        echo $vresponse['message'];
     }
 
 } catch (Exception $ex) {
 
     echo $ex->getMessage();
-
 }
-
 ?>
 </div>
 </body>

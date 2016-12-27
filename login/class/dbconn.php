@@ -1,10 +1,66 @@
 <?php
-// Extend this class to re-use db connection
 class DbConn
 {
-    public $conn;
-    public function __construct()
+    private $db_name;
+    private $host;
+    private $username;
+    private $password;
+    /**
+    * PDO Connection object
+    * @var object
+    */
+    protected $conn;
+    /**
+     * Database Table Prefix
+     * @var string
+     */
+    protected $tbl_prefix;
+    /**
+    * Table where basic user data is stored
+    * @var string
+    */
+    protected $tbl_members;
+    /**
+    * Table where user profile info is stored
+    * @var string
+    */
+    protected $tbl_memberinfo;
+    /**
+    * Admin table
+    * @var string
+    */
+    protected $tbl_admins;
+    /**
+    * Table where login attempts are logged
+    * @var string
+    */
+    protected $tbl_attempts;
+    /**
+    * Table where deleted users are stored temporarily
+    * @var string
+    */
+    protected $tbl_deleted;
+    /**
+    * Table that JWT tokens are validated against
+    * @var string
+    */
+    protected $tbl_tokens;
+    /**
+    * Table that cookies are stored and validated against
+    * @var string
+    */
+    protected $tbl_cookies;
+    /**
+    * Table where main application configuration is stored
+    * @var string
+    */
+    protected $tbl_appConfig;
+
+    function __construct()
     {
+    /**
+    * Pulls tables from
+    **/
         $up_dir = realpath(__DIR__ . '/..');
 
         if (file_exists('dbconf.php')) {
@@ -12,8 +68,7 @@ class DbConn
         } else {
             require $up_dir.'/dbconf.php';
         }
-
-        $this->tbl_prefix = $tbl_prefix; // Prefix for all database tables
+        $this->tbl_prefix = $tbl_prefix;
         $this->tbl_members = $tbl_members;
         $this->tbl_memberinfo = $tbl_memberinfo;
         $this->tbl_admins = $tbl_admins;

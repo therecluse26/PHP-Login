@@ -1,7 +1,6 @@
 <?php
 $cwd = getcwd(); // remember the current path
 chdir('../../');
-require 'login/config.php';
 require 'login/autoload.php';
 
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
@@ -19,7 +18,7 @@ $userarr = $e->userDataPull($uid, 0);
         $vresponse = Verify::verifyUser($userarr, 1);
 
         //Success
-        if ($vresponse == 1) {
+        if ($vresponse['status'] == true) {
 
             echo $vresponse;
 
@@ -47,7 +46,7 @@ $userarr = $e->userDataPull($uid, 0);
         } else {
             //Validation error from empty form variables
             header('HTTP/1.1 400 Bad Request');
-            throw new Exception("Failure");
+            throw new Exception($vresponse['message']);
         }
 
     } catch(Exception $ex) {

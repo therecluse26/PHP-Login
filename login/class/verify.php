@@ -6,37 +6,39 @@ class Verify extends DbConn
         try {
 
             $idset = [];
-            
+
             foreach($userarr as $user){
                 array_push($idset, $user['id']);
             }
-            
-            $in  = str_repeat('?,', count($idset) - 1) . '?';
-            
-            $vdb = new DbConn;
-            $tbl_members = $vdb->tbl_members;
 
-            // prepare sql and bind parameters
-            $vstmt = $vdb->conn->prepare("UPDATE ".$tbl_members." SET verified = ".$verify." WHERE id in ($in)");
-            $vstmt->execute($idset);
+            if (count($idset) > 0) {
+                $in  = str_repeat('?,', count($idset) - 1) . '?';
 
-            $vresp = 'true';
+                $vdb = new DbConn;
+                $tbl_members = $vdb->tbl_members;
+
+                // prepare sql and bind parameters
+                $vstmt = $vdb->conn->prepare("UPDATE ".$tbl_members." SET verified = ".$verify." WHERE id in ($in)");
+                $vstmt->execute($idset);
+
+                $vresp['status'] = true;
+                $vresp['message'] = '';
+
+            } else {
+
+                $vresp['status'] = false;
+                $vresp['message'] = 'User(s) not found';
+            }
+
 
 
         } catch (PDOException $v) {
 
-            $vresp = 'Error: ' . $v->getMessage();
-
+            $vresp['status'] = false;
+            $vresp['message'] = 'Error: ' . $v->getMessage();
         }
 
-    //Determines returned value ('true' or error code)
-    //$resp = ($vresp == true) ? true : 'Failure';
-    if($vresp == 'true'){
-        $resp = true;
-    } else {
-        $resp = false;
-    }
-        return $resp;
+        return $vresp;
 
     }
 }

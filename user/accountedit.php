@@ -1,4 +1,5 @@
 <?php
+$pagetype = 'userpage';
 $title = 'Account Settings';
 require '../login/partials/pagehead.php';
 $uid = $_SESSION['uid'];

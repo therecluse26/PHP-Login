@@ -7,7 +7,8 @@ function checkSessionKey($key)
     return $_SESSION[$key];
 }
 
-if (($pagetype != 'loginpage') && !array_key_exists('username', $_SESSION) || (array_key_exists('username', $_SESSION) && $ip != getenv ("REMOTE_ADDR") || (checkSessionKey('admin') == false && $pagetype == 'adminpage'))) {
+//($pagetype != 'loginpage') && checkSessionKey('username') == false || (array_key_exists('username', $_SESSION) &&
+if ($ip != getenv ("REMOTE_ADDR") || (checkSessionKey('admin') == false && $pagetype == 'adminpage') || (checkSessionKey('username') == false && $pagetype == 'userpage')) {
 
     $refurl = urlencode("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 
@@ -31,8 +32,7 @@ if (($pagetype != 'loginpage') && !array_key_exists('username', $_SESSION) || (a
 //Prevent non superadmins from accessing superadmin pages
 } elseif ($pagetype == 'superadminpage') {
 
-
-    if (!isset($_SESSION['superadmin']) || $_SESSION['superadmin'] != 1) {
+    if ((checkSessionKey('superadmin') == false) || $_SESSION['superadmin'] != 1) {
 
         header("location:".$this->base_url);
     }

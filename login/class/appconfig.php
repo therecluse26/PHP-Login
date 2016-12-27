@@ -1,7 +1,14 @@
 <?php
+/**
+* Handles application configuration settings stored in database `appConfig` table
+**/
 class AppConfig extends DbConn
 {
-    public function __construct() {
+    /**
+    * Primarily instantiated in `login/partials/pagehead.php`. Meant to be instantiated once to minimize unnecessary database calls.
+    * In any page where `pagehead.php` is included, settings can be pulled as such: `$this->setting_name` where `setting_name` corresponds to "setting" entry in `appConfig` database table.
+    **/
+    function __construct() {
 
         parent::__construct();
 
@@ -16,10 +23,17 @@ class AppConfig extends DbConn
             $this->{$key} = $value;
         }
 
+        $this->signin_url = $settings['base_url'].'/login';
     }
-
+    /**
+    * Pulls single setting statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
+    * Calls can be made like so: AppConfig::pullSetting('setting_name', 'db_var_type')
+    *
+    * `setting_name` corresponds to "setting" entry in `appConfig` table, and `db_var_type` should be desired db type such as `unsigned` for integers, `varchar`, etc.
+    **/
     public static function pullSetting($setting, $type = 'varchar')
     {
+
         $db = new DbConn;
         try {
         if ($type === 'varchar') {
@@ -38,7 +52,12 @@ class AppConfig extends DbConn
         }
         return $result[0];
     }
-
+    /**
+    * Pulls multiple settings statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
+    * Calls can be made like so: `AppConfig::pullMultiSettings(array("setting1", "setting2", "etc"))`
+    *
+    * `$settingArray` = array of settings to be pulled from `appConfig` table
+    **/
     public static function pullMultiSettings($settingArray)
     {
         $db = new DbConn;
@@ -60,7 +79,10 @@ class AppConfig extends DbConn
 
         return $result;
     }
-
+    /**
+    * Pulls all settings statically from database with descriptions, categories, and input types. Meant to be used specifically in `admin/editconfig.php` page.
+    * Calls can be made like so: AppConfig::pullAllSettings()
+    **/
     public static function pullAllSettings()
     {
         if ($_SESSION["admin"] == 1) {
@@ -85,19 +107,20 @@ class AppConfig extends DbConn
 
         return $result;
     }
-
+    /**
+    * Updates array of settings.
+    * Calls can be made like so: $obj->updateMultiSettings(array("setting1"=>"value1", "setting2"=>"value2", "etc"=>"etc"))
+    **/
     public function updateMultiSettings($settingArray)
     {
         try {
-            $db = new DbConn;
-
             foreach ($settingArray as $setting=>$value) {
 
                 try {
 
-                    $sql = "UPDATE ".$db->tbl_appConfig." SET value = :value WHERE setting = :setting";
+                    $sql = "UPDATE ".$this->tbl_appConfig." SET value = :value WHERE setting = :setting";
 
-                    $stmt = $db->conn->prepare($sql);
+                    $stmt = $this->conn->prepare($sql);
                     $stmt->bindParam(":value", $value);
                     $stmt->bindParam(":setting", $setting);
                     $stmt->execute();

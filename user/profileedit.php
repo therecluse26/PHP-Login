@@ -1,4 +1,5 @@
 <?php
+$pagetype = 'userpage';
 $title = 'Edit Profile';
 require '../login/partials/pagehead.php';
 $uid = $_SESSION['uid'];

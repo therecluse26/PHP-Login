@@ -1,4 +1,51 @@
 <?php
+if ($this->admin_verify == 'true') {
+    $verify_email_msg = $this->verify_email_admin;
+    $verify_footer = '';
+
+} else {
+    $verify_email_msg = $this->verify_email_noadmin;
+    $verify_footer = '<table class="vb-outer" width="100%" cellpadding="0" border="0" cellspacing="0" id="ko_buttonBlock_7">
+    <tbody><tr>
+      <td class="vb-outer" align="center" valign="top"  style="padding-left: 9px; padding-right: 9px;">
+
+<!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
+        <div class="oldwebkit" style="max-width: 570px;">
+        <table width="570" border="0" cellpadding="0" cellspacing="18" class="vb-container fullpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 18px; padding-left: 0; padding-right: 0; width: 100%; max-width: 570px; background-color: #ffffff;">
+          <tbody><tr>
+            <td valign="top" bgcolor="#ffffff" align="center" style="background-color: #ffffff;">
+
+              <table cellpadding="0" border="0" align="center" cellspacing="0" class="mobile-full">
+                <tbody><tr>
+                  <td width="auto" valign="middle" bgcolor="#bfbfbf" align="center" height="50" style="font-size: 22px; font-family: Arial, Helvetica, sans-serif; color: #ffffff; font-weight: normal; padding-left: 14px; padding-right: 14px; background-color: #337ab7; border-radius: 4px;">
+
+                 <a class="verifybtn" href="'.$verifyurl.'">Verify Your Account</a>
+
+                  </td>
+                </tr>
+              </tbody></table>
+
+                <!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
+        <div class="oldwebkit" style="max-width: 570px;">
+        <table width="570" border="0" cellpadding="0" cellspacing="18" class="vb-container fullpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 18px; padding-left: 0; padding-right: 0; width: 100%; max-width: 570px; background-color: #ffffff;">
+          <tbody><tr>
+            <td align="left" class="long-text links-color" style="text-align: left; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f;">
+              <p style="Margin: 1em 0px; Margin-top: 0px;">
+
+                <center>
+                or go to this address: <br>
+                <a href="'.$verifyurl.'">'.$verifyurl.'</a>
+                </center>
+                </p>
+            </td>
+          </tr>
+        </tbody></table>
+        </div>
+            </td>
+          </tr>
+        </tbody></table>';
+}
+
 $verify_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -153,7 +200,7 @@ $verify_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//E
         <table width="570" border="0" cellpadding="0" cellspacing="9" class="vb-container halfpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 9px; padding-left: 9px; padding-right: 9px; width: 100%; max-width: 570px; background-color: #ffffff;">
           <tbody><tr>
             <td bgcolor="#ffffff" align="center" style="background-color: #ffffff; font-size: 22px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f; text-align: center;">
-              <span>Account Verification</span>
+              <span>'.$this->site_name.' Account Verification</span><br><br>'.$usr['username'].'
             </td>
           </tr>
         </tbody></table>
@@ -172,7 +219,7 @@ $verify_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//E
             <td align="left" class="long-text links-color" style="text-align: left; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f;">
               <p style="Margin: 1em 0px; Margin-top: 0px;">
                 <center>
-                '.$this->verify_email.'
+                '.$verify_email_msg.'
                 </center>
                 </p>
             </td>
@@ -182,45 +229,10 @@ $verify_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//E
 <!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
       </td>
     </tr>
-  </tbody></table><table class="vb-outer" width="100%" cellpadding="0" border="0" cellspacing="0" id="ko_buttonBlock_7">
-    <tbody><tr>
-      <td class="vb-outer" align="center" valign="top"  style="padding-left: 9px; padding-right: 9px;">
+  </tbody></table>
 
-<!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
-        <div class="oldwebkit" style="max-width: 570px;">
-        <table width="570" border="0" cellpadding="0" cellspacing="18" class="vb-container fullpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 18px; padding-left: 0; padding-right: 0; width: 100%; max-width: 570px; background-color: #ffffff;">
-          <tbody><tr>
-            <td valign="top" bgcolor="#ffffff" align="center" style="background-color: #ffffff;">
+  '.$verify_footer.'
 
-              <table cellpadding="0" border="0" align="center" cellspacing="0" class="mobile-full">
-                <tbody><tr>
-                  <td width="auto" valign="middle" bgcolor="#bfbfbf" align="center" height="50" style="font-size: 22px; font-family: Arial, Helvetica, sans-serif; color: #ffffff; font-weight: normal; padding-left: 14px; padding-right: 14px; background-color: #337ab7; border-radius: 4px;">
-
-                      <a class="verifybtn" href="'.$verifyurl.'">Verify Your Account</a>
-
-                  </td>
-                </tr>
-              </tbody></table>
-
-                <!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
-        <div class="oldwebkit" style="max-width: 570px;">
-        <table width="570" border="0" cellpadding="0" cellspacing="18" class="vb-container fullpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 18px; padding-left: 0; padding-right: 0; width: 100%; max-width: 570px; background-color: #ffffff;">
-          <tbody><tr>
-            <td align="left" class="long-text links-color" style="text-align: left; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f;">
-              <p style="Margin: 1em 0px; Margin-top: 0px;">
-
-                <center>
-                or go to this address: <br>
-                <a href="'.$verifyurl.'">'.$verifyurl.'</a>
-                </center>
-                </p>
-            </td>
-          </tr>
-        </tbody></table>
-        </div>
-            </td>
-          </tr>
-        </tbody></table>
         </div>
 <!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
       </td>

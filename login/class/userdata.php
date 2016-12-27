@@ -134,7 +134,6 @@ class UserData extends DbConn
 
         //Remove potentially hacked array values
         if(!empty($dataarray)){
-
             unset($dataarray['admin']);
             unset($dataarray['verified']);
             unset($dataarray['mod_timestamp']);
@@ -170,4 +169,43 @@ class UserData extends DbConn
             return false;
         }
     }
+
+    public static function userVerifyList()
+    {
+        try {
+            $db = new DbConn;
+            $tbl_members = $db->tbl_members;
+
+            $stmt = $db->conn->prepare("SELECT id, email, username FROM ".$tbl_members." WHERE verified = 0");
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+
+            $result = "Error: " . $e->getMessage();
+
+        }
+
+        return $result;
+    }
+
+    public static function adminEmailList(){
+
+        try {
+            $db = new DbConn;
+
+            $stmt = $db->conn->prepare("SELECT email FROM ".$db->tbl_members." m inner join ".$db->tbl_admins." a on m.id = a.userid");
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (PDOException $e) {
+
+            $result = "Error: " . $e->getMessage();
+
+        }
+
+        return $result;
+
+    }
+
 }

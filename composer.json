@@ -1,6 +1,6 @@
 {
     "name": "therecluse26/php-login",
-    "description": "A secure, easy drop-in PHP login system",
+    "description": "A secure, drop-in PHP login system",
     "type": "library",
     "authors": [
         {

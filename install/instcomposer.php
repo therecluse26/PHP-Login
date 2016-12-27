@@ -1,4 +1,7 @@
 <?php
+/**
+* Installs
+**/
 function composerInstall() {
 
     $failure = 0;
@@ -7,7 +10,7 @@ function composerInstall() {
 
     $compinst = shell_exec('composer install -d ../ 2>&1');
 
-    if(strpos($compinst, "'composer' is not recognized") !== false ){
+    if(strpos($compinst, "'composer' is not recognized") != false ){
         $failure = 1;
         $status = "Composer is not installed. Please install the approprate version from <a href='https://getcomposer.org/download/'>https://getcomposer.org/download/</a>, restart your server and try again.";
         }
@@ -24,5 +27,5 @@ function composerInstall() {
     }
     $returnArray = array("status" => $status, "failure" => $failure);
     return $returnArray;
-    
+
 }
