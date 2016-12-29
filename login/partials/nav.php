@@ -77,9 +77,9 @@ if (isset($_SESSION['username'])){
 };
 
 ?>
-    </div><!-- /.navbar-collapse -->
 
-            </div>
+</div><!-- /.navbar-collapse -->
+</div>
 
 </div>
 </nav>

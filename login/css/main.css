@@ -139,32 +139,7 @@ tr:not(.checkedrow):hover {
 .editprofile {
     margin-bottom: 10px;
 }
-/*.navbar {
-    height: 60px;
-}
-.dropdown {
-    margin-top: 14px;
-    right: 10px;
-}
-.navbar-brand {
-    font-size: 20px;
-    line-height: 1;
 
-}
-.navbar .nav > li > a {
-    line-height: 19px;
-    margin-top: -10px;
-    margin-right: -10px;
-    margin-bottom: 0px;
-}
-
-.sitetitle {
-    margin-top: 14px;
-}
-.mainlogo {
-    margin: 5px 0 0 0;
-}
-*/
 .navbar-brand { position: relative; z-index: 2; }
 
 .navbar-nav.navbar-right .btn { position: relative; z-index: 2; padding: 4px 20px; margin: 10px auto; }
@@ -190,4 +165,8 @@ tr:not(.checkedrow):hover {
 }
 .mainlogo {
     margin-top: -6px;
+}
+.navbar-toggle {
+    width: 40px;
+    height: 40px;
 }

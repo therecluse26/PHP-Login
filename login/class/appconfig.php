@@ -24,6 +24,7 @@ class AppConfig extends DbConn
         }
 
         $this->signin_url = $settings['base_url'].'/login';
+
     }
     /**
     * Pulls single setting statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
@@ -50,7 +51,11 @@ class AppConfig extends DbConn
 
             $result[0] = "Error: " . $e->getMessage();
         }
+
+        unset($db);
+
         return $result[0];
+
     }
     /**
     * Pulls multiple settings statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
@@ -129,7 +134,6 @@ class AppConfig extends DbConn
                     $result['status'] = false;
                     $result['message'] = "Error: " . $e->getMessage();
                 }
-
             }
 
             $result['status'] = true;

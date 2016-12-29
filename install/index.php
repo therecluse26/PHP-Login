@@ -1,78 +1,103 @@
 <?php
 $currdir = dirname(getcwd());
+$baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Install PHP-Login</title>
-    <meta name="Author" content=""/>
-     <link rel="stylesheet" type="text/css" href="../login/css/main.css"> 
-    <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
-    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
-    <script src="bootstrap/bootstrap.js"></script>
-    <script src="ajax/instvalidate.js"></script>
-</head>
-<body>
-<div class="container">
-<div class="table">
-<table class="table table-bordered table-striped table-highlight">
-<tr>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Install PHP-Login</title>
+        <meta name="Author" content="" />
+        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="../login/css/main.css">
+        <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src="bootstrap/bootstrap.js"></script>
+        <script src="ajax/instvalidate.js"></script>
+    </head>
 
-<form id="dbform" action="install.php" class="form-signin" method="post">
+    <body>
+        <div class="container">
+            <table class="table table-bordered table-striped table-highlight">
 
-<td>
-<label for="dbhost">Database Settings:</label>
-        <input name="dbhost" id="dbhost" class="form-control" placeholder="Database Hostname"></input><br>
-        <input name="dbuser" id="dbuser" class="form-control" placeholder="Username"></input><br>
-        <input name="dbpw" id="dbpw" class="form-control" placeholder="Password"></input><br>
-        <input name="dbname" id="dbname" class="form-control" placeholder="Database Name"></input><br>
-        <input name="tblprefix" id="tblprefix" class="form-control" placeholder="Table prefix"></input><br>
-</td>
-<td>
-<label for="root_dir" id="valstatus">Root Path:</label>
-        <input name="root_dir" id="root_dir" class="form-control" placeholder="Site Root Directory" value=<?php echo $currdir; ?>></input><br>
+                <h1>Install PHP-Login</h1>
 
+                <form id="dbform" action="install.php" class="form-signin" method="post">
 
-<label for="superadmin">Superadmin Settings:</label>
-        <input name="superadmin" id="superadmin" class="form-control" placeholder="Superadmin username"></input><br>
-        <input type="password" name="sapw" id="sapw" class="form-control" placeholder="Superadmin Password"></input><br>
-        <input name="saemail" id="saemail" class="form-control" placeholder="Superadmin Email"></input><br>
-</td>
+                    <div class="form-group row">
+                        <div class="col-lg-6">
+                            <label for="dbhost" id="dbhost">Database Hostname</label>
+                            <input name="dbhost" id="dbhost" class="form-control" placeholder="Database Hostname"></input>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="dbuser" id="dbuser">DB User</label>
+                            <input name="dbuser" id="dbuser" class="form-control" placeholder="Username"></input>
+                            <br>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="dbpw" id="dbpw">DB Password</label>
+                            <input name="dbpw" id="dbpw" class="form-control" placeholder="Password"></input>
+                            <br>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="dbname" id="dbname">DB Name</label>
+                            <input name="dbname" id="dbname" class="form-control" placeholder="Database Name"></input>
+                            <br>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="tblprefix" id="tblprefix">DB Table Prefix</label>
+                            <input name="tblprefix" id="tblprefix" class="form-control" placeholder="Table prefix"></input>
+                            <br>
+                        </div>
 
-<td>
-<label for="smtp_fromEmail">SMTP Settings:</label>
-        <input name="smtp_fromEmail" id="smtp_fromEmail" class="form-control" placeholder="'From' Email"></input><br>
-        <input name="smtp_fromName" id="smtp_fromName" class="form-control" placeholder="'From' Name"></input><br>
-        <input name="smtp_server" id="smtp_server" class="form-control" placeholder="SMTP Server"></input><br>
-        <input name="smtp_user" id="smtp_user" class="form-control" placeholder="SMTP Username"></input><br>
-        <input name="smtp_pw" id="smtp_pw" class="form-control" placeholder="SMTP Password"></input><br>
-        <input name="smtp_port" id="smtp_port" class="form-control"  placeholder="Port"></input><br>
-        <select name="smtp_security" id="smtp_security" >
-            <option value="">-- SMTP Security --</option>
-            <option value="tls">TLS</option>
-            <option value="ssl">SSL</option>
-        </select>
-</td>
+                    </div>
 
+                    <div class="form-group row">
 
-</tr>
+                        <div class="col-lg-6">
 
-    </table>
-    <tr>
+                            <label for="base_dir" id="valstatus">Root Install Path:</label>
+                            <input name="base_dir" id="base_dir" class="form-control" placeholder="Site Root Directory" value=<?php echo $currdir; ?>></input>
+                            <br>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="base_url" id="valstatus">Base Url:</label>
+                            <input name="base_url" id="base_url" class="form-control" placeholder="Site Base Url" value=<?php echo $baseurl; ?>></input>
+                            <br>
+                        </div>
+                        <div class="col-lg-6">
 
-      <ul class="pager">
-    <li class="previous"><a href="#">Previous</a></li>
-    <li class="next"><a href="#">Next</a></li>
-  </ul>
+                            <label for="superadmin">Superadmin Username:</label>
+                            <input name="superadmin" id="superadmin" class="form-control" placeholder="Superadmin username"></input>
+                            <br>
+                        </div>
 
-  
-    <button id="submitbtn" class="btn btn-primary">Submit</button>
-</tr>
-</div>
-</div>
+                        <div class="col-lg-6">
 
-</form>
+                            <label for="saemail">Superadmin Email:</label>
+                            <input name="saemail" id="saemail" class="form-control" placeholder="Superadmin Email"></input>
+                            <br>
+                        </div>
 
-</body>
-</html>
+                        <div class="col-lg-6">
+                            <label for="sapw">New Password:</label>
+                            <input type="password" name="sapw" id="sapw" class="form-control" placeholder="Superadmin Password"></input>
+                            <br>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="sapw2">Repeat Password:</label>
+                            <input type="password" name="sapw2" id="sapw2" class="form-control" placeholder="Superadmin Password"></input>
+                            <br>
+                        </div>
+
+                        <div class="col-lg-6">
+
+                            <button id="submitbtn" class="btn btn-primary">Submit</button>
+
+                        </div>
+                    </div>
+
+                </form>
+
+    </body>
+
+    </html>

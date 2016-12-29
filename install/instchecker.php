@@ -12,14 +12,12 @@ if (file_exists($file)) {
   echo $text;
 
 // Convert to JSON to read the status.
-  $obj = json_decode($text, true);
+ $obj = json_decode($text, true);
 
-  //echo var_dump($obj);
-  // If the process is finished, delete the file.
+// If the process is finished, delete the file.
 if ($obj['percent'] == 100 || $obj['failure'] == 1) {
     unlink($file);
   }
-  
 }
 else {
   echo json_encode(array("percent" => null, "message" => null, "failure" => 0));

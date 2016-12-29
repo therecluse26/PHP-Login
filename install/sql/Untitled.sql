@@ -1,1 +1,0 @@
-SELECT * FROM login.appConfig order by -sortorder desc, type desc

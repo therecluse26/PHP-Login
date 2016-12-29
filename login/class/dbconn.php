@@ -1,9 +1,28 @@
 <?php
+/**
+* Database connection class. This base class is extended or utilized by numerous other classes.
+*/
 class DbConn
 {
+    /**
+    * Database name
+    * @var string
+    */
     private $db_name;
+    /**
+    * Database server hostname
+    * @var string
+    */
     private $host;
+    /**
+    * Database username
+    * @var string
+    */
     private $username;
+    /**
+    * Database password
+    * @var string
+    */
     private $password;
     /**
     * PDO Connection object

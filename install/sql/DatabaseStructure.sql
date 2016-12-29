@@ -24,7 +24,7 @@ CREATE TABLE `admins` (
   PRIMARY KEY (`adminid`,`userid`),
   UNIQUE KEY `adminid_UNIQUE` (`adminid`),
   UNIQUE KEY `userid_UNIQUE` (`userid`),
-  CONSTRAINT `fk_userid_admins` FOREIGN KEY (`userid`) REFERENCES `members` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_userid_admins` FOREIGN KEY (`userid`) REFERENCES `members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -36,8 +36,12 @@ DROP TABLE IF EXISTS `appConfig`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `appConfig` (
+  `sortorder` int(5) DEFAULT NULL,
   `setting` char(26) NOT NULL,
+  `category` varchar(25) NOT NULL DEFAULT 'misc',
   `value` varchar(12000) NOT NULL,
+  `type` varchar(15) NOT NULL DEFAULT 'text',
+  `description` varchar(140) DEFAULT NULL,
   `required` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`setting`),
   UNIQUE KEY `setting_UNIQUE` (`setting`)
@@ -121,7 +125,7 @@ CREATE TABLE `loginAttempts` (
   `Attempts` int(11) NOT NULL,
   `LastLogin` datetime NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,8 +183,8 @@ CREATE TABLE `members` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `add_admin`
-AFTER INSERT ON `members`
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `login`.`add_admin`
+AFTER INSERT ON `login`.`members`
 FOR EACH ROW
 BEGIN
 
@@ -326,5 +330,3 @@ DELIMITER ;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2016-12-19 17:23:07

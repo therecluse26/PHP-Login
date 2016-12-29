@@ -26,8 +26,8 @@ class UserData extends DbConn
             }
 
         return $result;
-
     }
+
     public static function pullUserByEmail($email)
     {
         $db = new DbConn;
@@ -50,7 +50,6 @@ class UserData extends DbConn
             }
 
         return $result;
-
     }
 
     public static function pullUserById($id)
@@ -75,7 +74,6 @@ class UserData extends DbConn
             }
 
         return $result;
-
     }
 
     public static function pullUserPassword($id)
@@ -100,7 +98,6 @@ class UserData extends DbConn
             }
 
         return $result;
-
     }
 
     public static function pullAdmin($id)
@@ -125,7 +122,6 @@ class UserData extends DbConn
             }
 
         return $result;
-
     }
 
     public static function upsertAccountInfo($uid, $dataarray) {
@@ -205,7 +201,5 @@ class UserData extends DbConn
         }
 
         return $result;
-
     }
-
 }

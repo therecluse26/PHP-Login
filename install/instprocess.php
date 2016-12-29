@@ -2,13 +2,11 @@
 if(!isset($_SESSION)) {
     session_start();
 }
-
 require "installscript.php";
-require "instcomposer.php";
 
 $resp = '';
 $failure = 0;
-$total = 20;
+$total = 21;
 $i = 0;
 $status = '';
 
@@ -21,10 +19,12 @@ $superadmin = $_POST['superadmin'];
 $saemail = $_POST['saemail'];
 $said = $_POST['said'];
 $sapw = $_POST['sapw'];
+$base_dir = $_POST['base_dir'];
+$base_url = $_POST['base_url'];
+$site_name = $_POST['site_name'];
 
 $arr_content = array();
-
-$settingsArr = array();
+$settingsArr = array("base_dir"=>$base_dir, "base_url"=>$base_url, "site_name"=>$site_name);
 
 while ($i < $total) {
 
@@ -33,15 +33,27 @@ while ($i < $total) {
     }
     else {
         if($i < 17) {
-            $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw);
-        } else if ($i == 18) {
-            $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw, $settingsArr);
-            sleep(0.5);
-        } else if ($i == 19) {
-            $statobj = composerInstall();
-            sleep(0.5);
-        }
 
+            $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw);
+
+        } elseif ($i == 17) {
+
+            //Insert basic app settings
+            $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw, $settingsArr);
+
+        } elseif ($i == 18) {
+
+            require "instcomposer.php";
+
+        } else {
+
+            $refurl = urlencode($base_url."/admin/editconfig.php");
+
+            $statobj['status'] = 'Installation Complete!<br>
+            <a href="'.$base_url.'/login/index.php?refurl='.$refurl.'">Sign In And Finish Configuration</a>';
+
+            $statobj['failure'] = 0;
+        }
 
         $percent = intval(($i+1)/$total * 100);
 
@@ -51,7 +63,7 @@ while ($i < $total) {
 
         file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
 
-        $sleep = rand(100000,1000000);
+        $sleep = rand(50000,500000);
         usleep($sleep);
 
         unset($conn);

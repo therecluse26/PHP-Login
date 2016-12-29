@@ -2,30 +2,70 @@
 /**
 * Installs
 **/
-function composerInstall() {
+$status = '';
+$failure = false;
 
-    $failure = 0;
+try {
+    if( ($f = popen("curl --remote-name https://getcomposer.org/composer.phar 2>&1", "r")) ) {
+        while( !feof($f) ){
+
+            $status = fread($f, 1024);
+            $arr_content = array("percent"=> 95, "message" => "Downloading composer.phar... <br>". $status, "failure" => 0);
+            file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+            flush(); // you have to flush buffer
+        }
+        fclose($f);
+    }
+} catch (Exception $e) {
+
+    $arr_content = array("percent"=> 95, "message" => $e->getMessage(), "failure" => 1);
+    file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+    flush();
+}
+
+try {
 
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 
-    $compinst = shell_exec('composer install -d ../ 2>&1');
-
-    if(strpos($compinst, "'composer' is not recognized") != false ){
-        $failure = 1;
-        $status = "Composer is not installed. Please install the approprate version from <a href='https://getcomposer.org/download/'>https://getcomposer.org/download/</a>, restart your server and try again.";
+        if( ($f = popen("php composer.phar install -d ../ 2>&1", "r")) ) {
+            while( !feof($f) ){
+                $status = fread($f, 1024);
+                $arr_content = array("percent"=> 95, "message" => "Pulling dependencies... <br>". $status, "failure" => 0);
+                file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+                flush(); // you have to flush buffer
+            }
+            fclose($f);
         }
-
-    } else {
-        $compname = "composer";
-        $compdown = shell_exec('curl -sS http://getcomposer.org/installer | php -- --filename='.$compname.' 2>&1');
-
-        echo $compdown . "<br><br>";
-
-        $compinst = shell_exec('./'.$compname.' install -d ../ 2>&1');
-
-        $status = nl2br($compdown) . nl2br($compinst);
     }
-    $returnArray = array("status" => $status, "failure" => $failure);
-    return $returnArray;
+
+} catch (Exception $e) {
+
+    $arr_content = array("percent"=> 95, "message" => $e->getMessage(), "failure" => 1);
+    file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+    flush(); // you have to flush buffer
+}
+
+try {
+    if( ($f = popen("php composer.phar install -d ../ 2>&1", "r")) ) {
+
+        while( !feof($f) ){
+
+            $status = fread($f, 1024);
+
+            $arr_content = array("percent"=> 95, "message" => "Pulling dependencies... <br>". $status, "failure" => 0);
+
+            file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+
+            flush(); // you have to flush buffer
+
+        }
+        fclose($f);
+    }
+} catch (Exception $e) {
+
+    $arr_content = array("percent"=> 95, "message" => $e->getMessage(), "failure" => 1);
+    file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+    flush(); // you have to flush buffer
 
 }
+$i++;

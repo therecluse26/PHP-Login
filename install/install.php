@@ -2,21 +2,23 @@
 // Start the session.
 session_start();
 
-/*
+
 $dbhost = $_POST['dbhost'];
 $dbuser = $_POST['dbuser'];
 $dbpw = $_POST['dbpw'];
 $dbname = $_POST['dbname'];
 $tblprefix = $_POST['tblprefix'];
+
+$base_dir = $_POST['base_dir'];
+$base_url = $_POST['base_url'];
+
 $superadmin = $_POST['superadmin'];
 $saemail = $_POST['saemail'];
 $said = uniqid(rand(), false);
 $sapw = password_hash($_POST['sapw'], PASSWORD_DEFAULT);
 $site_name = $_SERVER['SERVER_NAME'];
-$sapw = password_hash($_POST['sapw'], PASSWORD_DEFAULT);
-*/
 
-$dbhost = "localhost";
+/*$dbhost = "localhost";
 $dbuser = "root";
 $dbpw = "root";
 $dbname = "login3";
@@ -25,7 +27,7 @@ $superadmin = "braddmagyar";
 $saemail = "braddmagyar@gmail.com";
 $said = uniqid(rand(), false);
 $site_name = $_SERVER['SERVER_NAME'];
-$sapw = password_hash("blahblah", PASSWORD_DEFAULT);
+$sapw = password_hash("blahblah", PASSWORD_DEFAULT); */
 
 ?>
 <!DOCTYPE html>
@@ -45,9 +47,6 @@ $sapw = password_hash("blahblah", PASSWORD_DEFAULT);
   </div>
   <div id="message"></div>
 </div>
-
-
-
   <script>
     var timer;
 
@@ -64,11 +63,15 @@ echo session_id();
           $("#message").html(data.message);
 
           if (data.percent >= 100 && data.failure == 0) {
+
             window.clearInterval(timer);
+
           }
           else if (data.failure == 1) {
+
             $(".bar").css({"background-color": "#cc0000"});
             window.clearInterval(timer);
+
           }
         }
       });
@@ -80,13 +83,14 @@ echo session_id();
 
     $(document).ready(function(){
 
-      $.ajax({
-        method: "POST",
-        url: "instprocess.php",
-        data: { dbhost: "<?php echo $dbhost;?>", dbuser: "<?php echo $dbuser;?>", dbpw: "<?php echo $dbpw;?>", dbname: "<?php echo $dbname;?>", tblprefix: "<?php echo $tblprefix;?>", superadmin: "<?php echo $superadmin;?>", saemail: "<?php echo $saemail;?>", said: "<?php echo $said;?>", sapw: "<?php echo $sapw;?>" }
+        $.ajax({
+            method: "POST",
+            url: "instprocess.php",
+            data: { dbhost: "<?php echo $dbhost;?>", dbuser: "<?php echo $dbuser;?>", dbpw: "<?php echo $dbpw;?>", dbname: "<?php echo $dbname;?>", tblprefix: "<?php echo $tblprefix;?>", superadmin: "<?php echo $superadmin;?>", saemail: "<?php echo $saemail;?>", said: "<?php echo $said;?>", sapw: "<?php echo $sapw;?>", base_dir: "<?php echo $base_dir;?>", base_url: "<?php echo $base_url;?>", site_name: "<?php echo $site_name;?>" }
         });
 
-      timer = window.setInterval(refreshProgress, 500);
+        timer = window.setInterval(refreshProgress, 500);
+
     });
   </script>
 </body>
