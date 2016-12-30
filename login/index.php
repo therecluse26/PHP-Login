@@ -8,7 +8,7 @@ include 'partials/pagehead.php';
     <div class="container logindiv">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
-            <form class="text-center" name="form1" method="post" action="checklogin.php">
+            <form class="text-center" name="form1" method="post" action="ajax/checklogin.php">
                 <h3 class="form-signin-heading"><?php echo $title;?></h3>
                 <br>
                 <div class="form-group">
