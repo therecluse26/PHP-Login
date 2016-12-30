@@ -4,6 +4,8 @@ if(!isset($_SESSION)) {
 }
 require "installscript.php";
 
+set_time_limit(5000);
+
 $resp = '';
 $failure = 0;
 $total = 21;
@@ -19,8 +21,8 @@ $superadmin = $_POST['superadmin'];
 $saemail = $_POST['saemail'];
 $said = $_POST['said'];
 $sapw = $_POST['sapw'];
-$base_dir = $_POST['base_dir'];
-$base_url = $_POST['base_url'];
+$base_dir = base64_decode($_POST['base_dir']);
+$base_url = base64_decode($_POST['base_url']);
 $site_name = $_POST['site_name'];
 
 $arr_content = array();

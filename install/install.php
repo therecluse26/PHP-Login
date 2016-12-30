@@ -9,8 +9,8 @@ $dbpw = $_POST['dbpw'];
 $dbname = $_POST['dbname'];
 $tblprefix = $_POST['tblprefix'];
 
-$base_dir = $_POST['base_dir'];
-$base_url = $_POST['base_url'];
+$base_dir = base64_encode($_POST['base_dir']);
+$base_url = base64_encode($_POST['base_url']);
 
 $superadmin = $_POST['superadmin'];
 $saemail = $_POST['saemail'];
