@@ -1,4 +1,7 @@
 <?php
+/**
+* Blah blah
+*/
 class MailSender extends AppConfig
 {
     public function sendMail($userarr, $type)
@@ -50,7 +53,7 @@ class MailSender extends AppConfig
 
                 $mail->AddBCC($usr['email'], $usr['username']);
 
-                if ($this->admin_verify == true) {
+                if ($this->admin_verify == 'true') {
 
                     foreach ($admins as $admin) {
                         $mail->AddBCC($admin['email'], $usr['username']);
