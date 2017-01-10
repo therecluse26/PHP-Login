@@ -9,7 +9,7 @@ function checkSessionKey($key)
 
 //($pagetype != 'loginpage') && checkSessionKey('username') == false || (array_key_exists('username', $_SESSION) &&
 if ($ip != getenv ("REMOTE_ADDR") || (checkSessionKey('admin') == false && $pagetype == 'adminpage') || (checkSessionKey('username') == false && $pagetype == 'userpage')) {
-
+    trigger_error("1!!!");
     $refurl = urlencode("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
 
     session_destroy();
@@ -17,6 +17,7 @@ if ($ip != getenv ("REMOTE_ADDR") || (checkSessionKey('admin') == false && $page
     exit;
 
 } elseif (array_key_exists('username', $_SESSION) && $pagetype == 'loginpage') {
+    trigger_error("2!!!");
 
     if (array_key_exists('refurl', $_GET)){
 
@@ -31,6 +32,7 @@ if ($ip != getenv ("REMOTE_ADDR") || (checkSessionKey('admin') == false && $page
 
 //Prevent non superadmins from accessing superadmin pages
 } elseif ($pagetype == 'superadminpage') {
+    trigger_error("3!!!");
 
     if ((checkSessionKey('superadmin') == false) || $_SESSION['superadmin'] != 1) {
 

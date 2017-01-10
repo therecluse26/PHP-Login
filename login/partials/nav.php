@@ -6,7 +6,7 @@
 
 <?php
 //SITE LOGO (IF SET) OR SITE NAME
-if (($this->mainlogo == '') || @get_headers($this->mainlogo)[0] == 'HTTP/1.1 404 Not Found') {
+if (str_replace(' ', '', $this->mainlogo) == '') {
     //No logo, just renders site name as link
     echo '<ul class="nav navbar-nav navbar-left"><li class="sitetitle"><a class="navbar-brand" href="'.$this->base_url.'">'.$this->site_name.'</a></li></ul>';
 } else {
