@@ -32,7 +32,7 @@ class AppConfig extends DbConn
     *
     * `setting_name` corresponds to "setting" entry in `appConfig` table, and `db_var_type` should be desired db type such as `unsigned` for integers, `varchar`, etc.
     **/
-    protected static function pullSetting($setting, $type = 'varchar')
+    public static function pullSetting($setting, $type = 'varchar')
     {
 
         $db = new DbConn;
@@ -63,7 +63,7 @@ class AppConfig extends DbConn
     *
     * `$settingArray` = array of settings to be pulled from `appConfig` table
     **/
-    protected static function pullMultiSettings($settingArray)
+    public static function pullMultiSettings($settingArray)
     {
         $db = new DbConn;
 
@@ -88,7 +88,7 @@ class AppConfig extends DbConn
     * Pulls all settings statically from database with descriptions, categories, and input types. Meant to be used specifically in `admin/editconfig.php` page.
     * Calls can be made like so: AppConfig::pullAllSettings()
     **/
-    protected static function pullAllSettings()
+    public static function pullAllSettings()
     {
         if ($_SESSION["admin"] == 1) {
 
@@ -116,7 +116,7 @@ class AppConfig extends DbConn
     * Updates array of settings.
     * Calls can be made like so: $obj->updateMultiSettings(array("setting1"=>"value1", "setting2"=>"value2", "etc"=>"etc"))
     **/
-    protected function updateMultiSettings($settingArray)
+    public function updateMultiSettings($settingArray)
     {
         try {
             foreach ($settingArray as $setting=>$value) {
