@@ -1,6 +1,17 @@
 <?php
 $currdir = dirname(getcwd());
 $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+if(!is_writable($currdir)){
+
+    echo $currdir . " is not writable <br>";
+    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4);
+
+} else {
+
+    echo $currdir . " is writable<br>";
+    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4);
+
+}
 ?>
     <!DOCTYPE html>
     <html lang="en">

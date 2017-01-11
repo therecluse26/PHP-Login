@@ -18,17 +18,6 @@ $said = uniqid(rand(), false);
 $sapw = password_hash($_POST['sapw'], PASSWORD_DEFAULT);
 $site_name = $_SERVER['SERVER_NAME'];
 
-/*$dbhost = "localhost";
-$dbuser = "root";
-$dbpw = "root";
-$dbname = "login3";
-$tblprefix = "";
-$superadmin = "braddmagyar";
-$saemail = "braddmagyar@gmail.com";
-$said = uniqid(rand(), false);
-$site_name = $_SERVER['SERVER_NAME'];
-$sapw = password_hash("blahblah", PASSWORD_DEFAULT); */
-
 ?>
 <!DOCTYPE html>
 <html>
