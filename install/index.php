@@ -5,11 +5,15 @@ if(!is_writable($currdir)){
 
     echo $currdir . " is not writable <br>";
     echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4);
+    echo "Script Owner: " . get_current_user();
+    echo "File Owner: " . fileowner($currdir);
 
 } else {
 
     echo $currdir . " is writable<br>";
     echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4);
+    echo "Script Owner: " . get_current_user();
+    echo "File Owner: " . fileowner($currdir);
 
 }
 ?>

@@ -2,7 +2,6 @@
 // Start the session.
 session_start();
 
-
 $dbhost = $_POST['dbhost'];
 $dbuser = $_POST['dbuser'];
 $dbpw = $_POST['dbpw'];
