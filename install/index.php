@@ -1,20 +1,18 @@
 <?php
 $currdir = dirname(getcwd());
 $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-if(!is_writable($currdir)){
+$scriptowner = getmyuid();
+$fileowner = fileowner($currdir);
 
+if (!is_writable($currdir)) {
     echo $currdir . " is not writable <br>";
     echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
-    echo "Script Owner: " . getmyuid()."<br>";
-    echo "File Owner: " . fileowner($currdir)."<br>";
-
 } else {
-
     echo $currdir . " is writable<br>";
     echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
-    echo "Script Owner: " . getmyuid()."<br>";
-    echo "File Owner: " . fileowner($currdir)."<br>";
-
+}
+if ($scriptowner != $fileowner) {
+    echo "WARNING: Folder owner is not " . get_current_user() . "!";
 }
 ?>
     <!DOCTYPE html>
