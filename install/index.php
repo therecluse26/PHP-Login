@@ -12,7 +12,7 @@ if (!is_writable($currdir)) {
     echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
 }
 if ($serveruser != $fileowner) {
-    echo "WARNING: Folder owner is not " . get_current_user() . "!";
+    echo "WARNING: Folder owner should be same as server user! Current server user: " . get_current_user() . "!";
 }
 ?>
     <!DOCTYPE html>
