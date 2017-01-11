@@ -1,7 +1,7 @@
 <?php
 $currdir = dirname(getcwd());
 $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-$scriptowner = getmyuid();
+$serveruser = posix_geteuid();
 $fileowner = fileowner($currdir);
 
 if (!is_writable($currdir)) {
@@ -11,7 +11,7 @@ if (!is_writable($currdir)) {
     echo $currdir . " is writable<br>";
     echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
 }
-if ($scriptowner != $fileowner) {
+if ($serveruser != $fileowner) {
     echo "WARNING: Folder owner is not " . get_current_user() . "!";
 }
 ?>
