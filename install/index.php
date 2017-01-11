@@ -4,16 +4,16 @@ $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']
 if(!is_writable($currdir)){
 
     echo $currdir . " is not writable <br>";
-    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4);
-    echo "Script Owner: " . get_current_user();
-    echo "File Owner: " . fileowner($currdir);
+    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
+    echo "Script Owner: " . getmyuid()."<br>";
+    echo "File Owner: " . fileowner($currdir)."<br>";
 
 } else {
 
     echo $currdir . " is writable<br>";
-    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4);
-    echo "Script Owner: " . get_current_user();
-    echo "File Owner: " . fileowner($currdir);
+    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
+    echo "Script Owner: " . getmyuid()."<br>";
+    echo "File Owner: " . fileowner($currdir)."<br>";
 
 }
 ?>
