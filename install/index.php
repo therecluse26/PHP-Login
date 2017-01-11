@@ -13,7 +13,7 @@ if (!is_writable($currdir)) {
 }
 if ($serveruser != $fileowner) {
     echo "WARNING: Folder owner should be same as server user! Current server user: <b>" . get_current_user() . "</b><br> Please run the following command (on unix-based systems)<br>";
-    echo "sudo chown -R " . dirname(__FILE__);
+    echo "sudo chown -R " . dirname(dirname(__FILE__));
 }
 ?>
     <!DOCTYPE html>
