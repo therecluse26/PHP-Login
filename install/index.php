@@ -4,17 +4,18 @@ $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']
 $serveruser = posix_geteuid();
 $fileowner = fileowner($currdir);
 
-if (!is_writable($currdir)) {
-    echo $currdir . " is not writable <br>";
-    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
-} else {
-    echo $currdir . " is writable<br>";
-    echo "Permissions: " . substr(sprintf("%o",fileperms($currdir)),-4)."<br>";
-}
+//Checks folder owner and permissions
 if ($serveruser != $fileowner) {
-    echo "WARNING: Folder owner should be same as server user! Current server user: <b>" . get_current_user() . "</b><br> Please run the following command (on unix-based systems)<br>";
-    echo "sudo chown -R " . $serveruser .":". $serveruser ." ". dirname(dirname(__FILE__));
+    echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: Folder owner should be same as server user! Current server user: <b>" . get_current_user() . "</b><br> Please run the following command (on unix-based systems) and refresh the page<br>";
+
+    echo "<b>sudo chown -R " . $serveruser .":". $serveruser ." ". dirname(dirname(__FILE__)) . "</b></div>";
+
+} else if (!is_writable($currdir)) {
+    echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o",fileperms($currdir)),-4)."</b><br>Please run the following terminal command and refresh the page: <br>";
+    echo "<b>sudo chmod -R 755 " . dirname(dirname(__FILE__)). "</b></div>";
+
 }
+
 ?>
     <!DOCTYPE html>
     <html lang="en">

@@ -6,7 +6,6 @@ function checkSessionKey($key)
     }
     return $_SESSION[$key];
 }
-//($pagetype != 'loginpage') && checkSessionKey('username') == false || (array_key_exists('username', $_SESSION) &&
 if ($ip != getenv ("REMOTE_ADDR") || (checkSessionKey('admin') == false && $pagetype == 'adminpage') || (checkSessionKey('username') == false && $pagetype == 'userpage')) {
 
     $refurl = urlencode("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
