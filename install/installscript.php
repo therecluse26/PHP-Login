@@ -298,6 +298,21 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     break 1;
                 }
 
+            case 18:
+                try {
+                //Change file permissions
+                    $status = "Changing file permissions";
+
+                    chmod($settingsArr['base_dir'] . '/login/dbconf.php', 0660);
+
+                    break 1;
+                    sleep(1.5);
+                } catch (Exception $e) {
+                    throw new Exception("Failed to create application settings. " . $e->getMessage());
+                    $failure = 1;
+                    break 1;
+                }
+
             default:
                 $i++;
                 break 1;
