@@ -1,4 +1,4 @@
-<?php 
+<?php
 class profileData extends DbConn
 {
     public static function pullUserFields($uid, $fieldarr) {
@@ -42,30 +42,32 @@ class profileData extends DbConn
 
     public static function upsertUserInfo($uid, $dataarray) {
 
-        $datafields = implode(', ', array_keys($dataarray));
-
-        $insdata = implode('\', \'', $dataarray);
-        
-        foreach($dataarray as $key => $value){
-            if (isset($updata)){
-                $updata = $updata.$key.' = \''.$value.'\', ';
-            } else {
-                $updata = $key.' = \''.$value.'\', ';
-            }
-        }
-
-        $updata = rtrim($updata, ", ");
-        
         //Upsert user data
         $db = new DbConn;
         $tbl_memberinfo = $db->tbl_memberinfo;
 
+        $columnString = implode(',', array_keys($dataarray));
+        $valueString = implode(',', array_fill(0, count($dataarray), '?'));
+
+        $insdata = implode('\', \'', $dataarray);
+
+        foreach($dataarray as $key => $value){
+            if (isset($updata)){
+                $updata = $updata.$key.' = '.$db->conn->quote($value).', ';
+            } else {
+                $updata = $key.' = '.$db->conn->quote($value).', ';
+            }
+        }
+
+        $updata = rtrim($updata, ", ");
+
         // prepare sql and bind parameters
-        $stmt = $db->conn->prepare("INSERT INTO ".$tbl_memberinfo." (userid, $datafields) values ('$uid', '$insdata') ON DUPLICATE KEY UPDATE $updata");
-        
-        $status = $stmt->execute();
+        $stmt = $db->conn->prepare("INSERT INTO ".$tbl_memberinfo." (userid, {$columnString}) values ('$uid', {$valueString}) ON DUPLICATE KEY UPDATE $updata");
+
+        $status = $stmt->execute(array_values($dataarray));
 
         return $status;
+
     }
 
 }

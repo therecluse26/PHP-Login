@@ -15,7 +15,6 @@ if ($serveruser != $fileowner) {
     echo "<b>sudo chmod -R 755 " . dirname(dirname(__FILE__)). "</b></div>";
 
 }
-
 ?>
     <!DOCTYPE html>
     <html lang="en">
@@ -26,6 +25,7 @@ if ($serveruser != $fileowner) {
         <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
         <link rel="stylesheet" type="text/css" href="../login/css/main.css">
         <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+        <script src="js/jquery.validate.min.js"></script>
         <script src="bootstrap/bootstrap.js"></script>
         <script src="ajax/instvalidate.js"></script>
     </head>
@@ -113,6 +113,20 @@ if ($serveruser != $fileowner) {
 
                 </form>
 
-    </body>
+        <script>
+            $("#dbform").validate({
+                rules: {
+                    superadmin: {required: true},
 
+                    saemail: {required: true, email: true},
+
+                    sapw: {required: true},
+
+                    sapw2: {
+                        equalTo: "#sapw"
+                    }
+                }
+            });
+        </script>
+    </body>
     </html>

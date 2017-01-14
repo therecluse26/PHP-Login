@@ -1,0 +1,1 @@
+{"percent":100,"message":"Installation Complete!<br>\n            <a href=\"http:\/\/localhost\/PHP-Login\/login\/index.php?refurl=http%3A%2F%2Flocalhost%2FPHP-Login%2Fadmin%2Feditconfig.php\">Sign In And Finish Configuration<\/a>","failure":0}
