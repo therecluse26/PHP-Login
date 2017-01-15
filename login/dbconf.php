@@ -3,7 +3,7 @@
     $host = "localhost"; // Host name
     $username = "root"; // Mysql username
     $password = "root"; // Mysql password
-    $db_name = "login2123123123"; // Database name
+    $db_name = "login54321"; // Database name
 
     $tbl_prefix = ""; //Prefix for all database tables
     $tbl_members = $tbl_prefix."members";
