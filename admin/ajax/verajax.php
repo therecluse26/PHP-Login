@@ -20,7 +20,7 @@ $userarr = $e->userDataPull($uid, 0);
         //Success
         if ($vresponse['status'] == true) {
 
-            echo $vresponse;
+            echo $vresponse['status'];
 
             $userser = serialize($userarr);
             $user64 = base64_encode($userser);

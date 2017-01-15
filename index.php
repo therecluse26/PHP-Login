@@ -1,6 +1,7 @@
 <?php
 $title = 'Home';
 include "login/partials/pagehead.php";
+
 ?>
 </head>
 <body>

@@ -16,7 +16,7 @@ class CookieHandler extends DbConn
     {
 
         try {
-            setcookie("usertoken", $token, time() + $exptime, "/");
+            setcookie("usertoken", $token, time() + $exptime, "/", "", false, true);
 
             $db = new DbConn;
             $stmt = $db->conn->prepare("REPLACE INTO $db->tbl_cookies (cookieid, userid, tokenid, expired) values(:cookieid, :userid, :tokenid, 0)");
