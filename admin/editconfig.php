@@ -97,16 +97,20 @@ foreach ($groupedArr as $category => $catval) {
 </div>
 </div>
 </div>
+    </form>
+
 <div class="col-sm-12">
     <div class="col-sm-12">
         <div class="row">
-                    <div id="message"></div>
+            <div id="message"></div>
 
-        <button class='btn btn-success'>Submit</button>
         </div>
     </div>
 </div>
-</form>
+
+<button class='btn btn-success' id="savebtn">Save</button>
+<button class='btn btn-info' id='testemail'>Test Email</button>
+
 </div>
 <br><br><br>
 <script>

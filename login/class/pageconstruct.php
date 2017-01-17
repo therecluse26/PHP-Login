@@ -8,7 +8,6 @@ class PageConstruct extends AppConfig {
     * @var string
     */
     public static $ip;
-
     /**
     * `$this->htmlhead` pulls begging part of `<head>` section of page from `appConfig` table.
     * `secureheader.php` handles redirects and security.
@@ -26,7 +25,6 @@ class PageConstruct extends AppConfig {
         require_once $this->base_dir . "/login/partials/libincludes.php";
 
     }
-
     /**
     * Builds page navbar
     **/

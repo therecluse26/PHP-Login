@@ -145,7 +145,7 @@ CREATE TABLE `memberInfo` (
   `city` varchar(45) DEFAULT NULL,
   `state` varchar(30) DEFAULT NULL,
   `country` varchar(45) DEFAULT NULL,
-  `bio` varchar(60000) DEFAULT NULL,
+  `bio` varchar(20000) DEFAULT NULL,
   `userimage` varchar(255) DEFAULT NULL,
   UNIQUE KEY `userid_UNIQUE` (`userid`),
   KEY `fk_userid_idx` (`userid`),

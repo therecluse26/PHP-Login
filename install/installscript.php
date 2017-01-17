@@ -7,8 +7,6 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
         switch ($i) {
             case 0:
                 require "confgen.php";
-                //$status = "Generating config.php file";
-                //$i++;
                 break 1;
             case 1:
                 try {

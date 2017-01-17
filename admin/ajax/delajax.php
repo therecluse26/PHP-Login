@@ -16,7 +16,7 @@ if ((isset($ids)) && sizeof($ids) >= 1) {
 
     foreach($eresult as $e) {
 
-        try { 
+        try {
 
             $singleId = $e['id'];
 
@@ -28,19 +28,15 @@ if ((isset($ids)) && sizeof($ids) >= 1) {
 
                 echo $dresponse;
 
-                //Send verification email
-                //$m = new MailSender;
-                //SEND MAIL $m->sendMail($email, $username, $uid, 'Active')
-
                 } else {
                     //Validation error from empty form variables
                     //header('HTTP/1.1 400 Bad Request');
                     throw new Exception("Failure");
-            } 
+            }
 
         } catch(Exception $ex) {
             echo $ex->getMessage();
-            
+
         }
-    } 
+    }
 }
