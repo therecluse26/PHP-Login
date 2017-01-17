@@ -3,10 +3,8 @@ PHP-Login *** DEVELOPMENT VERSION ***
 
 A simple, secure login and signup system with PHP, MySQL and jQuery using Bootstrap 3 for the form design as well as PHP-Mailer for user account verification and confirmation
 
-<img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/login/images/screenshot.png" alt="Login Page Screenshot" />
-
 ## Installation
-### Clone the Repository (recursively to include PHP-Mailer submodule)
+### Clone the Repository (dev branch)
     $ git clone -b dev https://github.com/fethica/PHP-Login.git
 
 ### Run through web-based installer
