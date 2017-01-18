@@ -1,10 +1,11 @@
 <?php
-$reset_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+$reset_template = <<<RESETEMAIL
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="initial-scale=1.0">
   <meta name="format-detection" content="telephone=no">
-  <title>Verify</title>
+  <title>Password Reset</title>
 
   <style type="text/css">
     body{ Margin: 0; padding: 0; }
@@ -60,7 +61,28 @@ $reset_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN
          text-decoration: none;
 
       }
-  </style>
+
+.linkwrap {
+
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+
+}
+
+</style>
   <style type="text/css">
     /* yahoo, hotmail */
     .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div{ line-height: 100%; }
@@ -130,7 +152,7 @@ $reset_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN
 <!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="350"><tr><td align="center" valign="top"><![endif]-->
 <div class="mobile-full" style="display: inline-block; max-width: 350px; vertical-align: top; width: 100%;">
 
-<img width="350" vspace="0" hspace="0" border="0" alt="" style="border: 0px; display: block; width: 100%; max-width: 350px;" src="'.$this->mainlogo.'">
+<img width="350" vspace="0" hspace="0" border="0" alt="" style="border: 0px; display: block; width: 100%; max-width: 350px;" src="$this->mainlogo">
 
 
 </div>
@@ -153,7 +175,7 @@ $reset_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN
         <table width="570" border="0" cellpadding="0" cellspacing="9" class="vb-container halfpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 9px; padding-left: 9px; padding-right: 9px; width: 100%; max-width: 570px; background-color: #ffffff;">
           <tbody><tr>
             <td bgcolor="#ffffff" align="center" style="background-color: #ffffff; font-size: 22px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f; text-align: center;">
-              <span>Reset '.$this->site_name.' Password</span>
+              <span>$this->site_name - Reset Password</span>
             </td>
           </tr>
         </tbody></table>
@@ -172,7 +194,7 @@ $reset_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN
             <td align="left" class="long-text links-color" style="text-align: left; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f;">
               <p style="Margin: 1em 0px; Margin-top: 0px;">
                 <center>
-                '.$this->reset_email.'<br><a href="'.$reset_url.'">'.$reset_url.'</a>
+                $this->reset_email
                 </center>
                 </p>
             </td>
@@ -182,7 +204,41 @@ $reset_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN
 <!--[if (gte mso 9)|(lte ie 8)]></td></tr></table><![endif]-->
       </td>
     </tr>
-  </tbody></table>
+  </tbody></table><table class="vb-outer" width="100%" cellpadding="0" border="0" cellspacing="0" id="ko_buttonBlock_7">
+    <tbody><tr>
+      <td class="vb-outer" align="center" valign="top"  style="padding-left: 9px; padding-right: 9px;">
+
+<!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
+        <div class="oldwebkit" style="max-width: 570px;">
+        <table width="570" border="0" cellpadding="0" cellspacing="18" class="vb-container fullpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 18px; padding-left: 0; padding-right: 0; width: 100%; max-width: 570px; background-color: #ffffff;">
+          <tbody><tr>
+            <td valign="top" bgcolor="#ffffff" align="center" style="background-color: #ffffff;">
+
+              <table cellpadding="0" border="0" align="center" cellspacing="0" class="mobile-full">
+                <tbody><tr>
+                  <td width="auto" valign="middle" bgcolor="#bfbfbf" align="center" height="50" style="font-size: 22px; font-family: Arial, Helvetica, sans-serif; color: #ffffff; font-weight: normal; padding-left: 14px; padding-right: 14px; background-color: #337ab7; border-radius: 4px;">
+
+                      <a class="verifybtn" href="$reset_url">Reset Password</a>
+
+                  </td>
+                </tr>
+              </tbody></table>
+
+                <!--[if (gte mso 9)|(lte ie 8)]><table align="center" border="0" cellspacing="0" cellpadding="0" width="570"><tr><td align="center" valign="top"><![endif]-->
+        <div class="oldwebkit" style="max-width: 570px;">
+        <table width="570" border="0" cellpadding="0" cellspacing="18" class="vb-container fullpad" bgcolor="#ffffff" style="border-collapse: separate; border-spacing: 18px; padding-left: 0; padding-right: 0; width: 100%; max-width: 570px; background-color: #ffffff;">
+          <tbody><tr>
+            <td align="left" class="long-text links-color" style="text-align: left; font-size: 13px; font-family: Arial, Helvetica, sans-serif; color: #3f3f3f;">
+              <p style="Margin: 1em 0px; Margin-top: 0px;">
+
+                <center>
+                or go to this address: <br>
+                <a class="linkwrap" href="$reset_url">$reset_url</a>
+                </center>
+                </p>
+            </td>
+          </tr>
+        </tbody></table>
         </div>
             </td>
           </tr>
@@ -193,4 +249,5 @@ $reset_template = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN
     </tr>
   </tbody></table>
   </center>
-</body></html>';
+</body></html>
+RESETEMAIL;

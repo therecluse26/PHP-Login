@@ -12,4 +12,6 @@ A simple, secure login and signup system with PHP, MySQL and jQuery using Bootst
 
 Enter all relevant information into the form, submit, and wait for install to complete.
 
-If any errors occur, you may need to do some manual work to get it up and running. This is still a development version, so results may vary.
+    If any errors occur, you may need to do some manual work to get it up and running. This is still a development version, so results may vary.
+
+Once installation is complete, click the login link to sign in under your superadmin account and finish editing site configuration. Hover over the name of each setting to see a description.

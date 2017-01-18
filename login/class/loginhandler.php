@@ -59,7 +59,8 @@ class LoginHandler extends AppConfig
                     $_SESSION['uid'] = $result['id'];
                     $_SESSION['admin'] = $result['admin'];
                     $_SESSION['username'] = $result['username'];
-                    $_SESSION['ip_address'] = getenv ( "REMOTE_ADDR" );
+                    $_SESSION['ip_address'] = getenv ('REMOTE_ADDR');
+                    $_SESSION['verified'] = $result['verified'];
 
                 if ($result['admin'] == 1){
                     $admin = UserData::pullAdmin($_SESSION['uid']);

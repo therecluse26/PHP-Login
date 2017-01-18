@@ -14,8 +14,6 @@
 
 $jwt = $_GET['t'];
 
-//$conf = AppConfig::pullMultiSettings(array("base_url", "jwt_secret","password_policy_enforce", "password_min_length"));
-
 use \Firebase\JWT\JWT;
 
 try {
