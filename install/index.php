@@ -1,12 +1,22 @@
 <?php
 $currdir = dirname(getcwd());
 $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-$serveruser = posix_geteuid();
-$fileowner = fileowner($currdir);
+
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+
+    $serveruser = get_current_user();
+    $fileowner = fileowner($currdir);
+
+} else {
+
+    $serveruser = posix_geteuid();
+    $fileowner = fileowner($currdir);
+
+}
 
 //Checks folder owner and permissions
 if ($serveruser != $fileowner) {
-    echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: Folder owner should be same as server user! Current server user: <b>" . get_current_user() . "</b><br> Please run the following command (on unix-based systems) and refresh the page<br>";
+    echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: Folder owner should be same as server user! Current server user: <b>" . $serveruser . "</b><br> Please run the following command (on unix-based systems) and refresh the page<br>";
 
     echo "<b>sudo chown -R " . $serveruser .":". $serveruser ." ". dirname(dirname(__FILE__)) . "</b></div>";
 
