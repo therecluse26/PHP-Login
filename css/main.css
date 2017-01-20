@@ -4,19 +4,22 @@ body {
   background-color: #eee;
 }
 
-.form-signin, .form-signup {
+.form-signin, .form-signup, .form-resetpassword {
   max-width: 330px;
   padding: 15px;
   margin: 0 auto;
 }
 .form-signin .form-signin-heading, .form-signup .form-signup-heading,
-.form-signin .checkbox, .form-signup .checkbox {
+.form-resetpassword .form-resetpassword-heading, .form-signin .checkbox,
+.form-signup .checkbox .form-resetpassword .checkbox{
   margin-bottom: 10px;
 }
-.form-signin .checkbox, .form-signup .checkbox{
+.form-signin .checkbox, .form-signup .checkbox,
+.form-resetpassword .checkbox{
   font-weight: normal;
 }
-.form-signin .form-control, .form-signup .form-control {
+.form-signin .form-control, .form-signup .form-control,
+.form-resetpassword .form-control{
   position: relative;
   font-size: 16px;
   height: auto;
@@ -25,10 +28,12 @@ body {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
-.form-signin .form-control:focus, .form-signup .form-control:focus {
+.form-signin .form-control:focus, .form-signup .form-control:focus
+.form-resetpassword .form-control:focus{
   z-index: 2;
 }
-.form-signin input[type="text"], .form-signup input[type="text"] {
+.form-signin input[type="text"], .form-signup input[type="text"]
+.form-resetpassword input[type="text"]{
   margin-bottom: -1px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -38,6 +43,10 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-.form-signin .btn, .form-signup .btn  {
+.form-signin .btn, .form-signup .btn .form-resetpassword .btn{
+  margin-bottom: 10px;
+}
+
+.form-resetpassword input[type="text"]{
   margin-bottom: 10px;
 }

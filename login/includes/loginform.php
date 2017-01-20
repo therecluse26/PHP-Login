@@ -60,7 +60,7 @@ class LoginForm extends DbConn
             } else {
 
                 //Wrong username or password
-                $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Wrong Username or Password</div>";
+                $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Wrong Username or Password.<br> May be you need to <a href='resetPassword.php'>reset it</a>?</div>";
 
             }
         }

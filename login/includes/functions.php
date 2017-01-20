@@ -67,3 +67,13 @@ function mySqlErrors($response)
 
     }
 };
+
+function rand_string($length) {
+  $random_str = "";
+  $chars = "abcdefghijklmanopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  $size = strlen($chars) - 1;
+  for($i = 0;$i < $length;$i++) {
+    $random_str .= $chars[rand(0, $size)];
+  }
+  return $random_str;
+}
