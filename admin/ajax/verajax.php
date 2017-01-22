@@ -34,6 +34,8 @@ $userarr = $e->userDataPull($uid, 0);
             }
 
             if (func_enabled("shell_exec")) {
+
+
                 //shell_exec enabled
                 $mailQueue = shell_exec('curl '.AppConfig::pullSetting("base_url").'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
 

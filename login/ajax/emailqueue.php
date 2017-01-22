@@ -1,4 +1,7 @@
 <?
+/**
+Called via shell_exec; sends mass emails in the background
+*/
 if(isset($_GET["usr"])){
 
 require "../autoload.php";
