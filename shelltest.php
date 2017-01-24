@@ -1,21 +1,17 @@
 <?php
 
-echo shell_exec('which curl');
+if (substr(PHP_OS, 0, 3) != 'WIN'){
 
-echo shell_exec('which php');
 
-echo PHP_OS;
+    echo shell_exec('which curl');
+
+    echo shell_exec('which php');
+
+} else {
+
+    echo shell_exec('where curl');
+
+    echo shell_exec('where php');
+}
+
 /*
-
-if (shell_exec('which curl')) {
-    echo "Curl exists";
-} else {
-    echo "No curl";
-}
-
-if ($cmd2 = shell_exec('which composer')) {
-    echo "Composer exists";
-} else {
-    echo "No composer";
-}
-*/

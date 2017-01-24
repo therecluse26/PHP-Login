@@ -3,6 +3,8 @@ $cwd = getcwd(); // remember the current path
 chdir('../../');
 require 'login/autoload.php';
 
+$conf = AppConfig::pullMultiSettings(array("base_url", "base_dir", "curl_enabled"));
+
 //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
 $uid = $_GET['uid'];
 
@@ -33,15 +35,15 @@ $userarr = $e->userDataPull($uid, 0);
                 return !in_array($function, $disabled);
             }
 
-            if (func_enabled("shell_exec")) {
-
+            if ($conf['curl_enabled'] == 'true') {
 
                 //shell_exec enabled
-                $mailQueue = shell_exec('curl '.AppConfig::pullSetting("base_url").'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
+                shell_exec('curl '.$conf['base_url'].'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
+
 
             } else {
                 //shell_exec is disabled
-                include AppConfig::pullSetting("base_dir").'/login/ajax/emailqueue.php';
+                include $conf['base_dir'].'/login/ajax/emailqueue.php';
 
             }
 
