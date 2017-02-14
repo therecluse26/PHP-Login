@@ -7,14 +7,16 @@ $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']
 
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 
-    $serveruser = get_current_user();
-    $fileowner = fileowner($currdir);
+    if (function_exists(get_current_user())){
+        $serveruser = get_current_user();
+        $fileowner = fileowner($currdir);
+    }
 
 } else {
-
-    $serveruser = posix_geteuid();
-    $fileowner = fileowner($currdir);
-
+    if (function_exists(posix_geteuid())){
+        $serveruser = posix_geteuid();
+        $fileowner = fileowner($currdir);
+    }
 }
 
 //Checks folder owner and permissions
