@@ -5,19 +5,16 @@ ini_set('display_errors', 1);
 $currdir = dirname(getcwd());
 $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
 
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-
-    if (function_exists(get_current_user())){
-        $serveruser = get_current_user();
-        $fileowner = fileowner($currdir);
-    }
-
+if (function_exists('posix_geteuid')){
+    $serveruser = posix_geteuid();
 } else {
-    if (function_exists(posix_geteuid())){
-        $serveruser = posix_geteuid();
-        $fileowner = fileowner($currdir);
+    if (function_exists('get_current_user')){
+        $serveruser = get_current_user();
     }
 }
+
+    $fileowner = fileowner($currdir);
+
 
 //Checks folder owner and permissions
 if ($serveruser != $fileowner) {
@@ -27,7 +24,7 @@ if ($serveruser != $fileowner) {
 
 } else if (!is_writable($currdir)) {
     echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o",fileperms($currdir)),-4)."</b><br>Please run the following terminal command and refresh the page: <br>";
-    echo "<b>sudo chmod -R 755 " . dirname(dirname(__FILE__)). "</b></div>";
+    echo "<b>sudo chmod -R 755 " . dirname(dirname(__FILE__)) . " && sudo chown -R ". $serveruser ." ". dirname(dirname(__FILE__)) ."</b></div>";
 
 }
 ?>
