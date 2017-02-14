@@ -6,9 +6,6 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
     try {
         switch ($i) {
             case 0:
-                require "confgen.php";
-                break 1;
-            case 1:
                 try {
                     $conn = new PDO("mysql:host={$dbhost}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -24,7 +21,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 2:
+            case 1:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -40,7 +37,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 3:
+            case 2:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -56,7 +53,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 4:
+            case 3:
                 try{
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -72,7 +69,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 5:
+            case 4:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -88,7 +85,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 6:
+            case 5:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -104,7 +101,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 7:
+            case 6:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -120,7 +117,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 8:
+            case 7:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -135,7 +132,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 9:
+            case 8:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -151,7 +148,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 10:
+            case 9:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -170,7 +167,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     break 1;
                 }
 
-            case 11:
+            case 10:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -187,7 +184,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 12:
+            case 11:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -203,7 +200,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 13:
+            case 12:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -219,7 +216,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 14:
+            case 13:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -235,7 +232,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 15:
+            case 14:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -255,7 +252,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 16:
+            case 15:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -273,7 +270,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     break 1;
                 }
 
-            case 17:
+            case 16:
                 try {
                 //INSERT APP SETTINGS
                     function func_enabled($function) {
@@ -304,7 +301,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $status = "Creating application settings";
                     $values = "";
 
-                    $sqlappsettings = "REPLACE INTO {$tblprefix}appConfig (`sortorder`,`setting`,`category`,`value`,`type`,`description`,`required`) VALUES (27,'active_email','Messages','Your new account is now active! Click this link to log in!','text','Email message when account is verified',1), (26,'active_msg','Messages','Your account has been verified!','text','Display message when account is verified',1), (21,'admin_verify','Security','false','boolean','Require admin verification',1), (6,'avatar_dir','Website','/user/avatars','text','Directory where user avatars should be stored inside of base site directory. Do not include base_dir path.',1), (2,'base_dir','Website','".addslashes($settingsArr['base_dir'])."','hidden','Base directory of website in filesystem. \"C:\\...\" in windows, \"/...\" in unix systems',1), (3,'base_url','Website','".$settingsArr['base_url']."','url','Base URL of website. Example: \"http://sitename.com\"',1), (19,'cookie_expire_seconds','Security','2592000','number','Cookie expiration (in seconds)',1), (13,'from_email','Mailer','','email','From email address. Should typically be the same as \"mail_user\" email.',1), (14,'from_name','Mailer','Test Website','text','Name that shows up in \"from\" field of emails',1), (4,'htmlhead','Website','<!DOCTYPE html><html lang=\'en\'><head><meta charset=\'utf-8\'><meta name=\'viewport\' content-width=\'device-width\', initial-scale=\'1\', shrink-to-fit=\'no\'>','textarea','Main HTML header of website (without login-specific includes and script tags). Do not close <html> tag! Will break application functionality',1), (20,'jwt_secret','Security','php-login','text','Secret for JWT for tokens (Can be anything)',1), (18,'login_timeout','Security','300','number','Cooloff time for too many failed logins (in seconds)',1), (12,'mail_port','Mailer','587','number','Mail port. Common settings are 465 for ssl, 587 for tls, 25 for other',1), (10,'mail_pw','Mailer','','password','Email password to authenticate mailer',1), (11,'mail_security','Mailer','tls','text','Mail security type. Possible values are \"ssl\", \"tls\" or leave blank',1), (8,'mail_server','Mailer','smtp.email.com','text','Mail server address. Example: \"smtp.email.com\"',1), (7,'mail_server_type','Mailer','smtp','text','Type of email server. SMTP is most typical. Other server types untested.',1), (9,'mail_user','Mailer','','email','Email user',1), (5,'mainlogo','Website','','url','URL of main site logo. Example \"http://sitename.com/logo.jpg\"',1), (17,'max_attempts','Security','5','number','Maximum login attempts',1), (16,'password_min_length','Security','6','number','Minimum password length if \"password_policy_enforce\" is set to true',1), (15,'password_policy_enforce','Security','true','boolean','Require a mixture of upper and lowercase letters and minimum password length (set by \"password_min_length\")',1), (28,'reset_email','Messages','Click the link below to reset your password','text','Email message when user wants to reset their password',1), (23,'signup_requires_admin','Messages','Thank you for signing up! Before you can login, your account needs to be activated by an administrator.','text','Message displayed when user signs up, but requires admin approval',1), (22,'signup_thanks','Messages','Thank you for signing up! You will receive an email shortly confirming the verification of your account.','text','Message displayed wehn user signs up and can verify themselves via email',1), (1,'site_name','Website','".$settingsArr['site_name']."','text','Website name',1), (24,'verify_email_admin','Messages','Thank you for signing up! Your account will be reviewed by an admin shortly','text','Email message when account requires admin verification',1), (25,'verify_email_noadmin','Messages','Click this link to verify your new account!','text','Email message when user can verify themselves',1), (29, 'curl_enabled','Website','".$curl_enabled."', 'boolean','Enable curl for various processes such as background email sending', 1);";
+                    $sqlappsettings = "REPLACE INTO {$tblprefix}appConfig (`sortorder`,`setting`,`category`,`value`,`type`,`description`,`required`) VALUES (27,'active_email','Messages','Your new account is now active! Click this link to log in!','text','Email message when account is verified',1), (26,'active_msg','Messages','Your account has been verified!','text','Display message when account is verified',1), (21,'admin_verify','Security','false','boolean','Require admin verification',1), (6,'avatar_dir','Website','/user/avatars','text','Directory where user avatars should be stored inside of base site directory. Do not include base_dir path.',1), (2,'base_dir','Website','".addslashes($settingsArr['base_dir'])."','hidden','Base directory of website in filesystem. \"C:\\...\" in windows, \"/...\" in unix systems',1), (3,'base_url','Website','".$settingsArr['base_url']."','url','Base URL of website. Example: \"http://sitename.com\"',1), (19,'cookie_expire_seconds','Security','2592000','number','Cookie expiration (in seconds)',1), (13,'from_email','Mailer','','email','From email address. Should typically be the same as \"mail_user\" email.',1), (14,'from_name','Mailer','Test Website','text','Name that shows up in \"from\" field of emails',1), (4,'htmlhead','Website','<!DOCTYPE html><html lang=\'en\'><head><meta charset=\'utf-8\'><meta name=\'viewport\' content-width=\'device-width\', initial-scale=\'1\', shrink-to-fit=\'no\'>','textarea','Main HTML header of website (without login-specific includes and script tags). Do not close <html> tag! Will break application functionality',1), (20,'jwt_secret','Security','php-login','text','Secret for JWT for tokens (Can be anything)',1), (18,'login_timeout','Security','300','number','Cooloff time for too many failed logins (in seconds)',1), (12,'mail_port','Mailer','587','number','Mail port. Common settings are 465 for ssl, 587 for tls, 25 for other',1), (10,'mail_pw','Mailer','','password','Email password to authenticate mailer',1), (11,'mail_security','Mailer','tls','text','Mail security type. Possible values are \"ssl\", \"tls\" or leave blank',1), (8,'mail_server','Mailer','smtp.email.com','text','Mail server address. Example: \"smtp.email.com\"',1), (7,'mail_server_type','Mailer','smtp','text','Type of email server. SMTP is most typical. Other server types untested.',1), (9,'mail_user','Mailer','','email','Email user',1), (5,'mainlogo','Website','','url','URL of main site logo. Example \"http://sitename.com/logo.jpg\"',1), (17,'max_attempts','Security','5','number','Maximum login attempts',1), (16,'password_min_length','Security','6','number','Minimum password length if \"password_policy_enforce\" is set to true',1), (15,'password_policy_enforce','Security','true','boolean','Require a mixture of upper and lowercase letters and minimum password length (set by \"password_min_length\")',1), (28,'reset_email','Messages','Click the link below to reset your password','text','Email message when user wants to reset their password',1), (23,'signup_requires_admin','Messages','Thank you for signing up! Before you can login, your account needs to be activated by an administrator.','text','Message displayed when user signs up, but requires admin approval',1), (22,'signup_thanks','Messages','Thank you for signing up! You will receive an email shortly confirming the verification of your account.','text','Message displayed wehn user signs up and can verify themselves via email',1), (1,'site_name','Website','".$settingsArr['site_name']."','text','Website name',1), (24,'verify_email_admin','Messages','Thank you for signing up! Your account will be reviewed by an admin shortly','text','Email message when account requires admin verification',1), (25,'verify_email_noadmin','Messages','Click this link to verify your new account!','text','Email message when user can verify themselves',1), (29, 'curl_enabled','Website','".$curl_enabled."', 'boolean','Enable curl for various processes such as background email sending', 1), (30, 'email_working','Mailer','false', 'hidden','Indicates if email settings are correct and can connect to a mail server', 1), (31, 'admin_email','Website','', 'text','Site administrator email address', 1);";
 
                     $dm = $conn->exec($sqlappsettings);
 
@@ -316,6 +313,10 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
+
+            case 17:
+                require "confgen.php";
+                break 1;
 
             case 18:
                 try {

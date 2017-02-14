@@ -1,4 +1,7 @@
 <?php
+/**
+* AJAX page for log deletion in maillog.php
+**/
 $cwd = getcwd(); // remember the current path
 chdir('../../');
 require 'login/autoload.php';
@@ -7,36 +10,33 @@ require 'login/autoload.php';
 
 $uid = $_GET['uid'];
 
-$ids = MiscFunctions::assembleUids($uid);
+$ids = json_decode($uid);
 
 if ((isset($ids)) && sizeof($ids) >= 1) {
 
-    $e = new UserData;
-    $eresult = $e->userDataPull($uid, 0);
+    try {
 
-    foreach($eresult as $e) {
-
-        try {
-
-            $singleId = $e['id'];
+        foreach($ids as $id){
 
             //Deletes user
-            $dresponse = Delete::deleteUser($singleId);
+            $dresponse = Delete::deleteLog($id);
 
             //Success
-            if ($dresponse == 1) {
+            if ($dresponse['status'] == 1) {
 
-                echo $dresponse;
+                echo json_encode($dresponse);
 
                 } else {
                     //Validation error from empty form variables
                     //header('HTTP/1.1 400 Bad Request');
                     throw new Exception("Failure");
             }
-
-        } catch(Exception $ex) {
-            echo $ex->getMessage();
-
         }
+
+    } catch(Exception $ex) {
+
+        echo json_encode(array("status"=>0,"message"=>$ex->getMessage()));
+
     }
+
 }

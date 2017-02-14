@@ -5,10 +5,10 @@ $(document).ready(function() {
         }
     });
     $("input[type='checkbox']").change(function (e) {
-        if ($(this).is(":checked")) { 
+        if ($(this).is(":checked")) {
 
-            $(this).closest('tr:not("#headrow")').addClass("checkedrow"); 
-            
+            $(this).closest('tr:not("#headrow")').addClass("checkedrow");
+
         } else {
             $(this).closest('tr').removeClass("checkedrow");
         }

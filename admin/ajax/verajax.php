@@ -1,4 +1,7 @@
 <?php
+/**
+* AJAX page for user verification in verifyusers.php
+**/
 $cwd = getcwd(); // remember the current path
 chdir('../../');
 require 'login/autoload.php';

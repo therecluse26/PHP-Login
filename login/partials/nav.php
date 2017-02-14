@@ -54,6 +54,8 @@ if (isset($_SESSION['username'])){
     <!-- Superadmin Controls -->
     <?php if ((array_key_exists('superadmin', $_SESSION)) && $_SESSION['superadmin'] == 1): ?>
         <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
+        <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
+
     <?php endif; ?>
     <li role="separator" class="divider"></li>
     <li><a href="<?php echo $this->base_url; ?>/login/logout.php">Logout</a></li>

@@ -4,9 +4,7 @@ class NewUser extends DbConn
     public function createUser($userarr)
     {
         try {
-
-            $db = new DbConn;
-            $tbl_members = $db->tbl_members;
+            $tbl_members = $this->tbl_members;
 
             foreach($userarr as $user){
 
@@ -14,7 +12,7 @@ class NewUser extends DbConn
                 $pw = PasswordCrypt::encryptPw($user['pw']);
 
                 // prepare sql and bind parameters
-                $stmt = $db->conn->prepare("INSERT INTO ".$tbl_members." (id, username, password, email) VALUES (:id, :username, :password, :email)");
+                $stmt = $this->conn->prepare("INSERT INTO ".$tbl_members." (id, username, password, email) VALUES (:id, :username, :password, :email)");
                 $stmt->bindParam(':id', $user['id']);
                 $stmt->bindParam(':username', $user['username']);
                 $stmt->bindParam(':email', $user['email']);

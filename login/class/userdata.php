@@ -126,7 +126,7 @@ class UserData extends DbConn
 
     public static function upsertAccountInfo($uid, $dataarray) {
 
-            unset($dataarray['id']);
+        unset($dataarray['id']);
 
         //Remove potentially hacked array values
         if(!empty($dataarray)){
@@ -172,7 +172,7 @@ class UserData extends DbConn
             $db = new DbConn;
             $tbl_members = $db->tbl_members;
 
-            $stmt = $db->conn->prepare("SELECT id, email, username FROM ".$tbl_members." WHERE verified = 0");
+            $stmt = $db->conn->prepare("SELECT id, email, username, mod_timestamp as timestamp FROM ".$tbl_members." WHERE verified = 0 ORDER BY timestamp desc");
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

@@ -2,7 +2,7 @@
 /**
 * Contains all cookie handling methods
 **/
-class CookieHandler extends DbConn
+class CookieHandler
 {
     /**
     * Generates a cookie

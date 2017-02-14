@@ -1,4 +1,9 @@
 <?php
+/**
+* Configuration edit page
+*
+* Tags correspond to setting name, hover over them for setting description
+**/
 $pagetype = 'superadminpage';
 $title = 'Edit Site Configuration';
 require '../login/partials/pagehead.php';
@@ -109,7 +114,7 @@ foreach ($groupedArr as $category => $catval) {
 </div>
 
 <button class='btn btn-success' id="savebtn">Save</button>
-<button class='btn btn-info' id='testemail'>Test Email</button>
+<button class='btn btn-info' id='testemail'>Test Email Config</button>
 
 </div>
 <br><br><br>

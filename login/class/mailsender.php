@@ -30,7 +30,7 @@ class MailSender extends AppConfig
             $mail->Port = $this->mail_port;
             $mail->Username = $this->mail_user;
             $mail->Password = $this->mail_pw;
-            $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production)
+            $mail->SMTPDebug = 2; //Leave this set to 2; mail debug gets logged to mailLog db table
 
             $mail->SMTPOptions = array(
                 'ssl' => array(
@@ -99,7 +99,12 @@ class MailSender extends AppConfig
 
         try {
 
-            $mail->Send();
+            //Sends email and logs the response to mailLog table
+            ob_start();
+            $status = $mail->Send();
+            $debugMsg = ob_get_contents();
+            ob_get_clean();
+        EmailLogger::logResponse($debugMsg, $usr, $type, $status);
 
             $resp['status'] = true;
             $resp['message'] = '';
@@ -167,7 +172,12 @@ class MailSender extends AppConfig
         $mail->Body = $reset_template;
         $mail->AltBody = $this->reset_email . $this->signin_url;
 
-        $mail->Send();
+        //Sends email and logs the response to mailLog table
+        ob_start();
+        $status = $mail->Send();
+        $debugMsg = ob_get_contents();
+        ob_get_clean();
+        EmailLogger::logResponse($debugMsg, $to_email, 'Password Reset', $status);
 
         $resp['status'] = true;
         $resp['message'] = "Password reset sent! Check your email";
@@ -183,75 +193,6 @@ class MailSender extends AppConfig
             $resp['status'] = false;
             $resp['message'] = $e->getMessage();
             return $resp;
-        }
-    }
-
-    public function testMail(){
-
-        $resp = array();
-        /**
-         * This uses the SMTP class alone to check that a connection can be made to an SMTP server,
-         * authenticate, then disconnect
-         */
-        //SMTP needs accurate times, and the PHP time zone MUST be set
-        //This should be done in your php.ini, but this is how to do it if you don't have access to that
-
-        if ($this->mail_server_type == 'smtp') {
-
-            date_default_timezone_set('Etc/UTC');
-
-            require $this->base_dir.'/login/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
-            //Create a new SMTP instance
-            $smtp = new SMTP;
-            //Enable connection-level debug output
-            //$smtp->do_debug = SMTP::DEBUG_CONNECTION;
-            try {
-                //Connect to an SMTP server
-                if (!$smtp->connect($this->mail_server, $this->mail_port)) {
-                    throw new Exception('Connect failed');
-                }
-                //Say hello
-                if (!$smtp->hello(gethostname())) {
-                    throw new Exception('EHLO failed: ' . $smtp->getError()['error']);
-                }
-                //Get the list of ESMTP services the server offers
-                $e = $smtp->getServerExtList();
-                //If server can do TLS encryption, use it
-                if (is_array($e) && array_key_exists('STARTTLS', $e)) {
-                    $tlsok = $smtp->startTLS();
-                    if (!$tlsok) {
-                        throw new Exception('Failed to start encryption: ' . $smtp->getError()['error']);
-                    }
-                    //Repeat EHLO after STARTTLS
-                    if (!$smtp->hello(gethostname())) {
-                        throw new Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
-                    }
-                    //Get new capabilities list, which will usually now include AUTH if it didn't before
-                    $e = $smtp->getServerExtList();
-                }
-                //If server supports authentication, do it (even if no encryption)
-                if (is_array($e) && array_key_exists('AUTH', $e)) {
-                    if ($smtp->authenticate($this->mail_user, $this->mail_pw)) {
-
-                        $resp['status'] = true;
-                        $resp['message'] = "Successful Connection!";
-                        return $resp;
-
-                    } else {
-                        throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
-                    }
-                }
-
-            } catch (Exception $e) {
-
-                $resp['status'] = false;
-                $resp['message'] = 'SMTP error: ' . $e->getMessage();
-
-                return $resp;
-            }
-            //Whatever happened, close the connection.
-            $smtp->quit(true);
-
         }
     }
 }

@@ -20,7 +20,7 @@ $(document).ready(function (e) {
 
                 $("#message").fadeOut(0, function () {
 
-                    if (json.status == true) {
+                    if (json.status == 'true') {
                         var alertType = "success";
                     } else {
                         var alertType = "danger";

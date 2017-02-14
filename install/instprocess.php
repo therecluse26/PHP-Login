@@ -34,11 +34,11 @@ while ($i < $total) {
         break;
     }
     else {
-        if($i < 17) {
+        if($i <= 17 && $i <> 16) {
 
             $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw);
 
-        } elseif ($i == 17 || $i == 18) {
+        } elseif ($i == 16 || $i == 18) {
 
             //Insert basic app settings
             $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw, $settingsArr);

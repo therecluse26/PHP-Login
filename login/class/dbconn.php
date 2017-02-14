@@ -28,52 +28,57 @@ class DbConn
     * PDO Connection object
     * @var object
     */
-    protected $conn;
+    public $conn;
     /**
      * Database Table Prefix
      * @var string
      */
-    protected $tbl_prefix;
+    public $tbl_prefix;
     /**
     * Table where basic user data is stored
     * @var string
     */
-    protected $tbl_members;
+    public $tbl_members;
     /**
     * Table where user profile info is stored
     * @var string
     */
-    protected $tbl_memberinfo;
+    public $tbl_memberinfo;
     /**
     * Admin table
     * @var string
     */
-    protected $tbl_admins;
+    public $tbl_admins;
     /**
     * Table where login attempts are logged
     * @var string
     */
-    protected $tbl_attempts;
+    public $tbl_attempts;
     /**
     * Table where deleted users are stored temporarily
     * @var string
     */
-    protected $tbl_deleted;
+    public $tbl_deleted;
     /**
     * Table that JWT tokens are validated against
     * @var string
     */
-    protected $tbl_tokens;
+    public $tbl_tokens;
     /**
     * Table that cookies are stored and validated against
     * @var string
     */
-    protected $tbl_cookies;
+    public $tbl_cookies;
     /**
     * Table where main application configuration is stored
     * @var string
     */
-    protected $tbl_appConfig;
+    public $tbl_appConfig;
+    /**
+    * Table where mail send logs are stored
+    * @var string
+    */
+    public $tbl_mailLog;
 
     function __construct()
     {
@@ -96,6 +101,7 @@ class DbConn
         $this->tbl_tokens = $tbl_tokens;
         $this->tbl_cookies = $tbl_cookies;
         $this->tbl_appConfig = $tbl_appConfig;
+        $this->tbl_mailLog = $tbl_mailLog;
 
         // Connect to server and select database
         try {

@@ -26,117 +26,102 @@ if ($serveruser != $fileowner) {
 
 }
 ?>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Install PHP-Login</title>
-        <meta name="Author" content="" />
-        <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="../login/css/main.css">
-        <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
-        <script src="js/jquery.validate.min.js"></script>
-        <script src="bootstrap/bootstrap.js"></script>
-        <script src="ajax/instvalidate.js"></script>
-    </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Install PHP-Login</title>
+    <meta name="Author" content="" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../login/css/main.css">
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="js/jquery.validate.min.js"></script>
+    <script src="bootstrap/bootstrap.js"></script>
+    <script src="ajax/instvalidate.js"></script>
 
-    <body>
-        <div class="container">
-            <table class="table table-bordered table-striped table-highlight">
+</head>
 
-                <h1>Install PHP-Login</h1>
+<body>
+    <div class="container">
+        <table class="table table-bordered table-striped table-highlight">
 
-                <form id="dbform" action="install.php" class="form-signin" method="post">
+            <h1>Install PHP-Login</h1>
 
-                    <div class="form-group row">
-                        <div class="col-lg-6">
-                            <label for="dbhost" id="dbhost">Database Hostname</label>
-                            <input name="dbhost" id="dbhost" class="form-control" placeholder="Database Hostname"></input>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="dbuser" id="dbuser">DB User</label>
-                            <input name="dbuser" id="dbuser" class="form-control" placeholder="Username"></input>
-                            <br>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="dbpw" id="dbpw">DB Password</label>
-                            <input name="dbpw" id="dbpw" class="form-control" placeholder="Password"></input>
-                            <br>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="dbname" id="dbname">DB Name</label>
-                            <input name="dbname" id="dbname" class="form-control" placeholder="Database Name"></input>
-                            <br>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="tblprefix" id="tblprefix">DB Table Prefix</label>
-                            <input name="tblprefix" id="tblprefix" class="form-control" placeholder="Table prefix"></input>
-                            <br>
-                        </div>
+            <form id="dbform" action="install.php" class="form-signin" method="post">
 
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <label for="dbhost" id="dbhost">Database Hostname</label>
+                        <input name="dbhost" id="dbhost" class="form-control" placeholder="Database Hostname" required></input>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="dbuser" id="dbuser">DB User</label>
+                        <input name="dbuser" id="dbuser" class="form-control" placeholder="Username" required></input>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="dbpw" id="dbpw">DB Password</label>
+                        <input name="dbpw" id="dbpw" class="form-control" placeholder="Password" required></input>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="dbname" id="dbname">DB Name</label>
+                        <input name="dbname" id="dbname" class="form-control" placeholder="Database Name" required></input>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="tblprefix" id="tblprefix">DB Table Prefix</label>
+                        <input name="tblprefix" id="tblprefix" class="form-control" placeholder="Table prefix"></input>
+                        <br>
                     </div>
 
-                    <div class="form-group row">
+                </div>
 
-                        <div class="col-lg-6">
+                <div class="form-group row">
 
-                            <label for="base_dir" id="valstatus">Root Install Path:</label>
-                            <input name="base_dir" id="base_dir" class="form-control" placeholder="Site Root Directory" value=<?php echo $currdir; ?>></input>
-                            <br>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="base_url" id="valstatus">Base Url:</label>
-                            <input name="base_url" id="base_url" class="form-control" placeholder="Site Base Url" value=<?php echo $baseurl; ?>></input>
-                            <br>
-                        </div>
-                        <div class="col-lg-6">
+                    <div class="col-sm-6">
 
-                            <label for="superadmin">Superadmin Username:</label>
-                            <input name="superadmin" id="superadmin" class="form-control" placeholder="Superadmin username"></input>
-                            <br>
-                        </div>
+                        <label for="base_dir" id="valstatus">Root Install Path:</label>
+                        <input name="base_dir" id="base_dir" class="form-control" placeholder="Site Root Directory" value=<?php echo $currdir; ?> required></input>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="base_url" id="valstatus">Base Url:</label>
+                        <input name="base_url" id="base_url" class="form-control" placeholder="Site Base Url" value=<?php echo $baseurl; ?> required></input>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
 
-                        <div class="col-lg-6">
-
-                            <label for="saemail">Superadmin Email:</label>
-                            <input name="saemail" id="saemail" class="form-control" placeholder="Superadmin Email"></input>
-                            <br>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <label for="sapw">New Password:</label>
-                            <input type="password" name="sapw" id="sapw" class="form-control" placeholder="Superadmin Password"></input>
-                            <br>
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="sapw2">Repeat Password:</label>
-                            <input type="password" name="sapw2" id="sapw2" class="form-control" placeholder="Superadmin Password"></input>
-                            <br>
-                        </div>
-
-                        <div class="col-lg-6">
-
-                            <button id="submitbtn" class="btn btn-primary">Submit</button>
-
-                        </div>
+                        <label for="superadmin">Superadmin Username:</label>
+                        <input name="superadmin" id="superadmin" class="form-control" placeholder="Superadmin username" required></input>
+                        <br>
                     </div>
 
-                </form>
+                    <div class="col-sm-6">
 
-        <script>
-            $("#dbform").validate({
-                rules: {
-                    superadmin: {required: true},
+                        <label for="saemail">Superadmin Email:</label>
+                        <input type="email" name="saemail" id="saemail" class="form-control" placeholder="Superadmin Email" required></input>
+                        <br>
+                    </div>
 
-                    saemail: {required: true, email: true},
+                    <div class="col-sm-6">
+                        <label for="sapw">New Password:</label>
+                        <input type="password" name="sapw" id="sapw" class="form-control" placeholder="Superadmin Password" required></input>
+                        <br>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="sapw2">Repeat Password:</label>
+                        <input type="password" name="sapw2" id="sapw2" class="form-control" placeholder="Superadmin Password" required></input>
+                        <br>
+                    </div>
 
-                    sapw: {required: true},
+        <div class="col-sm-6">
 
-                    sapw2: {
-                        equalTo: "#sapw"
-                    }
-                }
-            });
-        </script>
-    </body>
-    </html>
+            <input id="submitbtn" type="submit" class="btn btn-primary"></input>
+            </form>
+
+        </div>
+    </div>
+</body>
+</html>

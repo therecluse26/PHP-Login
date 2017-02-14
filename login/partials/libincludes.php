@@ -26,10 +26,18 @@ switch ($title) {
 
     case "Admin Verification":
         echo '<script src="'.$this->base_url.'/login/vendor/components/jquery/jquery.min.js"></script><script src="'.$this->base_url.'/login/vendor/components/bootstrap/js/bootstrap.min.js"></script>';
-        echo '<script src="'.$this->base_url.'/admin/js/adminverify.js"></script>';
-        echo '<script src="'.$this->base_url.'/admin/js/admindelete.js"></script>';
+        echo '<script src="'.$this->base_url.'/admin/js/adminverifyuser.js"></script>';
+        echo '<script src="'.$this->base_url.'/admin/js/admindeleteuser.js"></script>';
         echo '<script src="'.$this->base_url.'/admin/js/adminselectall.js"></script>';
         echo '<script src="'.$this->base_url.'/admin/js/admincheckrow.js"></script>';
+        echo '<link href="'.$this->base_url.'/login/vendor/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"><link href="'.$this->base_url.'/login/css/main.css" rel="stylesheet" media="screen">';
+        break;
+
+    case "Mail Log":
+        echo '<script src="'.$this->base_url.'/login/vendor/components/jquery/jquery.min.js"></script><script src="'.$this->base_url.'/login/vendor/components/bootstrap/js/bootstrap.min.js"></script>';
+        echo '<script src="'.$this->base_url.'/admin/js/admindeletelog.js"></script>';
+        echo '<script src="'.$this->base_url.'/admin/js/admincheckrow.js"></script>';
+        echo '<script src="'.$this->base_url.'/admin/js/forwardback.js"></script>';
         echo '<link href="'.$this->base_url.'/login/vendor/components/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"><link href="'.$this->base_url.'/login/css/main.css" rel="stylesheet" media="screen">';
         break;
 

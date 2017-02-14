@@ -18,7 +18,8 @@ try {
     $tbl_deleted = $tbl_prefix."deletedMembers";
     $tbl_tokens = $tbl_prefix."tokens";
     $tbl_cookies = $tbl_prefix."cookies";
-    $tbl_appConfig = $tbl_prefix."appConfig";';
+    $tbl_appConfig = $tbl_prefix."appConfig";
+    $tbl_mailLog = $tbl_prefix."mailLog";';
 
     fwrite($dbconf_file, $dbconf_text);
     fclose($dbconf_file);
