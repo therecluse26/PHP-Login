@@ -10,7 +10,7 @@ $logs = EmailLogger::pullLog($limit, $offset, 0);
 
     if (!empty($logs)) {
 
-        echo '<table id="userlist" class="table table-sm"><thead class="headrow"><th>Id</th><th>Type</th><th>Status</th><th>Recipient</th><th>Response Message</th><th>Timestamp</th><th><button class="btn btn-info btn-sm pull-right">Select All</button><input type="checkbox" id="selectAll" hidden></input></th></thead><tbody id="mailLogOutput">';
+        echo '<table id="userlist" class="table table-sm usertable"><thead class="headrow"><th>Id</th><th>Type</th><th>Status</th><th>Recipient</th><th>Response Message</th><th>Timestamp</th><th><button class="btn btn-info btn-sm pull-right">Select All</button><input type="checkbox" id="selectAll" hidden></input></th></thead><tbody id="mailLogOutput">';
 
         foreach($logs as $log){
             $x++;
@@ -18,16 +18,6 @@ $logs = EmailLogger::pullLog($limit, $offset, 0);
             echo '<tr class="datarow" scope="row" id="row'.$x.'"><td class="col-sm-1">'.$log['id'].'</td><td class="col-sm-1">'.$log['type'].'</td><td class="col-sm-1">'.$log['status'].'</td><td class="col-sm-2">'.$log['recipient'].'</td><td class="col-sm-6">'.$log['response'].'</td><td class="col-sm-2">'.$log['timestamp'].'</td><td><button id="delbutton'.$x.'" class="btn btn-danger btn-sm btn-fixed pull-right" onclick="deleteLog(\''.$log['id'].'\',\''.$x.'\');">Delete</button><input type="checkbox" value="'.$log['id'].'" id="'.$x.'" hidden></input></td></tr>';
         }
         echo '</tbody></table><button id="deleteSelectedLogs" class="btn btn-success" onclick="deleteSelectedLogs();">Delete Selected</button>';
-        echo '<script>
-            $("#selectAll").change(function () {
-                $("input:checkbox").prop("checked", $(this).prop("checked"));
-                if ($("input:checkbox").is(":checked")) {
-                $("input:checkbox").closest("tr").addClass("checkedrow");
-                } else {
-                    $("input:checkbox").closest("tr").removeClass("checkedrow");
-                }
-            });
-        </script>';
     } else {
         echo '<p class="message">No logs to show</p>';
     };

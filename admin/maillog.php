@@ -10,10 +10,10 @@ $logcount = EmailLogger::pullLogCount();
 
 </head>
 <body>
-<div id="limithid" >10</div>
-<div id="offsethid" >0</div>
-<div id="currenthid" >10</div>
-<div id="rowcounthid"><?php echo $logcount['rowcount']; ?></div>
+<div id="limithid" hidden>20</div>
+<div id="offsethid" hidden>0</div>
+<div id="currenthid" hidden></div>
+<div id="rowcounthid" hidden><?php echo $logcount['rowcount']; ?></div>
 
 <div class="container-fluid">
 <?php
@@ -25,6 +25,7 @@ echo '<div class="pull-left"><h3>Mail Log</h3></div>
 
 <div id="mailLogOutput">
 </div>
+
     </table>
     </div>
     </form>

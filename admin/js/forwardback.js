@@ -1,13 +1,5 @@
 $(document).ready(function(){
     forwardBack('initial');
-    $("#selectAll").change(function(){
-        $("input:checkbox").prop('checked', $(this).prop("checked"));
-        if ($("input:checkbox").is(":checked")) {
-            $("input:checkbox").closest('tr').addClass("checkedrow");
-        } else {
-            $("input:checkbox").closest('tr').removeClass("checkedrow");
-        }
-    })
 })
 
 function forwardBack(direction){
@@ -17,55 +9,15 @@ function forwardBack(direction){
     var rowcount = parseInt($("#rowcounthid").text());
     var top = (offset + limit);
 
-console.log("top ---> " + top);
-
-    if (direction == 'right'){
-
-        $("#leftbtn").attr('disabled', false);
-
-        if (top >= rowcount) {
-            console.log("top >= rowcount");
-            top = rowcount;
-            $("#rightbtn").attr('disabled', true);
-        } else {
-            console.log("ELSE top >= rowcount");
-            top = top + limit;
-            offset = (offset + limit);
-        }
-
-        $("#rowcount").html(rowcount);
-        $("#pageCount").html(offset+"-"+ top +" of ");
-        $("#offsethid").text(offset);
-
-    } else if (direction == 'left') {
-
-        $("#rightbtn").attr('disabled', false);
-
-        if (offset <= 0) {
-            console.log("offset <= 0");
-            offset = 0;
-            $("#leftbtn").attr('disabled', true);
-
-        } else {
-            console.log("ELSE offset <= 0");
-            top = (offset);
-            offset = (offset - limit);
-        }
-
-        $("#rowcount").html(rowcount);
-        $("#pageCount").html(offset+"-"+ top +" of ");
-        $("#offsethid").text(offset);
-
-    } else if (direction == 'initial') {
+    if (direction == 'initial') {
 
         offset = 0;
+        $("#leftbtn").attr('disabled', true);
         $("#rowcount").html(rowcount);
         $("#pageCount").html(offset+"-"+ top +" of ");
         $("#offsethid").text(offset);
 
     }
-
-    console.log("top: " + top + " offset: " + offset + " limit: " + limit);
 
     $.ajax({
         type: "GET",
@@ -77,8 +29,11 @@ console.log("top ---> " + top);
         },
         success: function (html) {
 
-            $('#mailLogOutput').html(html);
+            $('#mailLogOutput').html(html).promise().done(function(){
 
+                $.getScript('js/selector.js');
+
+            });
         },
 
         error: function (textStatus, errorThrown) {
@@ -95,14 +50,12 @@ function forwardBtn(){
     var rowcount = parseInt($("#rowcounthid").text());
     var top = (offset + limit);
 
-            $("#leftbtn").attr('disabled', false);
+    $("#leftbtn").attr('disabled', false);
 
     if (top >= rowcount) {
-        console.log("top >= rowcount");
         top = rowcount;
         $("#rightbtn").attr('disabled', true);
     } else {
-        console.log("ELSE top >= rowcount");
         top = top + limit;
         offset = (offset + limit);
     }
@@ -121,8 +74,11 @@ function forwardBtn(){
         },
         success: function (html) {
 
-            $('#mailLogOutput').html(html);
+            $('#mailLogOutput').html(html).promise().done(function(){
 
+                $.getScript('js/selector.js');
+
+            });
         },
 
         error: function (textStatus, errorThrown) {
@@ -139,22 +95,20 @@ function backBtn(){
     var rowcount = parseInt($("#rowcounthid").text());
     var top = (offset + limit);
 
- $("#rightbtn").attr('disabled', false);
+    $("#rightbtn").attr('disabled', false);
 
-        if (offset <= 0) {
-            console.log("offset <= 0");
-            offset = 0;
-            $("#leftbtn").attr('disabled', true);
+    if (offset <= 0) {
+        offset = 0;
+        $("#leftbtn").attr('disabled', true);
 
-        } else {
-            console.log("ELSE offset <= 0");
-            top = (offset);
-            offset = (offset - limit);
-        }
+    } else {
+        top = (offset);
+        offset = (offset - limit);
+    }
 
-        $("#rowcount").html(rowcount);
-        $("#pageCount").html(offset+"-"+ top +" of ");
-        $("#offsethid").text(offset);
+    $("#rowcount").html(rowcount);
+    $("#pageCount").html(offset+"-"+ top +" of ");
+    $("#offsethid").text(offset);
 
 
     $.ajax({
@@ -166,9 +120,9 @@ function backBtn(){
            $('#mailLogOutput').html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");
         },
         success: function (html) {
-
-            $('#mailLogOutput').html(html);
-
+            $('#mailLogOutput').html(html).promise().done(function(){
+                $.getScript('js/selector.js');
+            });
         },
 
         error: function (textStatus, errorThrown) {
