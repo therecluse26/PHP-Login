@@ -4,7 +4,7 @@ function deleteUser(id, username, email, btnid){
 
     $.ajax({
         type: "GET",
-        url: "ajax/delajax.php",
+        url: "ajax/deluserajax.php",
         data: "uid="+ uidJSON,
         dataType: 'HTML',
         beforeSend: function () {
