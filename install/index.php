@@ -11,7 +11,7 @@ if (function_exists('posix_geteuid')){
     if (function_exists('get_current_user')){
         $serveruser = get_current_user();
     } else {
-        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Process functions 'posix_geteuid() and/or get_current_user() not enabled</b><br> Please run the following command (on unix-based systems) and refresh the page<br>"
+        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Process functions 'posix_geteuid() and/or get_current_user() not enabled</b><br> Please run the following command (on unix-based systems) and refresh the page<br>";
     }
 }
 
