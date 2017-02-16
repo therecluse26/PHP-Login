@@ -25,6 +25,10 @@ class AppConfig extends DbConn
 
         $this->signin_url = $settings['base_url'].'/login';
 
+        if ($this->from_email == '') {
+            $this->from_email = $this->admin_email;
+        }
+
     }
     /**
     * Pulls single setting statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
