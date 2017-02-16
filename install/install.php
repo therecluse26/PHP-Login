@@ -11,8 +11,6 @@ $tblprefix = $_POST['tblprefix'];
 $base_dir = base64_encode($_POST['base_dir']);
 $base_url = base64_encode($_POST['base_url']);
 
-chmod('tmp', 777);
-
 $superadmin = $_POST['superadmin'];
 $saemail = $_POST['saemail'];
 $said = uniqid(rand(), false);
