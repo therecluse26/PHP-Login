@@ -50,7 +50,7 @@ try {
         $conf->pullNav($_SESSION['username'], $_SESSION['admin'], $pagetype);
 
         //Checks for proper mailer configuration. Only checks connection if email_working db entry is false
-        if ($conf->email_working == 'false' || $conf->mail_server == '') {
+        if ($conf->email_working == 'false') {
 
             $mailtest = new EmailSettings;
 
