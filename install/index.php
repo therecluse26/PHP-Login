@@ -38,7 +38,7 @@ if ($serveruser != $fileowner) {
     <meta name="Author" content="" />
     <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="../login/css/main.css">
-    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     <script src="js/jquery.validate.min.js"></script>
     <script src="bootstrap/bootstrap.js"></script>
     <script src="ajax/instvalidate.js"></script>
