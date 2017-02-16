@@ -177,7 +177,10 @@ class MailSender extends AppConfig
         $status = $mail->Send();
         $debugMsg = ob_get_contents();
         ob_get_clean();
-        EmailLogger::logResponse($debugMsg, $to_email, 'Password Reset', $status);
+
+        $emailToLog = array("email"=>$to_email);
+
+        EmailLogger::logResponse($debugMsg, $emailToLog, 'Password Reset', $status);
 
         $resp['status'] = true;
         $resp['message'] = "Password reset sent! Check your email";
