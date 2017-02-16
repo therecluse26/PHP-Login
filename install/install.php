@@ -74,7 +74,12 @@ echo session_id();
         $.ajax({
             method: "POST",
             url: "instprocess.php",
-            data: { dbhost: "<?php echo $dbhost;?>", dbuser: "<?php echo $dbuser;?>", dbpw: "<?php echo $dbpw;?>", dbname: "<?php echo $dbname;?>", tblprefix: "<?php echo $tblprefix;?>", superadmin: "<?php echo $superadmin;?>", saemail: "<?php echo $saemail;?>", said: "<?php echo $said;?>", sapw: "<?php echo $sapw;?>", base_dir: "<?php echo $base_dir;?>", base_url: "<?php echo $base_url;?>", site_name: "<?php echo $site_name;?>" }
+            data: { dbhost: "<?php echo $dbhost;?>", dbuser: "<?php echo $dbuser;?>", dbpw: "<?php echo $dbpw;?>", dbname: "<?php echo $dbname;?>", tblprefix: "<?php echo $tblprefix;?>", superadmin: "<?php echo $superadmin;?>", saemail: "<?php echo $saemail;?>", said: "<?php echo $said;?>", sapw: "<?php echo $sapw;?>", base_dir: "<?php echo $base_dir;?>", base_url: "<?php echo $base_url;?>", site_name: "<?php echo $site_name;?>" },
+            success: function(html) {
+
+                $("#message").html(html);
+
+            }
         });
 
         timer = window.setInterval(refreshProgress, 500);

@@ -63,7 +63,13 @@ while ($i < $total) {
         $arr_content['message'] = $statobj['status'];
         $arr_content['failure'] = $statobj['failure'];
 
-        file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+        if (is_writable("tmp"){
+
+            file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
+
+        } else {
+            echo "Can't write";
+        }
 
         $sleep = rand(50000,500000);
         usleep($sleep);
