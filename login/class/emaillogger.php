@@ -89,7 +89,7 @@ class EmailLogger {
             $db = new DbConn;
             $tbl_mailLog = $db->tbl_mailLog;
 
-            $stmt = $db->conn->prepare("SELECT count(distinct id) as rowcount FROM ".$tbl_mailLog." where isread = ".$read);
+            $stmt = $db->conn->prepare("SELECT ifnull(count(distinct id), 0) as rowcount FROM ".$tbl_mailLog." where isread = ".$read);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
