@@ -313,12 +313,41 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
+                case 17:
+                try {
+                    //Create MailLog Table
+                    $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
+                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $status = "Creating mail log";
+                    $values = "";
 
-            case 17:
+                    $sqlappsettings = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}mailLog (
+                      `id` int(11) NOT NULL AUTO_INCREMENT,
+                      `type` varchar(45) NOT NULL DEFAULT 'generic',
+                      `status` varchar(45) DEFAULT NULL,
+                      `recipient` varchar(5000) DEFAULT NULL,
+                      `response` mediumtext NOT NULL,
+                      `isread` bit(1) NOT NULL DEFAULT b'0',
+                      `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                      PRIMARY KEY (`id`)
+                    ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+
+                    $dm = $conn->exec($sqlappsettings);
+
+                    unset($dm);
+                    break 1;
+                    sleep(0.5);
+                } catch (Exception $e) {
+                    throw new Exception("Failed to create application settings. " . $e->getMessage());
+                    $failure = 1;
+                    break 1;
+                }
+
+            case 18:
                 require "confgen.php";
                 break 1;
 
-            case 18:
+            case 19:
                 try {
                 //Change file permissions
                     $status = "Changing file permissions";

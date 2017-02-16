@@ -8,7 +8,7 @@ set_time_limit(5000);
 
 $resp = '';
 $failure = 0;
-$total = 22;
+$total = 23;
 $i = 0;
 $status = '';
 
@@ -34,16 +34,16 @@ while ($i < $total) {
         break;
     }
     else {
-        if($i <= 17 && $i <> 16) {
+        if($i <= 18 && $i <> 16) {
 
             $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw);
 
-        } elseif ($i == 16 || $i == 18) {
+        } elseif ($i == 16 || $i == 19) {
 
             //Insert basic app settings
             $statobj = installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin, $saemail, $said, $sapw, $settingsArr);
 
-        } elseif ($i == 19) {
+        } elseif ($i == 20) {
 
             require "instcomposer.php";
 
