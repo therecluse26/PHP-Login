@@ -63,7 +63,7 @@ while ($i < $total) {
         $arr_content['message'] = $statobj['status'];
         $arr_content['failure'] = $statobj['failure'];
 
-        if (is_writable("tmp"){
+        if (is_writable("tmp")){
 
             file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
 
