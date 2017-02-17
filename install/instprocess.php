@@ -8,7 +8,7 @@ set_time_limit(5000);
 
 $resp = '';
 $failure = 0;
-$total = 23;
+$total = 22;
 $i = 0;
 $status = '';
 
