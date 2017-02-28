@@ -67,7 +67,7 @@ try {
 
             file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
 
-            $sleep = rand(50000,500000);
+            $sleep = rand(50000,200000);
             usleep($sleep);
 
             unset($conn);
