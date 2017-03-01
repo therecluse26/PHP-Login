@@ -15,6 +15,8 @@
         }
     ],
     "require": {
+        "php": "^5.6 || ^7.0",
+        "ext-pdo": "*",
         "components/jquery": "^3.1",
         "components/bootstrap": "^3",
         "firebase/php-jwt": "^4.0",
