@@ -40,7 +40,7 @@ try {
         if( ($f = popen("php composer.phar install -d ../ 2>&1", "r")) ) {
             while( !feof($f) ){
                 $status = fread($f, 1024);
-                $arr_content = array("percent"=> 95, "message" => "Pulling dependencies... <br>". $status, "failure" => 0);
+                $arr_content = array("percent"=> 95, "message" => $status, "failure" => 0);
                 file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
                 flush(); // you have to flush buffer
             }
@@ -56,6 +56,9 @@ try {
 }
 
 try {
+
+    //popen("php composer.phar self-update 2&>1", "r");
+
     if( ($f = popen("php composer.phar install -d ../ 2>&1", "r")) ) {
 
         while( !feof($f) ){
@@ -67,10 +70,11 @@ try {
             file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
 
             flush(); // you have to flush buffer
-
         }
         fclose($f);
     }
+
+
 } catch (Exception $e) {
 
     $arr_content = array("percent"=> 95, "message" => $e->getMessage(), "failure" => 1);

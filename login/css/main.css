@@ -112,6 +112,14 @@ body {
     display: float;
     text-align: center;
 }
+#instmessage {
+    font-size: 12px;
+    text-align: center;
+    display: float;
+    height: 100px;
+    width: 100%;
+}
+
 .valstatus {
     padding-top: -10px;
 }
