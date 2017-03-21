@@ -103,7 +103,7 @@ body {
     margin-bottom: 20px;
 }
 #progress .bar {
-    background-color: #5cb85c;
+    background-color: #3dff3dz;
     border-radius: 5px;
     height: 28px;
 }
@@ -177,4 +177,20 @@ tr:not(.checkedrow):hover {
 .navbar-toggle {
     width: 40px;
     height: 40px;
+}
+.bar{  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.barPercent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.vertical-center {
+  min-height: 100%; 
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }

@@ -24,6 +24,8 @@
         "fengyuanchen/cropper": "dev-master"
     },
     "config": {
-        "vendor-dir": "login/vendor"
+        "vendor-dir": "login/vendor",
+        "disable-tls": true,
+        "secure-http": false
     }
 }

@@ -10,7 +10,8 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating database <span class='dbtable'>{$dbname}</span>";
-                    $sqlcreate = "CREATE DATABASE IF NOT EXISTS {$dbname};";
+                    $sqlcreate = "CREATE DATABASE IF NOT EXISTS {$dbname} DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;";
                     $c = $conn->exec($sqlcreate);
 
                     unset($c);
@@ -42,7 +43,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "admins</span> table";
-                    $sqladmins = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}admins ( `adminid` char(23) NOT NULL DEFAULT 'uuid_short();', `userid` char(23) NOT NULL, `active` bit(1) NOT NULL DEFAULT b'0', `superadmin` bit(1) NOT NULL DEFAULT b'0', PRIMARY KEY (`adminid`,`userid`), UNIQUE KEY `adminid_UNIQUE` (`adminid`), UNIQUE KEY `userid_UNIQUE` (`userid`), CONSTRAINT `fk_userid_admins` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqladmins = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}admins ( `adminid` char(23) NOT NULL DEFAULT 'uuid_short();', `userid` char(23) NOT NULL, `active` tinyint(1) NOT NULL DEFAULT b'0', `superadmin` tinyint(1) NOT NULL DEFAULT b'0', PRIMARY KEY (`adminid`,`userid`), UNIQUE KEY `adminid_UNIQUE` (`adminid`), UNIQUE KEY `userid_UNIQUE` (`userid`), CONSTRAINT `fk_userid_admins` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                     $a = $conn->exec($sqladmins);
 
                     unset($a);
@@ -327,7 +328,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                       `status` varchar(45) DEFAULT NULL,
                       `recipient` varchar(5000) DEFAULT NULL,
                       `response` mediumtext NOT NULL,
-                      `isread` bit(1) NOT NULL DEFAULT b'0',
+                      `isread` tinyint(1) NOT NULL DEFAULT b'0',
                       `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                       PRIMARY KEY (`id`)
                     ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";

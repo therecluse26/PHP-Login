@@ -26,14 +26,17 @@ $site_name = $_SERVER['SERVER_NAME'];
   <link rel="stylesheet" type="text/css" href="../login/css/main.css">
     <link rel="stylesheet" type="text/css" href="bootstrap/bootstrap.css">
     <script src="bootstrap/bootstrap.js"></script>
+    <script src="js/loadingdots.js"></script>
 </head>
 <body>
-
+<div class="container vertical-center">
+<div class="loadingDiv"><h1 id="loadingText"></h1></div>
 <div class="progressdiv">
   <div id="progress">
-  <div class="bar" style="width:0"></div>
+  <div class="bar" style="width:0"><div class="barPercent"></div></div>
   </div>
   <div id="instmessage" style="overflow-y:scroll;"></div>
+</div>
 </div>
   <script>
     var timer;
@@ -46,6 +49,7 @@ $site_name = $_SERVER['SERVER_NAME'];
         success:function(data){
 
           $(".bar").animate({ width: data.percent + "%"});
+            $(".barPercent").text(data.percent + "%");
 
           msg1 = data.message;
 
@@ -86,6 +90,12 @@ $site_name = $_SERVER['SERVER_NAME'];
 
     $(document).ready(function(){
 
+        $("#loadingText").Loadingdotdotdot({
+            "speed": 400,
+            "maxDots": 3,
+            "word": "Installing PHP-Login"
+        });
+
         $.ajax({
             method: "POST",
             url: "instprocess.php",
@@ -97,7 +107,7 @@ $site_name = $_SERVER['SERVER_NAME'];
             }
         });
 
-        timer = window.setInterval(refreshProgress, 250);
+        timer = window.setInterval(refreshProgress, 300);
 
     });
   </script>
