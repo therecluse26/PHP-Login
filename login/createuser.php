@@ -8,16 +8,19 @@ $newuser = $_POST['newuser'];
 $newpw = password_hash($_POST['password1'], PASSWORD_DEFAULT);
 $pw1 = $_POST['password1'];
 $pw2 = $_POST['password2'];
+$newemail = $_POST['email'];
 
-    //Enables moderator verification (overrides user self-verification emails)
-if (isset($admin_email)) {
+//Enables moderator verification (overrides user self-verification emails)
+if (isset($admin_email)) {	
 
-    $newemail = $admin_email;
+	$verify_email = $admin_email;
 
 } else {
 
+	$verify_email = $newemail;
 
 }
+
 //Validation rules
 if ($pw1 != $pw2) {
 
@@ -48,6 +51,7 @@ if ($pw1 != $pw2) {
 
             //Send verification email
             $m = new MailSender;
+            $m->sendMail($verify_email, $newuser, $newid, 'Verify');
 
         } else {
             //Failure
