@@ -54,16 +54,17 @@ class MailSender
         if ($mailServerType == 'smtp') {
 
             $mail->IsSMTP(); //Enable SMTP
-            $mail->SMTPAuth = true; //SMTP Authentication
+			$mail->SMTPAuth = $smtp_auth; //SMTP Authentication
             $mail->Host = $smtp_server; //SMTP Host
             //Defaults: Non-Encrypted = 25, SSL = 465, TLS = 587
             $mail->SMTPSecure = $smtp_security; // Sets the prefix to the server
+			$mail->SMTPAutoTLS = false; //disable opportunistic TLS to fix SSL mismatch when using localhost as Host
             $mail->Port = $smtp_port; //SMTP Port
             //SMTP user auth
             $mail->Username = $smtp_user; //SMTP Username
             $mail->Password = $smtp_pw; //SMTP Password
             //********************
-            $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production)
+            $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production) set to 1, 2, 3 or 4 for debugging
 
         }
 
