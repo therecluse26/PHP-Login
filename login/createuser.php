@@ -16,7 +16,6 @@ if (isset($admin_email)) {
 
 } else {
 
-    $newemail = $_POST['email'];
 
 }
 //Validation rules
@@ -49,7 +48,6 @@ if ($pw1 != $pw2) {
 
             //Send verification email
             $m = new MailSender;
-            $m->sendMail($newemail, $newuser, $newid, 'Verify');
 
         } else {
             //Failure
