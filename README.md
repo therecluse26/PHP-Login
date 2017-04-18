@@ -99,7 +99,7 @@ If the user has the right username and password, then the `checklogin.php` will 
 If the username and/or the password are wrong the `checklogin.php` will send "Wrong Username or Password".
 
 
-###Signup/Login Workflow:
+### Signup/Login Workflow:
 > 1) Create new user using `signup.php` form
 > (note: validation occurs both client and server side)
 > &nbsp;&nbsp;&nbsp;&nbsp;<b>Validation requires: </b>
