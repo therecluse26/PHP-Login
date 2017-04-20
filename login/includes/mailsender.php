@@ -48,7 +48,13 @@ class MailSender
             $mail->Body = $active_email . '<br><a href="'.$signin_url.'">'.$signin_url.'</a>';
             $mail->AltBody  =  $active_email . $signin_url;
 
-        };
+        } elseif ($type == 'Reset') {
+
+          $mail->Subject = $site_name . 'Password Reset';
+
+          $mail->Body = $reset_email . $id;
+          $mail->AltBody = $reset_email . $id;
+        }
 
         //SMTP Settings
         if ($mailServerType == 'smtp') {
