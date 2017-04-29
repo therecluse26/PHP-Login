@@ -66,7 +66,7 @@ class UserData extends DbConn
                 $stmt->execute();
 
                 $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
+                
             } catch (PDOException $e) {
 
                 $result = "Error: " . $e->getMessage();

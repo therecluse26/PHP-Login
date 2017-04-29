@@ -15,8 +15,7 @@ if (function_exists('posix_geteuid')){
     }
 }
 
-    $fileowner = fileowner($currdir);
-
+$fileowner = fileowner($currdir);
 
 //Checks folder owner and permissions
 if ($serveruser != $fileowner) {
@@ -25,9 +24,16 @@ if ($serveruser != $fileowner) {
     echo "<b>sudo chown -R " . $serveruser .":". $serveruser ." ". dirname(dirname(__FILE__)) . "</b></div>";
 
 } else if (!is_writable($currdir)) {
-    echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o",fileperms($currdir)),-4)."</b><br>Please run the following terminal command and refresh the page: <br>";
-    echo "<b>sudo chmod -R 755 " . dirname(dirname(__FILE__)) . " && sudo chown -R ". $serveruser ." ". dirname(dirname(__FILE__)) ."</b></div>";
-
+    
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        //Outputs appropriate fix for Windows machines
+        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o",fileperms($currdir)),-4)."</b><br>Enable read, write and execute permissions on this folder: " . dirname(dirname(__FILE__)) . " to ". $serveruser ."</b></div>";
+        
+    } else {
+        //Outputs appropriate fix for Unix-based machines
+        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o",fileperms($currdir)),-4)."</b><br>Please run the following terminal command and refresh the page: <br>";
+        echo "<b>sudo chmod -R 755 " . dirname(dirname(__FILE__)) ." && sudo chown -R ". $serveruser ." ". dirname(dirname(__FILE__)) ."</b></div>";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -66,7 +72,7 @@ if ($serveruser != $fileowner) {
                     </div>
                     <div class="col-sm-6">
                         <label for="dbpw" id="dbpw">DB Password</label>
-                        <input name="dbpw" id="dbpw" class="form-control" placeholder="Password" required></input>
+                        <input name="dbpw" id="dbpw" class="form-control" placeholder="Password"></input>
                         <br>
                     </div>
                     <div class="col-sm-6">

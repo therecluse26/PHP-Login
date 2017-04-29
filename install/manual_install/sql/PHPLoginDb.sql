@@ -1,5 +1,5 @@
 SET 
-@base_dir = 'C:\\xampp\\htdocs\\PHP-Login\\', /* Base directory of PHP-Login (for Windows, use double backslashes) */
+@base_dir = 'C:\\xampp2\\htdocs\\PHP-Login\\', /* Base directory of PHP-Login (for Windows, use double backslashes) */
 @base_url = 'http://localhost/PHP-Login', /* Website base URL */
 @site_name = 'Just a Website', /* Your website name */
 @curl_enabled = true, /* If cURL is enabled in PHP */

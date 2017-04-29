@@ -53,8 +53,8 @@ try {
 
                 $refurl = urlencode($base_url."/admin/editconfig.php");
 
-                $statobj['status'] = 'Installation Complete!<br>
-                <a href="'.$base_url.'/login/index.php?refurl='.$refurl.'">Sign In And Finish Configuration</a>';
+                $statobj['status'] = '<br><br><br><br><form action="'.$base_url.'/login/index.php?refurl='.$refurl.'">
+                <button class="btn btn-primary">Sign In And Finish Configuration</button></form>';
 
                 $statobj['failure'] = 0;
             }
@@ -67,7 +67,7 @@ try {
 
             file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
 
-            $sleep = rand(60000,80000);
+            $sleep = rand(40000,80000);
             usleep($sleep);
 
             unset($conn);
