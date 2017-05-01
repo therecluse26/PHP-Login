@@ -2,9 +2,9 @@
     /*** MOVE THIS TO /login FOLDER AFTER EDITING ***/
     //DATABASE CONNECTION VARIABLES
     $host = "localhost"; // Host name
-    $username = "root"; // Mysql username
-    $password = ""; // Mysql password
-    $db_name = "loginmanual1"; // Database name
+    $username = "db_user"; // Mysql username
+    $password = "db_password"; // Mysql password
+    $db_name = "login_db_name"; // Database name
 
     $tbl_prefix = ""; //Prefix for all database tables
     /*** DO NOT EDIT BELOW THIS LINE ***/

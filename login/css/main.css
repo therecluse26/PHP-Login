@@ -121,6 +121,11 @@ body {
     width: 100%;
 }
 
+label.error {
+    color: red;
+    font-size: 8px;
+}
+
 .valstatus {
     padding-top: -10px;
 }
@@ -199,7 +204,6 @@ tr:not(.checkedrow):hover {
   align-items: center;
 }
 
-
 @media all and (max-width: 1200px) { /* screen size until 1200px */
     .install-header {
       font-size: 4rem;
@@ -209,9 +213,14 @@ tr:not(.checkedrow):hover {
     .install-header {
       font-size: 3rem;
     }
-    }
+}
 @media all and (max-width: 500px) { /* screen size until 500px */
     .install-header {
       font-size: 2rem;
     }
-    }
+}
+
+#instTypeModal {
+    top: 25%;
+    overflow-y: auto;
+}

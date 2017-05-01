@@ -48,7 +48,7 @@ if ($serveruser != $fileowner) {
     <script src="js/jquery.validate.min.js"></script>
     <script src="bootstrap/bootstrap.js"></script>
     <script src="ajax/instvalidate.js"></script>
-
+    <script src="js/modalInstallSelect.js"></script>
 </head>
 
 <body>
@@ -133,5 +133,36 @@ if ($serveruser != $fileowner) {
 
         </div>
     </div>
+</div>
+
+
+<!-- Modal -->
+<div id="instTypeModal" class="modal fade largeModal" data-backdrop="static" data-keyboard="false" role="dialog">
+    
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title text-center">Installation Type</h2>
+          </div>
+
+
+            <div class="modal-body">
+                <div class="container">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary btn-block btn-lg" data-dismiss="modal">Automated</button>
+                    </div>
+                    <div class="col-md-6">
+                        <form action="manual">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Manual</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
