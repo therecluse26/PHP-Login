@@ -1,12 +1,12 @@
 <?php
 /**
-* Handles application configuration settings stored in database `appConfig` table
+* Handles application configuration settings stored in database `app_config` table
 **/
 class AppConfig extends DbConn
 {
     /**
     * Primarily instantiated in `login/partials/pagehead.php`. Meant to be instantiated once to minimize unnecessary database calls.
-    * In any page where `pagehead.php` is included, settings can be pulled as such: `$this->setting_name` where `setting_name` corresponds to "setting" entry in `appConfig` database table.
+    * In any page where `pagehead.php` is included, settings can be pulled as such: `$this->setting_name` where `setting_name` corresponds to "setting" entry in `app_config` database table.
     **/
     function __construct() {
 
@@ -34,7 +34,7 @@ class AppConfig extends DbConn
     * Pulls single setting statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
     * Calls can be made like so: AppConfig::pullSetting('setting_name', 'db_var_type')
     *
-    * `setting_name` corresponds to "setting" entry in `appConfig` table, and `db_var_type` should be desired db type such as `unsigned` for integers, `varchar`, etc.
+    * `setting_name` corresponds to "setting" entry in `app_config` table, and `db_var_type` should be desired db type such as `unsigned` for integers, `varchar`, etc.
     **/
     public static function pullSetting($setting, $type = 'varchar')
     {
@@ -65,7 +65,7 @@ class AppConfig extends DbConn
     * Pulls multiple settings statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
     * Calls can be made like so: `AppConfig::pullMultiSettings(array("setting1", "setting2", "etc"))`
     *
-    * `$settingArray` = array of settings to be pulled from `appConfig` table
+    * `$settingArray` = array of settings to be pulled from `app_config` table
     **/
     public static function pullMultiSettings($settingArray)
     {

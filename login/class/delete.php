@@ -2,8 +2,8 @@
 /**
 * Deletes user from `members` table.
 *
-* Trigger automatically inserts deleted user into `deletedMembers` table and saves them for 30 days until a database event removes them.
-* Erasing from `deletedMembers` table will result in permanent deletion
+* Trigger automatically inserts deleted user into `deleted_members` table and saves them for 30 days until a database event removes them.
+* Erasing from `deleted_members` table will result in permanent deletion
 **/
 class Delete extends DbConn
 {
