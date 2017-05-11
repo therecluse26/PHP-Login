@@ -11,12 +11,11 @@ $mail_pw = $_POST['mail_pw'];
 $sa_user = $_POST['sa_user'];
 $sa_id = $_POST['sa_id'];
 $sa_email = $_POST['sa_email'];
-
 $pw_plain = $_POST['sa_password'];
 
 try {
 
-    $file = __DIR__."/"."sql/phplogindb.txt";
+    $file = "../sql/phplogindb.txt";
 
     $sql = file_get_contents($file);
 
