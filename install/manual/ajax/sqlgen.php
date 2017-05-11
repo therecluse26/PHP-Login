@@ -11,9 +11,13 @@ $mail_pw = $_POST['mail_pw'];
 $sa_user = $_POST['sa_user'];
 $sa_id = $_POST['sa_id'];
 $sa_email = $_POST['sa_email'];
+
 $pw_plain = $_POST['sa_password'];
-    
-$sql = file_get_contents('../sql/PHPLoginDB.txt');    
+
+$file = $_SERVER['DOCUMENT_ROOT']."/"."sql/PHPLoginDB.txt";
+
+
+$sql = file_get_contents($file);
 
 $_POST['sa_password'] = password_hash($pw_plain, PASSWORD_DEFAULT);
 
