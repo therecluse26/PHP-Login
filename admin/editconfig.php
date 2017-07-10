@@ -26,6 +26,7 @@ foreach ($settingsArr as $key => $value) {
 
 <ul class='nav nav-tabs'>
 <?php
+        
 $i = 1;
 //Builds tabs
 foreach ($groupedArr as $category => $catval) {
@@ -47,6 +48,7 @@ foreach ($groupedArr as $category => $catval) {
 $x = 1;
 //Builds content within tabs
 foreach ($groupedArr as $category => $catval) {
+    
     if ($x === 1) {
         echo "<div class='tab-pane active' id='{$category}'>";
     } else {
@@ -87,6 +89,26 @@ foreach ($groupedArr as $category => $catval) {
 
             case "url":
             echo "<div class='col-sm-6'><button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br><input type='url' class='form-control boolean' name='{$setting[0]}' value='{$setting[1]}'></input><br></div>";
+                break;
+                
+            case "timezone":
+
+                echo "<div class='col-sm-6'><button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br><select class='form-control' name='{$setting[0]}' value='{$setting[1]}'>";
+            
+                foreach(timezone_identifiers_list() as $timezone) { 
+                    
+                    if($setting[1] == $timezone) {
+                        
+                        echo "<option value='$timezone' selected>$timezone</option>";
+                        
+                    } else {
+                        
+                        echo "<option value='$timezone'>$timezone</option>";
+
+                    }
+                };
+            
+            echo "</select><br></div>";
                 break;
 
             default:

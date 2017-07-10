@@ -5,10 +5,6 @@ This is the master page that includes
 all other controls and classes
 **/
 try {
-    if (!isset($_SESSION)) {
-
-        session_start();
-    }
     /**
     * Recursively searches for autoload.php, enabling user to include this header file in subdirectories up to 20 directories deep
     **/
@@ -37,6 +33,15 @@ try {
     * This object's class extends AppConfig, so AppConfig variables can be pulled from it
     **/
     $conf = new PageConstruct;
+    
+    if (!isset($_SESSION)) {
+
+        session_start();
+        
+        date_default_timezone_set($conf->timezone);
+
+    }
+    
     $conf->buildHead($pagetype, $title);
 
     //Checks for cookie
@@ -68,7 +73,9 @@ try {
         }
 
     } else {
+        
         $conf->pullNav(null, 0, $pagetype);
+        
     }
 
 } catch (Exception $ex) {
