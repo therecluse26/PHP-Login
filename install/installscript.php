@@ -5,6 +5,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
     $failure = 0;
     try {
         switch ($i) {
+            // Create Database
             case 0:
                 try {
                     $conn = new PDO("mysql:host={$dbhost}", $dbuser, $dbpw);

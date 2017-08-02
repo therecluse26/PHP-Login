@@ -1,6 +1,6 @@
 <?php
 // Start the session.
-if(!isset($_SESSION)){
+if (!isset($_SESSION)) {
     session_start();
 } else {
     session_destroy();

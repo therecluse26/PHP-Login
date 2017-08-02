@@ -5,10 +5,10 @@ ini_set('display_errors', 1);
 $currdir = dirname(getcwd());
 $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
 
-if (function_exists('posix_geteuid')){
+if (function_exists('posix_geteuid')) {
     $serveruser = posix_geteuid();
 } else {
-    if (function_exists('get_current_user')){
+    if (function_exists('get_current_user')) {
         $serveruser = get_current_user();
     } else {
         echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Process functions 'posix_geteuid() and/or get_current_user() not enabled</b><br> Please run the following command (on unix-based systems) and refresh the page<br>";
@@ -23,15 +23,15 @@ if ($serveruser != $fileowner) {
 
     echo "<b>sudo chown -R " . $serveruser .":". $serveruser ." ". dirname(dirname(__FILE__)) . "</b></div>";
 
-} else if (!is_writable($currdir)) {
+} elseif (!is_writable($currdir)) {
     
     if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
         //Outputs appropriate fix for Windows machines
-        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o",fileperms($currdir)),-4)."</b><br>Enable read, write and execute permissions on this folder: " . dirname(dirname(__FILE__)) . " to ". $serveruser ."</b></div>";
+        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o", fileperms($currdir)), -4)."</b><br>Enable read, write and execute permissions on this folder: " . dirname(dirname(__FILE__)) . " to ". $serveruser ."</b></div>";
         
     } else {
         //Outputs appropriate fix for Unix-based machines
-        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o",fileperms($currdir)),-4)."</b><br>Please run the following terminal command and refresh the page: <br>";
+        echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>WARNING: " . $currdir . " is not writable! Current permissions: <b>" . substr(sprintf("%o", fileperms($currdir)), -4)."</b><br>Please run the following terminal command and refresh the page: <br>";
         echo "<b>sudo chmod -R 755 " . dirname(dirname(__FILE__)) ." && sudo chown -R ". $serveruser ." ". dirname(dirname(__FILE__)) ."</b></div>";
     }
 }
