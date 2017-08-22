@@ -3,7 +3,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 $currdir = dirname(getcwd());
-$baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+
+if ($_SERVER['SERVER_PORT'] != 80) {
+    $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI']);
+} else {
+    $baseurl = dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+}
 
 if (function_exists('posix_geteuid')) {
     $serveruser = posix_geteuid();
@@ -163,6 +168,5 @@ if ($serveruser != $fileowner) {
         </div>
     </div>
 </div>
-
 </body>
 </html>

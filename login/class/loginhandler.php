@@ -54,13 +54,13 @@ class LoginHandler extends AppConfig
                 //Success! Register $myusername, $mypassword and return "true"
                 $success = 'true';
 
-                    session_start();
+                session_start();
 
-                    $_SESSION['uid'] = $result['id'];
-                    $_SESSION['admin'] = $result['admin'];
-                    $_SESSION['username'] = $result['username'];
-                    $_SESSION['ip_address'] = getenv ('REMOTE_ADDR');
-                    $_SESSION['verified'] = $result['verified'];
+                $_SESSION['uid'] = $result['id'];
+                $_SESSION['admin'] = $result['admin'];
+                $_SESSION['username'] = $result['username'];
+                $_SESSION['ip_address'] = getenv ('REMOTE_ADDR');
+                $_SESSION['verified'] = $result['verified'];
 
                 if ($result['admin'] == 1){
                     $admin = UserData::pullAdmin($_SESSION['uid']);
@@ -116,9 +116,9 @@ class LoginHandler extends AppConfig
         }
 
         //Determines returned value ('true' or error code)
-        $resp = ($err == '') ? 'true' : $err;
+        $resp = ($err == '') ? $result : $err;
 
-        return $resp;
+        //return $resp;
 
     }
 
@@ -218,5 +218,12 @@ class LoginHandler extends AppConfig
         return $resp;
 
     }
+    public static function logout(){
 
+        if (isset($_COOKIE["usertoken"])) {
+            setcookie("usertoken", "", time() - 10000, "/");
+        }
+        session_start();
+        session_destroy();
+    }
 }

@@ -12,6 +12,8 @@ $sa_user = $_POST['sa_user'];
 $sa_id = $_POST['sa_id'];
 $sa_email = $_POST['sa_email'];
 $pw_plain = $_POST['sa_password'];
+$time_zone = date_default_timezone_get();
+$_POST['time_zone'] = $time_zone;
 
 try {
 

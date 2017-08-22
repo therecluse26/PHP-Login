@@ -1,7 +1,5 @@
 <?php
-if (isset($_COOKIE["usertoken"])) {
-    setcookie("usertoken", "", time() - 10000, "/");
-}
-session_start();
-session_destroy();
+require "autoload.php";
+LoginHandler::logout();
+
 header("location:../index.php");

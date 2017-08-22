@@ -4,7 +4,12 @@ ini_set('display_errors', 1);
 
 $currdir = dirname(getcwd());
 $basedir = dirname(dirname(getcwd()));
-$baseurl = dirname(dirname(dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'])));
+if ($_SERVER['SERVER_PORT'] != 80) {
+    $baseurl = dirname(dirname(dirname('http://' . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'])));
+} else {
+    $baseurl = dirname(dirname(dirname('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'])));
+}
+
 $sa_id = uniqid(rand(), false);
 
 //Check if cURL is enabled
