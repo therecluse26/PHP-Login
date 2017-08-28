@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('UTC');
 class LoginForm extends DbConn
 {
     public function checkLogin($myusername, $mypassword)
