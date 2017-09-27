@@ -30,7 +30,7 @@ class MailSender extends AppConfig
             $mail->Port = $this->mail_port;
             $mail->Username = $this->mail_user;
             $mail->Password = $this->mail_pw;
-            $mail->SMTPDebug = 2; //Leave this set to 2; mail debug gets logged to mailLog db table
+            $mail->SMTPDebug = 2; //Leave this set to 2; mail debug gets logged to mail_log db table
 
             $mail->SMTPOptions = array(
                 'ssl' => array(
@@ -99,7 +99,7 @@ class MailSender extends AppConfig
 
         try {
 
-            //Sends email and logs the response to mailLog table
+            //Sends email and logs the response to mail_log table
             ob_start();
             $status = $mail->Send();
             $debugMsg = ob_get_contents();
@@ -172,7 +172,7 @@ class MailSender extends AppConfig
         $mail->Body = $reset_template;
         $mail->AltBody = $this->reset_email . $this->signin_url;
 
-        //Sends email and logs the response to mailLog table
+        //Sends email and logs the response to mail_log table
         ob_start();
         $status = $mail->Send();
         $debugMsg = ob_get_contents();

@@ -9,7 +9,7 @@ class PageConstruct extends AppConfig {
     */
     public static $ip;
     /**
-    * `$this->htmlhead` pulls begging part of `<head>` section of page from `appConfig` table.
+    * `$this->htmlhead` pulls begging part of `<head>` section of page from `app_config` table.
     * `secureheader.php` handles redirects and security.
     * `libincludes.php` handles required js and css libraries for login script
     **/

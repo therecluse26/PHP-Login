@@ -79,8 +79,23 @@ class DbConn
     * @var string
     */
     public $tbl_mailLog;
+    /**
+    * Makes this a singleton class
+    * @var Singleton
+    */
+    protected static $instance;
 
-    function __construct()
+    public static function getInstance()
+    {
+        if (null === static::$instance) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
+
+    }
+
+    protected function __construct()
     {
     /**
     * Pulls tables from
@@ -113,5 +128,19 @@ class DbConn
             die($e->getMessage());
 
         }
+    }
+    /**
+    * Prevents cloning
+    * @return void
+    **/
+    private function __clone()
+    {
+    }
+    /**
+    * Prevents unserialization
+    * @return void
+    **/
+    private function __wakeup()
+    {
     }
 }

@@ -22,7 +22,7 @@ try {
     $superadmin = $_POST['superadmin'];
     $saemail = $_POST['saemail'];
     $said = $_POST['said'];
-    $sapw = $_POST['sapw'];
+    $sapw = $_POST['sapw']; 
     $base_dir = base64_decode($_POST['base_dir']);
     $base_url = base64_decode($_POST['base_url']);
     $site_name = $_POST['site_name'];
@@ -53,8 +53,8 @@ try {
 
                 $refurl = urlencode($base_url."/admin/editconfig.php");
 
-                $statobj['status'] = 'Installation Complete!<br>
-                <a href="'.$base_url.'/login/index.php?refurl='.$refurl.'">Sign In And Finish Configuration</a>';
+                $statobj['status'] = '<br><br><br><br><form action="'.$base_url.'/login/index.php?refurl='.$refurl.'">
+                <button class="btn btn-primary">Sign In And Finish Configuration</button></form>';
 
                 $statobj['failure'] = 0;
             }
@@ -67,7 +67,7 @@ try {
 
             file_put_contents("tmp/" . session_id() . ".txt", json_encode($arr_content));
 
-            $sleep = rand(50000,500000);
+            $sleep = rand(40000,80000);
             usleep($sleep);
 
             unset($conn);

@@ -92,7 +92,7 @@ body {
     width: 50%;
     margin-right: auto;
     margin-left: auto;
-    margin-top: 15%;
+    margin-top: 5%;
     margin-bottom: auto;
 }
 #progress {
@@ -103,15 +103,29 @@ body {
     margin-bottom: 20px;
 }
 #progress .bar {
-    background-color: #5cb85c;
+    background-color: #3ddd3d;
     border-radius: 5px;
-    height: 28px;
+    height: 29px;
+    color: #fff;
 }
 #message {
     font-size: 12px;
     display: float;
     text-align: center;
 }
+#instmessage {
+    font-size: 12px;
+    text-align: center;
+    display: float;
+    height: 100px;
+    width: 100%;
+}
+
+label.error {
+    color: red;
+    font-size: 8px;
+}
+
 .valstatus {
     padding-top: -10px;
 }
@@ -169,4 +183,44 @@ tr:not(.checkedrow):hover {
 .navbar-toggle {
     width: 40px;
     height: 40px;
+}
+.bar{  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.barPercent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.install-header {
+  font-size: 4rem;
+    padding-top: 140px;
+}
+.vertical-center {
+  min-height: 50%;
+  min-height: 50vh;
+  align-items: center;
+}
+
+@media all and (max-width: 1200px) { /* screen size until 1200px */
+    .install-header {
+      font-size: 4rem;
+    }
+}
+@media all and (max-width: 1000px) { /* screen size until 1000px */
+    .install-header {
+      font-size: 3rem;
+    }
+}
+@media all and (max-width: 500px) { /* screen size until 500px */
+    .install-header {
+      font-size: 2rem;
+    }
+}
+
+#instTypeModal {
+    top: 25%;
+    overflow-y: auto;
 }
