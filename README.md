@@ -37,6 +37,9 @@ CREATE TABLE `loginAttempts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 ### Setup the `login/dbconf.php` file
+
+Copy the file login/dbconf.php.sample to login/dbconf.php and update your settings.
+
 ```php
 <?php
     //DATABASE CONNECTION VARIABLES
@@ -48,6 +51,9 @@ CREATE TABLE `loginAttempts` (
 ```
 
 ### Setup the `login/config.php` file
+
+Copy the file login/config.php.sample to login/login.php and update your settings.
+
 <i>Read code comments for a description of each variable</i>
 
 ```php
