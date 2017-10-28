@@ -1,17 +1,28 @@
 <?php
 class MailSender
 {
-    public function sendMail($email, $user, $id, $type)
+    public function sendMail($uid, $type)
     {
         require 'scripts/PHPMailer/PHPMailerAutoload.php';
         include 'config.php';
 
         $finishedtext = $active_email;
 
+        $u = new selectUser();
+        $uresult = $u->userPull($uid);
+        // Check if uid exist
+        if (!isset($uresult['mod_timestamp'])) {
+            return;
+        }
+        $v = hash('md5', $uresult['mod_timestamp']);
+        $user = $uresult['username'];
+        $email = $uresult['email'];
+
         // ADD $_SERVER['SERVER_PORT'] TO $verifyurl STRING AFTER $_SERVER['SERVER_NAME'] FOR DEV URLS USING PORTS OTHER THAN 80
         // substr() trims "createuser.php" off of the current URL and replaces with verifyuser.php
-        // Can pass 1 (verified) or 0 (unverified/blocked) into url for "v" parameter
-        $verifyurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "verifyuser.php?v=1&uid=" . $id;
+        // Verificationstring is the hash of the users mod_timestamp, this make sure that the link is usable
+        // only once and not if the user has been modified since the mail was sent
+        $verifyurl = substr($base_url . $_SERVER['PHP_SELF'], 0, -strlen(basename($_SERVER['PHP_SELF']))) . "verifyuser.php?v=" . $v . "&uid=" . $id;
 
         // Create a new PHPMailer object
         // ADD sendmail_path = "env -i /usr/sbin/sendmail -t -i" to php.ini on UNIX servers
