@@ -15,12 +15,6 @@ include 'config.php';
 $uid = $_GET['uid'];
 $verify = $_GET['v'];
 
-$e = new SelectEmail;
-$eresult = $e->emailPull($uid);
-
-$email = $eresult['email'];
-$username = $eresult['username'];
-
 $v = new Verify;
 
 if (isset($uid) && !empty(str_replace(' ', '', $uid)) && isset($verify) && !empty(str_replace(' ', '', $verify))) {
@@ -34,7 +28,7 @@ if (isset($uid) && !empty(str_replace(' ', '', $uid)) && isset($verify) && !empt
 
         //Send verification email
         $m = new MailSender;
-        $m->sendMail($email, $username, $uid, 'Active');
+        $m->sendMail($uid, 'Active');
     } else {
         //Echoes error from MySQL
         echo $vresponse;
