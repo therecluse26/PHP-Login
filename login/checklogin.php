@@ -10,8 +10,8 @@ $username = $_POST['myusername'];
 $password = $_POST['mypassword'];
 
 // To protect MySQL injection
-$username = stripslashes($username);
-$password = stripslashes($password);
+$username = addslashes($username);
+$password = addslashes($password);
 
 $response = '';
 $loginCtl = new LoginForm;
