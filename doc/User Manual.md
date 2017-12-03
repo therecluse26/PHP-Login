@@ -126,12 +126,11 @@ Configuration Settings
 - `site_name` - The human-readable name of your website, e.g. "Harold's Shoelace Emporium"
 - `base_url` - The base url of your website, e.g. "http://www.harolds-shoelaces.com"
 - `htmlhead` - The global HTML header for your website. Necessary because of javascript libraries that are loaded in by the server. This only needs to be basic meta-information such as:
-```
-<!DOCTYPE html>
+``<!DOCTYPE html>
 <html lang='en'>
 <head>
 <meta charset='utf-8'>
-<meta name='viewport' content-width='device-width', initial-scale='1', shrink-to-fit='no'>```
+<meta name='viewport' content-width='device-width', initial-scale='1', shrink-to-fit='no'>``
 	
 - `mainlogo` - URL of the main site logo that will appear in the top left corner of your navbar by default
 - `avatar_dir` - Filesystem directory under your PHP-Login base directory to which user avatars will be stored
