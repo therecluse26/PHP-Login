@@ -85,17 +85,7 @@ class DbConn
     */
     protected static $instance;
 
-    public static function getInstance()
-    {
-        if (null === static::$instance) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-
-    }
-
-    protected function __construct()
+    public function __construct()
     {
     /**
     * Pulls tables from
@@ -128,6 +118,15 @@ class DbConn
             die($e->getMessage());
 
         }
+    }
+    public static function getInstance()
+    {
+        if (null === static::$instance) {
+            static::$instance = new static();
+        }
+
+        return static::$instance;
+
     }
     /**
     * Prevents cloning

@@ -9,7 +9,7 @@ $sa_user = $_POST['sa_user'];
 
 try {
 
-    $dbconf = file_get_contents('../sql/dbconftemp.txt');    
+    $dbconf = file_get_contents('../sql/dbconftemp.txt');
 
     if (preg_match_all("/{{(.*?)}}/", $dbconf, $m)) {
       foreach ($m[1] as $i => $varname) {
@@ -21,7 +21,24 @@ try {
          <textarea id="dbConfResults" class="form-control" rows="6" cols="70">'. $dbconf .'</textarea>
         <button id="copyDbConf" class="btn btn-default col-md-4">Copy to Clipboard</button><span class="col-md-4" id="copyNotifDbConf"></span>
         <br><br>
-        <h3>3) Login as '.$sa_user.' user at <a href="'.$base_url.'/login/index.php">'.$base_url.'/login/index.php</a></h3>
+        <b>
+          3) Pull required depenencies by opening a terminal to the { site_root } directory (the base directory of where this is installed. For example /var/www/html/PHP-Login)
+            and running the following command:
+
+            <br><br><em> <strong>composer install </strong>
+
+            <br><br>
+            <small>* If issues arise, go to <a href="https://getcomposer.org/">https://getcomposer.org/</a> for more comprehensive documentation on this tool.</small>
+        </b>
+        <br><br>
+        <b>
+          4) Login as '.$sa_user.' user at <a href="'.$base_url.'/login/index.php">'.$base_url.'/login/index.php</a>
+        </b>
+        <br><br>
+        <b>
+          5) Complete site configuration, verify proper functionality then delete the <br>
+          <em><strong>{ site_root }/install</strong></em> folder </a>
+        </b>
         </li>
         <script>
         $("#copyDbConf").click(function(){
@@ -34,8 +51,8 @@ try {
         });
         </script>
     </ol>';
-   
+
 } catch (Exception $e) {
-    
+
     echo 'Error: ' . $e->getMessage();
 }
