@@ -55,22 +55,17 @@ Select an installation option from the pop-up modal that appears: `Automated` or
 
 Enter all relevant information into the form, submit, and wait for install to complete. 
 
-<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/acct_settings.png" alt="Login Page Screenshot" />
-
+<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_form.png" alt="Automated Installer Form" />
 
 This will generate necessary database connection and configuration files, pull required `Composer` dependencies, and create/seed the database with user supplied data.
 
-{ INSTALL IN PROCESS IMAGE }
+<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress"/>
 
 ##### If any errors occur, or if you for some reason feel like being awesome, you may install manually. See the secton entitled [Manual Installation Instructions](#maninstall) for more information.
 
-{ INSTALL COMPLETE IMAGE }
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_success.png" alt="Automated Installer Complete" />
 
-Once installation is complete, click `Sign In and Finish Configuration` and click the login link to sign in under your superadmin account (you will create this in the initial install form).
-
-{ ADMIN LOGIN IMAGE }
-
-[Post Installation Instructions](#postinstall) 
+Continue to [Post Installation Instructions](#postinstall) 
 
 
 <div id="maninstall">
@@ -82,7 +77,7 @@ The manual installation process is, well, more manual than the automated install
 
 Fill out all requested information on this page and click the `Generate Configuration` button on the bottom.
 
-{ MANINSTALL FORM IMAGE }
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/maninstall_empty.png" alt="Manual Install Form" />
 
 Configuration and SQL scripts will be generated. Several manual steps will now be necessary.
 
@@ -92,7 +87,7 @@ Configuration and SQL scripts will be generated. Several manual steps will now b
 
 - Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies. 
 
-{ MANINSTALL GENERATED IMAGE }
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" />
 
 Installation is now complete, however, a few steps are still necessary before your site is functional. Proceed to [Post Installation Instructions](#postinstall) 
 
@@ -101,10 +96,9 @@ Installation is now complete, however, a few steps are still necessary before yo
 
 Post Installation
 -----------------
-
 Now that basic installation is completed, we will need to login and do some simple site configuration. Navigate to the root of your site to login under the superadmin account you just created: ex: `[your_site]/login/index.php`
 
-{ LOGIN FORM IMAGE }
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/loginfrm_empty.png" alt="Log in" />
 
 Once you are signed in for the first time under your superadmin account, we need to finish editing site configuration. Click on the top right corner of your screen where your username is located and select `Edit Site Config` to continue.
 
