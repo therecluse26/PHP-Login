@@ -97,6 +97,7 @@ Installation is now complete, however, a few steps are still necessary before yo
 
 	
 <div id="postinstall"></div>
+
 Post Installation
 -----------------
 
@@ -119,6 +120,7 @@ For baseline functionality, ensure that proper SMTP settings are configured in t
 
 
 <div id="postinstall"></div>
+
 Configuration Settings
 ----------------------
 ###`Website` tab
