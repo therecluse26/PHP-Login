@@ -59,11 +59,11 @@ Enter all relevant information into the form, submit, and wait for install to co
 
 This will generate necessary database connection and configuration files, pull required `Composer` dependencies, and create/seed the database with user supplied data.
 
-<img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress" style="width:500px;display:block;margin:auto;" />
+<img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress" style="width:300px;display:block;margin:auto;" />
 
 ##### If any errors occur, or if you for some reason feel like being awesome, you may install manually. See the secton entitled [Manual Installation Instructions](#maninstall) for more information.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="width:500px;display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="width:300px;display:block;margin:auto;" />
 
 Continue to [Post Installation Instructions](#postinstall) 
 
