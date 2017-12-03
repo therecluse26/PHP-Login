@@ -1,5 +1,5 @@
-PHP-Login Manual
-================
+PHP-Login 3.0
+=============
 
 PHP-Login is a simple login and signup system built with PHP, MySQL (with PDO), jQuery and Bootstrap 3. It is meant to be a starting point for PHP developers to build sites from and includes basic user management classes and methods.
 
@@ -55,7 +55,8 @@ Select an installation option from the pop-up modal that appears: `Automated` or
 
 Enter all relevant information into the form, submit, and wait for install to complete. 
 
-{ FILLED OUT AUTO INSTALL FORM IMAGE }
+<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/acct_settings.png" alt="Login Page Screenshot" />
+
 
 This will generate necessary database connection and configuration files, pull required `Composer` dependencies, and create/seed the database with user supplied data.
 
@@ -117,6 +118,7 @@ For baseline functionality, ensure that proper SMTP settings are configured in t
 *_For quick reference, hover over the name of each setting to see a description of what it does_
 
 
+Verify that everything is working properly. Once this is done **remember to delete the `/install` directory**
 
 #### Congratulations, you've successfully set up PHP-Login! Now get to building your website!
 
