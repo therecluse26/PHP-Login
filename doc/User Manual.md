@@ -5,7 +5,7 @@ PHP-Login is a simple login and signup system built with PHP, MySQL (with PDO), 
 
 Technologies used:
 ------------------
-#####Prerequisites
+##### Prerequisites
 
 - `PHP` *_required_
 	- Version `7.0+` recommended
@@ -24,7 +24,7 @@ Technologies used:
 - `cURL` _recommended_
 	- Version `7+` recommended
 
-#####Components loaded via Composer
+##### Components loaded via Composer
 - `jQuery`
 	- Version `3.1`
 	- Pulled in via composer
@@ -61,7 +61,7 @@ This will generate necessary database connection and configuration files, pull r
 
 { INSTALL IN PROCESS IMAGE }
 
-#####If any errors occur, or if you for some reason feel like being awesome, you may install manually. See the secton entitled [Manual Installation Instructions](#maninstall) for more information.
+##### If any errors occur, or if you for some reason feel like being awesome, you may install manually. See the secton entitled [Manual Installation Instructions](#maninstall) for more information.
 
 { INSTALL COMPLETE IMAGE }
 
@@ -118,14 +118,14 @@ For baseline functionality, ensure that proper SMTP settings are configured in t
 
 
 
-####Congratulations, you've successfully set up PHP-Login! Now get to building your website!
+#### Congratulations, you've successfully set up PHP-Login! Now get to building your website!
 
 
 <div id="postinstall"></div>
 
 Configuration Settings
 ----------------------
-###`Website` tab
+### `Website` tab
 
 - `site_name` - The human-readable name of your website, e.g. "Harold's Shoelace Emporium"
 - `base_url` - The base url of your website, e.g. "http://www.harolds-shoelaces.com"
@@ -142,7 +142,7 @@ Configuration Settings
 - `admin_email` - Email address of superadmin in case of errors
 - `timezone` - Timezone of website
 
-###`Mailer` tab
+### `Mailer` tab
 - 	`mail_server_type` - Type of mail server. `smtp` is default and the only tested value.
 -  `mail_server` - Mail server address. Ex: `stmp.website.com`
 -  `mail_user` - Email server user. Ex: `user@website.com`
@@ -152,7 +152,7 @@ Configuration Settings
 -  `from_email` - Email address to send system emails from
 -  `from_name` - Name for system to send emails as
 	
-###`Security` tab
+### `Security` tab
 - `password_policy_enforce` - If you want to require the password policy that you set, select `true`
 - `password_min_length` - Minimum password length if `password_policy_enforce` is set to `true`
 -  `max_attempts` - Maximum number of login attempts before locking user out for set `login_timeout` value
@@ -161,7 +161,7 @@ Configuration Settings
 -  `jwt_secret` - Secret for JSON Web Tokens. Used to generate token hashes, can be any value
 -  `admin_verify` - If set to `true` admin must verify users. If set to false, users can self-verify via email
 	
-###`Messages` tab
+### `Messages` tab
 - `signup_thanks` - Message to display after user signs up and can self verify. Should notify user that a verification email will be sent
 - `signup_requires_admin` - Message to display after user signs up but needs admin approval
 - `verify_email_admin` - Email sent to user when admin verification is required
