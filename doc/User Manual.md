@@ -113,7 +113,9 @@ For baseline functionality, ensure that proper SMTP settings are configured in t
 
 { MAILER CONFIG IMAGE }
 
-*For quick reference, hover over the name of each setting to see a description of what it does*
+
+*_For quick reference, hover over the name of each setting to see a description of what it does_
+
 
 
 ####Congratulations, you've successfully set up PHP-Login! Now get to building your website!
