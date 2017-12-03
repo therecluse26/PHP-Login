@@ -55,15 +55,15 @@ Select an installation option from the pop-up modal that appears: `Automated` or
 
 Enter all relevant information into the form, submit, and wait for install to complete. 
 
-<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_form.png" alt="Automated Installer Form" />
+<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" />
 
 This will generate necessary database connection and configuration files, pull required `Composer` dependencies, and create/seed the database with user supplied data.
 
-<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress"/>
+<img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress" style="width:500px;display:block;margin:auto;" />
 
 ##### If any errors occur, or if you for some reason feel like being awesome, you may install manually. See the secton entitled [Manual Installation Instructions](#maninstall) for more information.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_success.png" alt="Automated Installer Complete" />
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="width:500px;display:block;margin:auto;" />
 
 Continue to [Post Installation Instructions](#postinstall) 
 
@@ -77,7 +77,7 @@ The manual installation process is, well, more manual than the automated install
 
 Fill out all requested information on this page and click the `Generate Configuration` button on the bottom.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/maninstall_empty.png" alt="Manual Install Form" />
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/maninstall_empty.png" alt="Manual Install Form" style="display:block;margin:auto;" />
 
 Configuration and SQL scripts will be generated. Several manual steps will now be necessary.
 
@@ -87,7 +87,7 @@ Configuration and SQL scripts will be generated. Several manual steps will now b
 
 - Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies. 
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" />
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" />
 
 Installation is now complete, however, a few steps are still necessary before your site is functional. Proceed to [Post Installation Instructions](#postinstall) 
 
@@ -98,15 +98,17 @@ Post Installation
 -----------------
 Now that basic installation is completed, we will need to login and do some simple site configuration. Navigate to the root of your site to login under the superadmin account you just created: ex: `[your_site]/login/index.php`
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/loginfrm_empty.png" alt="Log in" />
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/loginfrm_empty.png" alt="Log in" style="display:block;margin:auto;" />
 
 Once you are signed in for the first time under your superadmin account, we need to finish editing site configuration. Click on the top right corner of your screen where your username is located and select `Edit Site Config` to continue.
+
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/dropdown_menu.png" alt="Edit Site Config" style="height:200px;display:block;margin:auto;"/>
 
 On the `Edit Site Configuration` page, numerous configuration options can be set. Be aware, that some of these changes (such as `base_url`) can lead to a broken site if configured incorrectly. If any of these config changes do lead to a non-functioning site, you can recover it by updating the `app_config` MySQL database table to the correct values.
 
 For baseline functionality, ensure that proper SMTP settings are configured in the `Mailer` tab. Once this is filled out, click `Save` and then `Test Email Config` to show if a successful email connection was made or otherwise show connection/authentication errors.
 
-{ MAILER CONFIG IMAGE }
+ <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/superadmin_email_config.png" alt="Mail Config" style="display:block;margin:auto;" />
 
 
 *_For quick reference, hover over the name of each setting to see a description of what it does_
@@ -115,6 +117,10 @@ For baseline functionality, ensure that proper SMTP settings are configured in t
 Verify that everything is working properly. Once this is done **remember to delete the `/install` directory**
 
 #### Congratulations, you've successfully set up PHP-Login! Now get to building your website!
+
+To learn about additional features, open the corner dropdown menu and explore the options contained. 
+
+**Note:** The available options will be different if a user is an admin vs a standard user. Standard users will only see the `Edit Profile`, `Account Settings` and `Logout` menu options.
 
 
 <div id="postinstall"></div>
