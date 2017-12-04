@@ -39,7 +39,7 @@ Technologies used:
 Installation
 ------------
 ### Clone the Repository
-    $ git clone https://github.com/fethica/PHP-Login.git
+    $ git clone https://github.com/therecluse26/PHP-Login.git
 
 ### Run through web-based installer
 Open this link in your web browser (replacing [yoursite.com] with your site address)
@@ -55,15 +55,15 @@ Select an installation option from the pop-up modal that appears: `Automated` or
 
 Enter all relevant information into the form, submit, and wait for install to complete.
 
-<img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/master/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" />
+<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/master/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" />
 
 This will generate necessary database connection and configuration files, pull required `Composer` dependencies, and create/seed the database with user supplied data.
 
-<img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress" style="width:300px;display:block;margin:auto;" />
+<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress" style="width:300px;display:block;margin:auto;" />
 
 ##### If any errors occur, or if you for some reason feel like being awesome, you may install manually. See the secton entitled [Manual Installation Instructions](#maninstall) for more information.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="width:300px;display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="width:300px;display:block;margin:auto;" />
 
 Continue to [Post Installation Instructions](#postinstall)
 
@@ -77,7 +77,7 @@ The manual installation process is, well, more manual than the automated install
 
 Fill out all requested information on this page and click the `Generate Configuration` button on the bottom.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/maninstall_empty.png" alt="Manual Install Form" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_empty.png" alt="Manual Install Form" style="display:block;margin:auto;" />
 
 Configuration and SQL scripts will be generated. Several manual steps will now be necessary.
 
@@ -87,7 +87,7 @@ Configuration and SQL scripts will be generated. Several manual steps will now b
 
 - Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" />
 
 Installation is now complete, however, a few steps are still necessary before your site is functional. Proceed to [Post Installation Instructions](#postinstall)
 
@@ -98,17 +98,17 @@ Post Installation
 -----------------
 Now that basic installation is completed, we will need to login and do some simple site configuration. Navigate to the root of your site to login under the superadmin account you just created: ex: `[your_site]/login/index.php`
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/loginfrm_empty.png" alt="Log in" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/loginfrm_empty.png" alt="Log in" style="display:block;margin:auto;" />
 
 Once you are signed in for the first time under your superadmin account, we need to finish editing site configuration. Click on the top right corner of your screen where your username is located and select `Edit Site Config` to continue.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/dropdown_menu.png" alt="Edit Site Config" style="height:200px;display:block;margin:auto;"/>
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/dropdown_menu.png" alt="Edit Site Config" style="height:200px;display:block;margin:auto;"/>
 
 On the `Edit Site Configuration` page, numerous configuration options can be set. Be aware, that some of these changes (such as `base_url`) can lead to a broken site if configured incorrectly. If any of these config changes do lead to a non-functioning site, you can recover it by updating the `app_config` MySQL database table to the correct values.
 
 For baseline functionality, ensure that proper SMTP settings are configured in the `Mailer` tab. Once this is filled out, click `Save` and then `Test Email Config` to show if a successful email connection was made or otherwise show connection/authentication errors.
 
- <img src="https://raw.githubusercontent.com/fethica/PHP-Login/master/doc/images/superadmin_email_config.png" alt="Mail Config" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/superadmin_email_config.png" alt="Mail Config" style="display:block;margin:auto;" />
 
 
 *_For quick reference, hover over the name of each setting to see a description of what it does_
@@ -130,7 +130,7 @@ Configuration Settings
 ### `Website` tab
 
 - `site_name` - The human-readable name of your website, e.g. "Harold's Shoelace Emporium"
-- `base_url` - The base url of your website, e.g. "http://www.harolds-shoelaces.com"
+- `base_url` - The base url of your website, e.g. "http://www.haroldsshoelaces.com"
 - `htmlhead` - The global HTML header for your website. Necessary because of javascript libraries that are loaded in by the server. This only needs to be basic meta-information such as:
 ```html
 <!DOCTYPE html>
