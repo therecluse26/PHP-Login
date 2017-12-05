@@ -55,7 +55,7 @@ Select an installation option from the pop-up modal that appears: `Automated` or
 
 Enter all relevant information into the form, submit, and wait for install to complete.
 
-<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/master/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" />
+<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" />
 
 This will generate necessary database connection and configuration files, pull required `Composer` dependencies, and create/seed the database with user supplied data.
 
