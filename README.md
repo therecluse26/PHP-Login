@@ -33,7 +33,7 @@ Technologies used:
 - `PHP-Mailer`
 	- Version `5.2`
 - `JSON Web Tokens` (JWT) (Firebase implementation)
-	- Version `4.0`
+	- Version `5.0`
 
 
 Installation
