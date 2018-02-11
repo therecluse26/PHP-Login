@@ -8,6 +8,12 @@ function checkSessionKey($key)
     return $_SESSION[$key];
 }
 
+$allowed_types = array('superadminpage', 'adminpage', 'userpage', 'loginpage', 'page');
+if (!in_array($pagetype, $allowed_types, true)) {
+    throw new Exception("Server Error: Please contact site administrator and relay this error - xER41400 [".$pagetype."]");
+    exit;
+}
+
 if ($ip != getenv("REMOTE_ADDR") || (checkSessionKey("admin") == false && $pagetype == "adminpage") || (checkSessionKey("username") == false && $pagetype == "userpage")) {
 
     $refurl = urlencode("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
