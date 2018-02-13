@@ -23,19 +23,24 @@ class AuthorizationHandler
         }
     }
 
+    private function sessionValid()
+    {
+        return $_SERVER["REMOTE_ADDR"] == $this->checkSessionKey("ip_address");
+    }
+
     public function isSuperAdmin()
     {
-        return $this->checkSessionKey("superadmin") == 1;
+        return $this->checkSessionKey("superadmin") == 1 && $this->sessionValid();
     }
 
     public function isAdmin()
     {
-        return $this->checkSessionKey("admin") != false;
+        return $this->checkSessionKey("admin") != false && $this->sessionValid();
     }
 
     public function isLoggedIn()
     {
-        return $this->checkSessionKey("username") != false;
+        return $this->checkSessionKey("username") != false && $this->sessionValid();
     }
 
     //Check if user is OK for $pagetype

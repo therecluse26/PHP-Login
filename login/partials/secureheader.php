@@ -2,7 +2,7 @@
 
 $auth = new AuthorizationHandler;
 
-if ($ip != getenv("REMOTE_ADDR") || !$auth->pageOk($pagetype)) {
+if (!$auth->pageOk($pagetype)) {
     // Not authorized...
 
     if ($auth->isLoggedIn()) {
