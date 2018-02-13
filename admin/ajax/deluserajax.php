@@ -6,40 +6,45 @@ $cwd = getcwd(); // remember the current path
 chdir('../../');
 require 'login/autoload.php';
 
-//Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
+session_start();
 
-$uid = $_GET['uid'];
+if ((new AuthorizationHandler)->pageOk("adminpage")) {
 
-$ids = MiscFunctions::assembleUids($uid);
+    //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
 
-if ((isset($ids)) && sizeof($ids) >= 1) {
+    $uid = $_GET['uid'];
 
-    $e = new UserData;
-    $eresult = $e->userDataPull($uid, 0);
+    $ids = MiscFunctions::assembleUids($uid);
 
-    foreach($eresult as $e) {
+    if ((isset($ids)) && sizeof($ids) >= 1) {
 
-        try {
+        $e = new UserData;
+        $eresult = $e->userDataPull($uid, 0);
 
-            $singleId = $e['id'];
+        foreach($eresult as $e) {
 
-            //Deletes user
-            $dresponse = Delete::deleteUser($singleId);
+            try {
 
-            //Success
-            if ($dresponse == 1) {
+                $singleId = $e['id'];
 
-                echo $dresponse;
+                //Deletes user
+                $dresponse = Delete::deleteUser($singleId);
 
-                } else {
-                    //Validation error from empty form variables
-                    //header('HTTP/1.1 400 Bad Request');
-                    throw new Exception("Failure");
+                //Success
+                if ($dresponse == 1) {
+
+                    echo $dresponse;
+
+                    } else {
+                        //Validation error from empty form variables
+                        //header('HTTP/1.1 400 Bad Request');
+                        throw new Exception("Failure");
+                }
+
+            } catch(Exception $ex) {
+                echo $ex->getMessage();
+
             }
-
-        } catch(Exception $ex) {
-            echo $ex->getMessage();
-
         }
     }
 }
