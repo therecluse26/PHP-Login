@@ -2,7 +2,7 @@ $(document).ready(function(){
 
   $("#submit").click(function(){
 
-    var userid = $("#userid").val();
+    var t = $("#t").val();
     var password = $("#password1").val();
     var password2 = $("#password2").val();
 
@@ -10,14 +10,14 @@ $(document).ready(function(){
         $("#message").fadeOut(0, function (){
               $(this).html("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Please enter new password twice</div>").fadeIn();
         })
-    } else if (userid == "") {
+    } else if (t == "") {
 
     }
     else {
       $.ajax({
         type: "POST",
         url: "ajax/resetformsubmit.php",
-        data: "userid="+userid+"&password1="+password+"&password2="+password2,
+        data: "t="+t+"&password1="+password+"&password2="+password2,
         dataType: "json",
         success: function(json){
 

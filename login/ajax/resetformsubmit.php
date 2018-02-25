@@ -5,40 +5,60 @@ require_once '../vendor/autoload.php';
 $config = new AppConfig;
 
 //Pull username, generate new ID and hash password
-$userid = $_POST['userid'];
+$jwt = $_POST['t'];
 $pw1 = $_POST['password1'];
 $pw2 = $_POST['password2'];
 
+use \Firebase\JWT\JWT;
+
+try {
+    $secret = $config->pullSetting("jwt_secret");
+    $decoded = JWT::decode($jwt, $secret, array('HS256'));
+    $userid = $decoded->userid;
+    $tokenid = $decoded->tokenid;
+
+    $validToken = TokenHandler::selectToken($tokenid, $userid, 0);
+} catch (Exception $e) {
+    echo "Unknown error occured [AJ14440]";
+    exit();
+}
+
 try {
 
-    $conf = $config->pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
+    if ($validToken && ($decoded->pw_reset == "true")) {
 
-    $user = UserData::pullUserById($userid);
+        $conf = $config->pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
 
-    $pwresp = PasswordPolicy::validate($pw1, $pw2, (bool) $conf['password_policy_enforce'], (int) $conf['password_min_length']);
+        $user = UserData::pullUserById($userid);
 
-    //Validation passed
-    if ($pwresp['status'] == true) {
+        $pwresp = PasswordPolicy::validate($pw1, $pw2, (bool) $conf['password_policy_enforce'], (int) $conf['password_min_length']);
 
-        //Tries inserting into database and add response to variable
+        //Validation passed
+        if ($pwresp['status'] == true) {
 
-        $a = new PasswordForm;
+            //Tries inserting into database and add response to variable
 
-        $response = $a->resetPw($user['id'], $pw1);
+            $a = new PasswordForm;
 
-        //Success
-        if ($response['status'] == true) {
+            $response = $a->resetPw($user['id'], $pw1);
 
-            echo json_encode($response);
+            //Success
+            if ($response['status'] == true) {
+
+                echo json_encode($response);
+
+            } else {
+                //Failure
+                MiscFunctions::mySqlErrors($response['message']);
+            }
 
         } else {
-            //Failure
-            MiscFunctions::mySqlErrors($response['message']);
+            //Validation error from empty form variables
+            echo json_encode($pwresp);
         }
-
     } else {
-        //Validation error from empty form variables
-        echo json_encode($pwresp);
+        echo "Unknown error occured [AJ14441]";
+        exit();
     }
 
 } catch (Exception $e) {
