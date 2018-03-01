@@ -6,37 +6,42 @@ $cwd = getcwd(); // remember the current path
 chdir('../../');
 require 'login/autoload.php';
 
-//Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
+session_start();
 
-$uid = $_GET['uid'];
+if ((new AuthorizationHandler)->pageOk("superadminpage")) {
 
-$ids = json_decode($uid);
+    //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
 
-if ((isset($ids)) && sizeof($ids) >= 1) {
+    $uid = $_GET['uid'];
 
-    try {
+    $ids = json_decode($uid);
 
-        foreach($ids as $id){
+    if ((isset($ids)) && sizeof($ids) >= 1) {
 
-            //Deletes user
-            $dresponse = Delete::deleteLog($id);
+        try {
 
-            //Success
-            if ($dresponse['status'] == 1) {
+            foreach($ids as $id){
 
-                echo json_encode($dresponse);
+                //Deletes user
+                $dresponse = Delete::deleteLog($id);
 
-                } else {
-                    //Validation error from empty form variables
-                    //header('HTTP/1.1 400 Bad Request');
-                    throw new Exception("Failure");
+                //Success
+                if ($dresponse['status'] == 1) {
+
+                    echo json_encode($dresponse);
+
+                    } else {
+                        //Validation error from empty form variables
+                        //header('HTTP/1.1 400 Bad Request');
+                        throw new Exception("Failure");
+                }
             }
+
+        } catch(Exception $ex) {
+
+            echo json_encode(array("status"=>0,"message"=>$ex->getMessage()));
+
         }
 
-    } catch(Exception $ex) {
-
-        echo json_encode(array("status"=>0,"message"=>$ex->getMessage()));
-
     }
-
 }

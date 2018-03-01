@@ -5,15 +5,18 @@
 require "../../login/autoload.php";
 $conf = new AppConfig;
 
-try {
+session_start();
 
-    $update = $conf->updateMultiSettings($_POST);
+if ((new AuthorizationHandler)->pageOk("superadminpage")) {
 
-    echo json_encode($update);
+    try {
 
-} catch (Exception $e) {
+        $update = $conf->updateMultiSettings($_POST);
 
-    echo $e->getMessage();
+        echo json_encode($update);
+
+    } catch (Exception $e) {
+
+        echo $e->getMessage();
+    }
 }
-
-

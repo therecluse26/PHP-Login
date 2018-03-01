@@ -2,23 +2,29 @@
 /**
 * AJAX page for testing email settings in editconfig.php
 **/
-if ($_GET['t'] == '1') {
 
-    require '../../login/autoload.php';
+require '../../login/autoload.php';
 
-    $test = new EmailSettings;
+session_start();
 
-    $resp = $test->testMailSettings();
+if ((new AuthorizationHandler)->pageOk("superadminpage")) {
+    
+    if ($_GET['t'] == '1') {
 
-    unset($test);
+        $test = new EmailSettings;
 
-    if ($resp['status'] == 'false'){
+        $resp = $test->testMailSettings();
+
+        unset($test);
+
+        if ($resp['status'] == 'false'){
 
 
 
+        }
+
+        $jsonresp = json_encode($resp);
+
+        echo $jsonresp;
     }
-
-    $jsonresp = json_encode($resp);
-
-    echo $jsonresp;
 }

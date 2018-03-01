@@ -1,30 +1,24 @@
 <?php
-//Checks session keys
-function checkSessionKey($key)
-{
-    if (!isset($_SESSION[$key])) {
-        return false;
+
+$auth = new AuthorizationHandler;
+
+if (!$auth->pageOk($pagetype)) {
+    // Not authorized...
+
+    if ($auth->isLoggedIn()) {
+        // User is either logged in as admin but tries to access superadmin page,
+        // or logged in as regular user but trying to access admin page.
+        // Do not append refurl, then we could get stuuck in a loop...
+        header("location:".$this->base_url);
+    } else {
+        // User not logged in...
+        $refurl = urlencode("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
+        session_destroy();
+        header("location:".$this->base_url."/login/index.php?refurl=".$refurl);
     }
-    return $_SESSION[$key];
-}
-
-$allowed_types = array('superadminpage', 'adminpage', 'userpage', 'loginpage', 'page');
-if (!in_array($pagetype, $allowed_types, true)) {
-    throw new Exception("Server Error: Please contact site administrator and relay this error - xER41400 [".$pagetype."]");
-    exit;
-}
-
-if ($ip != getenv("REMOTE_ADDR") || (checkSessionKey("admin") == false && $pagetype == "adminpage") || (checkSessionKey("username") == false && $pagetype == "userpage")) {
-
-    $refurl = urlencode("http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]");
-
-    session_destroy();
-
-    header("location:".$this->base_url."/login/index.php?refurl=".$refurl);
-
     exit;
 
-} elseif (array_key_exists("username", $_SESSION) && $pagetype == "loginpage") {
+} elseif ($auth->isLoggedIn() && $pagetype == "loginpage") {
 
     if (array_key_exists("refurl", $_GET)){
 
@@ -36,13 +30,5 @@ if ($ip != getenv("REMOTE_ADDR") || (checkSessionKey("admin") == false && $paget
     } else {
 
         header("location:".$this->base_url."/index.php");
-    }
-
-//Prevent non superadmins from accessing superadmin pages
-} elseif ($pagetype == "superadminpage") {
-
-    if ((checkSessionKey("superadmin") == false) || $_SESSION["superadmin"] != 1) {
-
-        header("location:".$this->base_url);
     }
 }
