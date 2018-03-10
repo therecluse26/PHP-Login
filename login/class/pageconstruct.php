@@ -28,12 +28,12 @@ class PageConstruct extends AppConfig {
     /**
     * Builds page navbar
     **/
-    public function pullNav($username = null, $admin = 0, $pagetype = 'page') {
+    public function pullNav($username = null, $admin = 0, $pagetype = 'page', $barmenu = array()) {
 
         $url = $this->base_url;
         $mainlogo = $this->mainlogo;
 
-            include $this->base_dir . "/login/partials/nav.php";
+        include $this->base_dir . "/login/partials/nav.php";
 
     }
 }

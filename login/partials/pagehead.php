@@ -52,7 +52,7 @@ try {
     //Pulls navbar
     if (array_key_exists('username', $_SESSION)) {
 
-        $conf->pullNav($_SESSION['username'], $_SESSION['admin'], $pagetype);
+        $conf->pullNav($_SESSION['username'], $_SESSION['admin'], $pagetype, $barmenu);
 
         //Checks for proper mailer configuration. Only checks connection if email_working db entry is false
         if ($conf->email_working == 'false') {

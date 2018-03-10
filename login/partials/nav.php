@@ -20,14 +20,44 @@ if (str_replace(' ', '', $this->mainlogo) == '') {
 
 
 <!-- BOOTSTRAP NAV LINKS GO HERE. USE <li> items with <a> links inside of <ul> -->
-<ul class="nav navbar-nav">
 
-</ul>
+<?php
 
+if (is_array($barmenu)) {
+    echo '<ul class="nav navbar-nav">';
+
+    foreach ($barmenu as $btn => $url) {
+        
+        if (is_array($url)) {
+            echo "<li class=\"dropdown\">";
+            echo "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">";
+            echo $btn;
+            echo "<span class=\"caret\"></span>";
+            echo "</a>";
+            echo "<ul class=\"dropdown-menu\">";
+
+            foreach ($url as $sub_btn => $sub_url) {
+                echo "<li><a href=\"" . (MiscFunctions::isAbsUrl($sub_url) ? $sub_url : $this->base_url . '/' . $sub_url) . "\">$sub_btn</a></li>";
+            }
+
+            echo "</ul>";
+
+        } else {
+            echo "<li><a href=\"" . (MiscFunctions::isAbsUrl($url) ? $url : $this->base_url . '/' . $url) . "\">$btn</a></li>";
+        }
+        
+    }
+
+    echo "</ul>";
+}
+
+?>
 
 <?php
 // SIGN IN / USER SETTINGS BUTTON
-if (isset($_SESSION['username'])){
+$auth = new AuthorizationHandler;
+
+if ($auth->isLoggedIn()){
 
     $usr = profileData::pullUserFields($_SESSION['uid'], Array('firstname', 'lastname'));
 
@@ -39,28 +69,30 @@ if (isset($_SESSION['username'])){
 
 ?>
     <ul class="nav navbar-nav navbar-right">
-    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $user; ?>
-    <span class="caret"></span>
-    </a>
-      <ul class="dropdown-menu" aria-labelledby="userDropdown">
-    <li><a href="<?php echo $this->base_url; ?>/user/profileedit.php">Edit Profile</a></li>
-    <li><a href="<?php echo $this->base_url; ?>/user/accountedit.php">Account Settings</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <?php echo $user; ?>
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li><a href="<?php echo $this->base_url; ?>/user/profileedit.php">Edit Profile</a></li>
+                <li><a href="<?php echo $this->base_url; ?>/user/accountedit.php">Account Settings</a></li>
 
-    <!-- Admin Controls -->
-    <?php if ((array_key_exists('admin', $_SESSION)) && $_SESSION['admin'] == 1): ?>
-          <li role="separator" class="divider"></li>
-        <li><a href="<?php echo $this->base_url; ?>/admin/verifyusers.php">Verify/Delete Users</a></li>
-    <?php endif; ?>
-    <!-- Superadmin Controls -->
-    <?php if ((array_key_exists('superadmin', $_SESSION)) && $_SESSION['superadmin'] == 1): ?>
-        <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
-        <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
+                <!-- Admin Controls -->
+                <?php if ($auth->isAdmin()): ?>
+                      <li role="separator" class="divider"></li>
+                    <li><a href="<?php echo $this->base_url; ?>/admin/verifyusers.php">Verify/Delete Users</a></li>
+                <?php endif; ?>
+                <!-- Superadmin Controls -->
+                <?php if ($auth->isSuperAdmin()): ?>
+                    <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
+                    <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
 
-    <?php endif; ?>
-    <li role="separator" class="divider"></li>
-    <li><a href="<?php echo $this->base_url; ?>/login/logout.php">Logout</a></li>
-    </ul>
-    </li>
+                <?php endif; ?>
+                <li role="separator" class="divider"></li>
+                <li><a href="<?php echo $this->base_url; ?>/login/logout.php">Logout</a></li>
+            </ul>
+        </li>
     </ul>
 
 <?php
