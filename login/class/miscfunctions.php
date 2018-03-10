@@ -33,4 +33,16 @@ class MiscFunctions
         return $uids;
     }
 
+    // Check if url is relative or absolute
+    public static function isAbsUrl($url) {
+        if ($url[0] == '/') {
+            return true;
+        }
+        
+        if (strpos($url, "://")) {
+            return true;
+        }
+        
+        return false;
+    }
 }
