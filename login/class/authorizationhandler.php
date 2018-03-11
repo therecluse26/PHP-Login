@@ -7,6 +7,10 @@ class AuthorizationHandler
     //Checks session keys
     private function checkSessionKey($key)
     {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         if (!isset($_SESSION[$key])) {
             return false;
         }
