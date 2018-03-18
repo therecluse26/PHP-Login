@@ -23,6 +23,14 @@ if (str_replace(' ', '', $this->mainlogo) == '') {
 
 <?php
 
+if (!is_array($barmenu)) {
+    // If no menu array is specified as override, try to fallback on menu file
+    $menu_file = dirname(__FILE__) . "/../../phplogin_menu.php";
+    if (file_exists($menu_file)) {
+        include $menu_file;
+    }
+}
+
 if (is_array($barmenu)) {
     echo '<ul class="nav navbar-nav">';
 
