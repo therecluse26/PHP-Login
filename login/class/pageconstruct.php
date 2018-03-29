@@ -28,7 +28,7 @@ class PageConstruct extends AppConfig {
     /**
     * Builds page navbar
     **/
-    public function pullNav($username = null, $admin = 0, $pagetype = 'page', $barmenu = array()) {
+    public function pullNav($username = null, $admin = 0, $pagetype = 'page', $barmenu = NULL) {
 
         $url = $this->base_url;
         $mainlogo = $this->mainlogo;
