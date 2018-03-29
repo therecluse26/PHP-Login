@@ -82,13 +82,13 @@ CREATE TABLE `cookies` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `deletedmembers`
+-- Table structure for table `deleted_members`
 --
 
-DROP TABLE IF EXISTS `deletedmembers`;
+DROP TABLE IF EXISTS `deleted_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deletedmembers` (
+CREATE TABLE `deleted_members` (
   `id` char(23) NOT NULL,
   `username` varchar(65) NOT NULL DEFAULT '',
   `password` varchar(65) NOT NULL DEFAULT '',
@@ -102,13 +102,13 @@ CREATE TABLE `deletedmembers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `loginattempts`
+-- Table structure for table `login_attempts`
 --
 
-DROP TABLE IF EXISTS `loginattempts`;
+DROP TABLE IF EXISTS `login_attempts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `loginattempts` (
+CREATE TABLE `login_attempts` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Username` varchar(65) DEFAULT NULL,
   `IP` varchar(20) NOT NULL,
@@ -119,13 +119,13 @@ CREATE TABLE `loginattempts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `maillog`
+-- Table structure for table `mail_log`
 --
 
-DROP TABLE IF EXISTS `maillog`;
+DROP TABLE IF EXISTS `mail_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `maillog` (
+CREATE TABLE `mail_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL DEFAULT 'generic',
   `status` varchar(45) DEFAULT NULL,
@@ -138,13 +138,13 @@ CREATE TABLE `maillog` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `memberinfo`
+-- Table structure for table `member_info`
 --
 
-DROP TABLE IF EXISTS `memberinfo`;
+DROP TABLE IF EXISTS `member_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `memberinfo` (
+CREATE TABLE `member_info` (
   `userid` char(23) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(55) DEFAULT NULL,
