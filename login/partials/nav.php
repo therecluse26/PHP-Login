@@ -17,15 +17,13 @@ if (str_replace(' ', '', $this->mainlogo) == '') {
 <!-- Collect the nav links, forms, and other content for toggling -->
 <div class="collapse navbar-collapse" id="navbar-collapsed">
 
-
-
 <!-- BOOTSTRAP NAV LINKS GO HERE. USE <li> items with <a> links inside of <ul> -->
 
 <?php
 
 if (!is_array($barmenu)) {
     // If no menu array is specified as override, try to fallback on menu file
-    $menu_file = dirname(__FILE__) . "/../../phplogin_menu.php";
+    $menu_file = dirname(__FILE__) . "/barmenu.php";
     if (file_exists($menu_file)) {
         include $menu_file;
     }
@@ -35,7 +33,6 @@ if (is_array($barmenu)) {
     echo '<ul class="nav navbar-nav">';
 
     foreach ($barmenu as $btn => $url) {
-        
         if (is_array($url)) {
             echo "<li class=\"dropdown\">";
             echo "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">";
@@ -49,11 +46,9 @@ if (is_array($barmenu)) {
             }
 
             echo "</ul>";
-
         } else {
             echo "<li><a href=\"" . (MiscFunctions::isAbsUrl($url) ? $url : $this->base_url . '/' . $url) . "\">$btn</a></li>";
         }
-        
     }
 
     echo "</ul>";
@@ -65,17 +60,14 @@ if (is_array($barmenu)) {
 // SIGN IN / USER SETTINGS BUTTON
 $auth = new AuthorizationHandler;
 
-if ($auth->isLoggedIn()){
-
-    $usr = profileData::pullUserFields($_SESSION['uid'], Array('firstname', 'lastname'));
+if ($auth->isLoggedIn()) {
+    $usr = profileData::pullUserFields($_SESSION['uid'], array('firstname', 'lastname'));
 
     if (is_array($usr) && trim($usr['firstname']) != '' && trim($usr['lastname']) != '') {
         $user = $usr['firstname']. ' ' .$usr['lastname'];
     } else {
         $user = $_SESSION['username'];
-    }
-
-?>
+    } ?>
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -104,10 +96,8 @@ if ($auth->isLoggedIn()){
     </ul>
 
 <?php
-
 } else {
-    //User not logged in
-?>
+        //User not logged in?>
     <ul class="nav navbar-nav navbar-right">
     <li class="dropdown"><a href="<?php echo $this->base_url; ?>/login/index.php" role="button" aria-haspopup="false" aria-expanded="false">Sign In
     </a>
@@ -115,13 +105,11 @@ if ($auth->isLoggedIn()){
     </ul>
 
 <?php
-
-};
+    };
 
 ?>
 
 </div><!-- /.navbar-collapse -->
 </div>
-
 </div>
 </nav>

@@ -1,7 +1,7 @@
 <?php
 $pagetype = 'loginpage';
 $title = 'Verify User';
-require 'partials/pagehead.php';
+require 'misc/pagehead.php';
 ?>
 </head>
 <body>

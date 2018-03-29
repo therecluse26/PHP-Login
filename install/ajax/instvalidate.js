@@ -1,36 +1,5 @@
 $(document).ready(function(){
 
-/*    $('#dbform').validate({
-        rules: {
-            dbhost: {
-                required: true
-            },
-            dbuser: {
-                required: true
-            },
-            dbpw: {
-                required: true
-            },
-            dbname: {
-                required: true
-            },
-            superadmin: {
-                required: true
-            },
-            saemail: {
-                required: true,
-                email: true
-            },
-            sapw: {
-                required: true
-            }
-        },
-        submitHandler: function(form) {
-            console.log(form);
-            form.submit();
-        }
-    });*/
-
     $('#root_dir').change(function() {
         var dirpath = $('#root_dir').val();
         $.ajax({

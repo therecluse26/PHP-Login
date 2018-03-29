@@ -6,7 +6,7 @@
 **/
 $pagetype = 'superadminpage';
 $title = 'Edit Site Configuration';
-require '../login/partials/pagehead.php';
+require '../login/misc/pagehead.php';
 $conf = new AppConfig;
 $settingsArr = $conf->pullAllSettings();
 //Gets categories from settings array

@@ -1,16 +1,16 @@
 SET 
 @base_dir = {{base_dir}},
 @base_url = {{base_url}},
-@site_name = {{site_name}}, 
-@curl_enabled = {{curl_enabled}}, 
+@site_name = {{site_name}},
+@curl_enabled = {{curl_enabled}},
 @mail_server = {{mail_server}},
 @mail_user = {{mail_user}},
-@mail_pw = {{mail_pw}}, 
-@mail_security = 'tls', 
+@mail_pw = {{mail_pw}},
+@mail_security = 'tls',
 @mail_port = '587',
 @sa_user = {{sa_user}},
 @sa_id = {{sa_id}},
-@sa_email = {{sa_email}}, 
+@sa_email = {{sa_email}},
 @sa_password = {{sa_password}},
 @time_zone = {{time_zone}};
 

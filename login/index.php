@@ -1,7 +1,7 @@
 <?php
 $pagetype = 'loginpage';
 $title = 'Login';
-include 'partials/pagehead.php';
+include 'misc/pagehead.php';
 ?>
 </head>
 <body>

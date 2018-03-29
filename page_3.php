@@ -7,7 +7,7 @@ $barmenu = array(
 
 $title = "The very fancy Page 3";
 $pagetype = "userpage"; // Allow only logged in users
-include "login/partials/pagehead.php";
+include "login/misc/pagehead.php";
 ?>
 </head>
 <body>

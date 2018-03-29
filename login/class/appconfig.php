@@ -5,7 +5,7 @@
 class AppConfig extends DbConn
 {
     /**
-    * Primarily instantiated in `login/partials/pagehead.php`. Meant to be instantiated once to minimize unnecessary database calls.
+    * Primarily instantiated in `login/misc/pagehead.php`. Meant to be instantiated once to minimize unnecessary database calls.
     * In any page where `pagehead.php` is included, settings can be pulled as such: `$this->setting_name` where `setting_name` corresponds to "setting" entry in `app_config` database table.
     **/
     function __construct() {

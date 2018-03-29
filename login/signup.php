@@ -4,7 +4,7 @@ if ((isset($_SESSION)) && array_key_exists('username', $_SESSION)) {
 }
 $pagetype = 'loginpage';
 $title = 'Sign Up';
-require 'partials/pagehead.php';
+require 'misc/pagehead.php';
 ?>
 </head>
 <body>
