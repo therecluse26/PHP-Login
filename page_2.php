@@ -5,6 +5,7 @@ include "login/misc/pagehead.php";
 ?>
 </head>
 <body>
+  <?php require 'login/misc/pullnav.php'; ?>
     <div class="container">
 
         <h2>Page 2</h2>

@@ -9,21 +9,28 @@ class UserData extends DbConn
         $tbl_members = $db->tbl_members;
         $result = array();
 
-            try {
-                $in = str_repeat('?,', count($idset) - 1) . '?';
+        try {
+            $in = str_repeat('?,', count($idset) - 1) . '?';
 
-                $sql = "SELECT id, email, username FROM ".$tbl_members." WHERE admin = ".$admin." and id IN ($in)";
-
-                $stmt = $db->conn->prepare($sql);
-                $stmt->execute($idset);
-
-                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-
-                $result = "Error: " . $e->getMessage();
-
+            if ($admin == 0) {
+                $sql = "SELECT m.id, m.email, m.username FROM ".$tbl_members." m
+                        INNER JOIN member_roles mr on mr.member_id = m.id
+                        INNER JOIN roles r on mr.role_id = r.id
+                        WHERE r.name NOT IN ('Admin', 'Superadmin') and m.id IN ($in)";
+            } elseif ($admin == 1) {
+                $sql = "SELECT m.id, m.email, m.username FROM ".$tbl_members." m
+                        INNER JOIN member_roles mr on mr.member_id = m.id
+                        INNER JOIN roles r on mr.role_id = r.id
+                        WHERE r.name IN ('Admin', 'Superadmin') and m.id IN ($in)";
             }
+
+            $stmt = $db->conn->prepare($sql);
+            $stmt->execute($idset);
+
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $result = "Error: " . $e->getMessage();
+        }
 
         return $result;
     }
@@ -34,20 +41,16 @@ class UserData extends DbConn
         $tbl_members = $db->tbl_members;
         $result = array();
 
-            try {
+        try {
+            $sql = "SELECT id, email, username FROM ".$tbl_members." WHERE email = :email LIMIT 1";
+            $stmt = $db->conn->prepare($sql);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
 
-                $sql = "SELECT id, email, username FROM ".$tbl_members." WHERE email = :email LIMIT 1";
-                $stmt = $db->conn->prepare($sql);
-                $stmt->bindParam(':email', $email);
-                $stmt->execute();
-
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-
-                $result = "Error: " . $e->getMessage();
-
-            }
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $result = "Error: " . $e->getMessage();
+        }
 
         return $result;
     }
@@ -58,20 +61,16 @@ class UserData extends DbConn
         $tbl_members = $db->tbl_members;
         $result = array();
 
-            try {
+        try {
+            $sql = "SELECT id, email, username FROM ".$tbl_members." WHERE id = :id LIMIT 1";
+            $stmt = $db->conn->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
 
-                $sql = "SELECT id, email, username, admin FROM ".$tbl_members." WHERE id = :id LIMIT 1";
-                $stmt = $db->conn->prepare($sql);
-                $stmt->bindParam(':id', $id);
-                $stmt->execute();
-
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-                
-            } catch (PDOException $e) {
-
-                $result = "Error: " . $e->getMessage();
-
-            }
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $result = "Error: " . $e->getMessage();
+        }
 
         return $result;
     }
@@ -82,55 +81,26 @@ class UserData extends DbConn
         $tbl_members = $db->tbl_members;
         $result = array();
 
-            try {
+        try {
+            $sql = "SELECT password FROM ".$tbl_members." WHERE id = :id LIMIT 1";
+            $stmt = $db->conn->prepare($sql);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
 
-                $sql = "SELECT password FROM ".$tbl_members." WHERE id = :id LIMIT 1";
-                $stmt = $db->conn->prepare($sql);
-                $stmt->bindParam(':id', $id);
-                $stmt->execute();
-
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-
-                $result = "Error: " . $e->getMessage();
-
-            }
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $result = "Error: " . $e->getMessage();
+        }
 
         return $result;
     }
 
-    public static function pullAdmin($id)
+    public static function upsertAccountInfo($uid, $dataarray)
     {
-        $db = new DbConn;
-        $tbl_admins = $db->tbl_admins;
-        $result = array();
-
-            try {
-
-                $sql = "SELECT adminid, active, superadmin FROM ".$tbl_admins." WHERE userid = :id LIMIT 1";
-                $stmt = $db->conn->prepare($sql);
-                $stmt->bindParam(':id', $id);
-                $stmt->execute();
-
-                $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            } catch (PDOException $e) {
-
-                $result = "Error: " . $e->getMessage();
-
-            }
-
-        return $result;
-    }
-
-    public static function upsertAccountInfo($uid, $dataarray) {
-
         unset($dataarray['id']);
 
         //Remove potentially hacked array values
-        if(!empty($dataarray)){
-            unset($dataarray['admin']);
+        if (!empty($dataarray)) {
             unset($dataarray['verified']);
             unset($dataarray['mod_timestamp']);
             unset($dataarray['username']);
@@ -139,8 +109,8 @@ class UserData extends DbConn
 
             $insdata = implode('\', \'', $dataarray);
 
-            foreach($dataarray as $key => $value){
-                if (isset($updata)){
+            foreach ($dataarray as $key => $value) {
+                if (isset($updata)) {
                     $updata = $updata.$key.' = \''.$value.'\', ';
                 } else {
                     $updata = $key.' = \''.$value.'\', ';
@@ -159,45 +129,64 @@ class UserData extends DbConn
             $status = $stmt->execute();
 
             return $status;
-
         } else {
-
             return false;
         }
     }
 
-    public static function userVerifyList()
+    public static function getUserVerifyList()
     {
         try {
             $db = new DbConn;
             $tbl_members = $db->tbl_members;
 
-            $stmt = $db->conn->prepare("SELECT id, email, username, mod_timestamp as timestamp FROM ".$tbl_members." WHERE verified = 0 ORDER BY timestamp desc");
+            $stmt = $db->conn->prepare("SELECT id, email, username, mod_timestamp as timestamp FROM ".$tbl_members."
+                                        WHERE verified = 0 ORDER BY timestamp desc");
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         } catch (PDOException $e) {
-
             $result = "Error: " . $e->getMessage();
-
         }
 
         return $result;
     }
 
-    public static function adminEmailList(){
+    public static function getAllActiveUsers()
+    {
+        try {
+            $db = new DbConn;
+            $tbl_members = $db->tbl_members;
 
+            $stmt = $db->conn->prepare("SELECT m.id, m.email, m.username, m.mod_timestamp as timestamp, GROUP_CONCAT(r.name) roles FROM ".$tbl_members." m
+                                        INNER JOIN member_roles mr on mr.member_id = m.id
+                                        INNER JOIN roles r on mr.role_id = r.id
+                                        WHERE r.name NOT IN ('Superadmin')
+                                        AND m.verified = 1
+                                        GROUP BY m.id
+                                        ORDER BY timestamp desc");
+
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $result = "Error: " . $e->getMessage();
+        }
+
+        return $result;
+    }
+
+    public static function adminEmailList()
+    {
         try {
             $db = new DbConn;
 
-            $stmt = $db->conn->prepare("SELECT email FROM ".$db->tbl_members." m inner join ".$db->tbl_admins." a on m.id = a.userid");
+            $stmt = $db->conn->prepare("SELECT email FROM ".$db->tbl_members." m
+                                        INNER JOIN member_roles mr on mr.member_id = m.id
+                                        INNER JOIN roles r on mr.role_id = r.id
+                                        WHERE r.name in ('Admin', 'Superadmin')");
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         } catch (PDOException $e) {
-
             $result = "Error: " . $e->getMessage();
-
         }
 
         return $result;

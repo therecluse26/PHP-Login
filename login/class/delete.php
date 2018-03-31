@@ -38,10 +38,10 @@ class Delete extends DbConn
         try {
 
             $ddb = new DbConn;
-            $tbl_mailLog = $ddb->tbl_mailLog;
+            $tbl_mail_log = $ddb->tbl_mail_log;
             $derr = array();
 
-            $dstmt = $ddb->conn->prepare('update '.$tbl_mailLog.' set isread = 1 WHERE id = :logid');
+            $dstmt = $ddb->conn->prepare('update '.$tbl_mail_log.' set isread = 1 WHERE id = :logid');
             $dstmt->bindParam(':logid', $logid);
             $dstmt->execute();
             $derr['status'] = 1;

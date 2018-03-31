@@ -7,16 +7,14 @@ require_once '../vendor/autoload.php';
 use \Firebase\JWT\JWT;
 
 $email = $_POST['email'];
-$config = new AppConfig;
 $resp = array();
 
-$conf = $config->pullMultiSettings(array("jwt_secret","base_url"));
+$conf = AppConfig::pullMultiSettings(array("jwt_secret","base_url"));
 
 try {
     $user = UserData::pullUserByEmail($email);
 
     if (!$user) {
-
         throw new Exception("No user found!");
     }
 
@@ -56,13 +54,9 @@ try {
         $resp['status'] = 1;
         $resp['response'] = $mailResult['message'];
         echo json_encode($resp);
-
     }
-
 } catch (Exception $f) {
-
     $resp['status'] = 0;
     $resp['response'] = $f->getMessage();
     echo json_encode($resp);
-
 }

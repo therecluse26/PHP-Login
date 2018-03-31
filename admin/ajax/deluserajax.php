@@ -1,6 +1,6 @@
 <?php
 /**
-* AJAX page for user deletion in verifyusers.php
+* AJAX page for user deletion in userverification.php
 **/
 $cwd = getcwd(); // remember the current path
 chdir('../../');

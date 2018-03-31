@@ -5,6 +5,7 @@ include 'misc/pagehead.php';
 ?>
 </head>
 <body>
+  <?php require 'misc/pullnav.php'; ?>
     <div class="container logindiv">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">

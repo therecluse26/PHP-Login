@@ -5,6 +5,7 @@ require 'misc/pagehead.php';
 ?>
 </head>
 <body>
+<?php require 'misc/pullnav.php'; ?>
 <div class="container">
 
 <?php
@@ -21,7 +22,6 @@ try {
 
     //Success
     if ($vresponse['status'] == true) {
-
         echo '<form class="form-signin" action="'.$conf->signin_url.'"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$conf->active_msg.'</div><br><input type="submit" class="btn btn-lg btn-primary btn-block" value="Click Here to Log In"></button></form>';
 
         //Send verification email
@@ -29,14 +29,11 @@ try {
 
         //SEND MAIL
         $m->sendMail($userarr, 'Active');
-
     } else {
         //Echoes error from MySQL
         echo $vresponse['message'];
     }
-
 } catch (Exception $ex) {
-
     echo $ex->getMessage();
 }
 ?>

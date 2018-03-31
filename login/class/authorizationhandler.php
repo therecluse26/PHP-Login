@@ -1,7 +1,7 @@
 <?php
 
 // Verifies a users authorization
-class AuthorizationHandler
+class AuthorizationHandler extends RoleHandler
 {
 
     //Checks session keys
@@ -32,14 +32,15 @@ class AuthorizationHandler
         return $_SERVER["REMOTE_ADDR"] == $this->checkSessionKey("ip_address");
     }
 
+
     public function isSuperAdmin()
     {
-        return $this->checkSessionKey("superadmin") == 1 && $this->sessionValid();
+        return $this->checkRole($this->checkSessionKey("uid"), "Superadmin") != false && $this->sessionValid();
     }
 
     public function isAdmin()
     {
-        return $this->checkSessionKey("admin") != false && $this->sessionValid();
+        return ($this->checkRole($this->checkSessionKey("uid"), "Admin") != false || $this->isSuperAdmin()) && $this->sessionValid();
     }
 
     public function isLoggedIn()
@@ -59,7 +60,7 @@ class AuthorizationHandler
         if (!$this->isAdmin() && $pagetype == "adminpage") {
             return false;
         }
-        
+
         if (!$this->isLoggedIn() && $pagetype == "userpage") {
             return false;
         }

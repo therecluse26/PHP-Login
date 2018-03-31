@@ -2,7 +2,6 @@
 $pagetype = 'loginpage';
 require_once '../autoload.php';
 require_once '../vendor/autoload.php';
-$config = new AppConfig;
 
 //Pull username, generate new ID and hash password
 $jwt = $_POST['t'];
@@ -12,7 +11,7 @@ $pw2 = $_POST['password2'];
 use \Firebase\JWT\JWT;
 
 try {
-    $secret = $config->pullSetting("jwt_secret");
+    $secret = AppConfig::pullSetting("jwt_secret");
     $decoded = JWT::decode($jwt, $secret, array('HS256'));
     $userid = $decoded->userid;
     $tokenid = $decoded->tokenid;
@@ -24,10 +23,8 @@ try {
 }
 
 try {
-
     if ($validToken && ($decoded->pw_reset == "true")) {
-
-        $conf = $config->pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
+        $conf = AppConfig::pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
 
         $user = UserData::pullUserById($userid);
 
@@ -44,14 +41,11 @@ try {
 
             //Success
             if ($response['status'] == true) {
-
                 echo json_encode($response);
-
             } else {
                 //Failure
                 MiscFunctions::mySqlErrors($response['message']);
             }
-
         } else {
             //Validation error from empty form variables
             echo json_encode($pwresp);
@@ -60,8 +54,6 @@ try {
         echo "Unknown error occured [AJ14441]";
         exit();
     }
-
 } catch (Exception $e) {
-
     echo $e->getMessage();
 };

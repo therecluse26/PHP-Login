@@ -18,36 +18,27 @@ $max_attempts = AppConfig::pullSetting("max_attempts", "unsigned");
 
 //First Attempt
 if ($lastAttempt['lastlogin'] == '') {
-
     $lastlogin = 'never';
     $loginCtl->insertAttempt($username);
     $response = $loginCtl->checkLogin($username, $password);
-
 } elseif ($lastAttempt['attempts'] >= $max_attempts) {
 
     //Exceeded max attempts
     $loginCtl->updateAttempts($username);
     $response = $loginCtl->checkLogin($username, $password);
-
 } else {
-
     $response = $loginCtl->checkLogin($username, $password, $_POST['remember']);
-
 };
 
 if ($lastAttempt['attempts'] < $max_attempts && $response != 'true') {
-
     $loginCtl->updateAttempts($username);
     $resp = new RespObj($username, $response);
     $jsonResp = json_encode($resp);
     echo $jsonResp;
-
 } else {
-
     $resp = new RespObj($username, $response);
     $jsonResp = json_encode($resp);
     echo $jsonResp;
-
 }
 
 unset($resp, $jsonResp);

@@ -10,8 +10,14 @@ if (@get_headers($usr['userimage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['user
     $imgpath = $usr['userimage'];
 }
 ?>
+
+<script src="js/profileupdate.js"></script>
+<script src="js/croppie.min.js"></script>
+<link href="css/croppie.min.css" rel="stylesheet" media="screen">
+
 </head>
 <body>
+  <?php require 'login/misc/pullnav.php'; ?>
     <div class="container">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">

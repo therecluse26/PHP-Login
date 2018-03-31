@@ -4,12 +4,19 @@
 **/
 $pagetype = 'superadminpage';
 $title = 'Mail Log';
-require_once '../login/misc/pagehead.php';
+require '../login/misc/pagehead.php';
 $logcount = EmailLogger::pullLogCount();
 ?>
 
+<script src="js/admindeletelog.js"></script>
+<script src="js/admincheckrow.js"></script>
+<script src="js/forwardback.js"></script>
+
 </head>
 <body>
+
+<?php require 'login/misc/pullnav.php'; ?>
+
 <div id="limithid" hidden>20</div>
 <div id="offsethid" hidden>0</div>
 <div id="currenthid" hidden></div>
@@ -19,13 +26,14 @@ $logcount = EmailLogger::pullLogCount();
 <?php
 
 echo '<div class="pull-left"><h3>Mail Log</h3></div>
-<div class="pull-right"><button id="leftbtn" type="button" class="btn btn-default" onClick="backBtn();"> <span class="glyphicon glyphicon-arrow-left"></span></button><button id="rightbtn" type="button" class="btn btn-default" onClick="forwardBtn();"> <span class="glyphicon glyphicon-arrow-right"></span></button></div><br><br><div class="pull-right"><span id="pageCount"></span><span id="rowcount">'.$logcount['rowcount'].'</span></div>
-';
+<div class="pull-right">
+<button id="leftbtn" type="button" class="btn btn-default" onClick="backBtn();"><span class="glyphicon glyphicon-arrow-left"></span></button>
+<button id="rightbtn" type="button" class="btn btn-default" onClick="forwardBtn();"><span class="glyphicon glyphicon-arrow-right"></span></button>
+</div><br><br><div class="pull-right"><span id="pageCount"></span><span id="rowcount">'.$logcount['rowcount'].'</span></div>';
 ?>
 
 <div id="mailLogOutput">
 </div>
-
     </table>
     </div>
     </form>

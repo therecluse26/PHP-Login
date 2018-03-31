@@ -15,5 +15,5 @@
     $tbl_deleted = $tbl_prefix."deleted_members";
     $tbl_tokens = $tbl_prefix."tokens";
     $tbl_cookies = $tbl_prefix."cookies";
-    $tbl_appConfig = $tbl_prefix."app_config";
-    $tbl_mailLog = $tbl_prefix."mail_log";
+    $tbl_app_config = $tbl_prefix."app_config";
+    $tbl_mail_log = $tbl_prefix."mail_log";

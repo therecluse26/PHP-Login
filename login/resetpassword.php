@@ -4,9 +4,16 @@
     require 'misc/pagehead.php';
     require 'vendor/autoload.php';
 ?>
-</head>
 
+<script src="js/resetpw.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/additional-methods.min.js"></script>
+
+</head>
 <body>
+
+  <?php require 'misc/pullnav.php'; ?>
+
     <div class="container logindiv">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">

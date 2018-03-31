@@ -6,15 +6,13 @@ $db_name = $_POST['db_name'];
 $base_url = $_POST['base_url'];
 $sa_user = $_POST['sa_user'];
 
-
 try {
-
     $dbconf = file_get_contents('../sql/dbconftemp.txt');
 
     if (preg_match_all("/{{(.*?)}}/", $dbconf, $m)) {
-      foreach ($m[1] as $i => $varname) {
-        $dbconf = str_replace($m[0][$i], sprintf('%s', '\''.$_POST[$varname].'\''), $dbconf);
-      }
+        foreach ($m[1] as $i => $varname) {
+            $dbconf = str_replace($m[0][$i], sprintf('%s', '\''.$_POST[$varname].'\''), $dbconf);
+        }
     }
 
     echo '<b>2) Copy/Paste this database configuration into the `dbconf.php` file located in the /login folder</b>
@@ -51,8 +49,6 @@ try {
         });
         </script>
     </ol>';
-
 } catch (Exception $e) {
-
     echo 'Error: ' . $e->getMessage();
 }

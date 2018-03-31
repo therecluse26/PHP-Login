@@ -12,7 +12,7 @@ class PageConstruct extends AppConfig
     /**
     * `$this->htmlhead` pulls begging part of `<head>` section of page from `app_config` table.
     * `secureheader.php` handles redirects and security.
-    * `libincludes.php` handles required js and css libraries for login script
+    * `globalincludes.php` handles required js and css libraries for login script
     **/
     public function buildHead($pagetype = 'page', $title = 'Page')
     {
@@ -23,12 +23,12 @@ class PageConstruct extends AppConfig
         echo $this->htmlhead;
         echo "<title>".$title."</title>";
 
-        require_once $this->base_dir . "/login/partials/libincludes.php";
+        require_once $this->base_dir . "/login/partials/globalincludes.php";
     }
     /**
     * Builds page navbar
     **/
-    public function pullNav($username = null, $admin = 0, $pagetype = 'page', $barmenu = null)
+    public function pullNav($username = null, AuthorizationHandler $auth, $pagetype = 'page', $barmenu = null)
     {
         $url = $this->base_url;
         $mainlogo = $this->mainlogo;

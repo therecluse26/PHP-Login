@@ -1,5 +1,5 @@
 <?php
-class TokenHandler extends DbConn
+class TokenHandler
 {
     public static function selectToken($tokenid, $userid, $expire)
     {
@@ -18,6 +18,8 @@ class TokenHandler extends DbConn
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            unset($db);
+
             return $result;
         } catch (PDOException $e) {
             $result = "Error: " . $e->getMessage();
@@ -34,6 +36,7 @@ class TokenHandler extends DbConn
             $stmt->bindParam(':userid', $userid);
             $stmt->bindParam(':tokenid', $tokenid);
             $stmt->execute();
+
 
             return true;
         } catch (Exception $e) {

@@ -73,12 +73,12 @@ class DbConn
     * Table where main application configuration is stored
     * @var string
     */
-    public $tbl_appConfig;
+    public $tbl_app_config;
     /**
     * Table where mail send logs are stored
     * @var string
     */
-    public $tbl_mailLog;
+    public $tbl_mail_log;
     /**
     * Makes this a singleton class
     * @var Singleton
@@ -87,11 +87,8 @@ class DbConn
 
     public function __construct()
     {
-    /**
-    * Pulls tables from
-    **/
+        // Pulls tables from dbconf.php file
         $up_dir = realpath(__DIR__ . '/..');
-
         if (file_exists('dbconf.php')) {
             require 'dbconf.php';
         } else {
@@ -100,23 +97,22 @@ class DbConn
         $this->tbl_prefix = $tbl_prefix;
         $this->tbl_members = $tbl_members;
         $this->tbl_memberinfo = $tbl_memberinfo;
+        $this->tbl_roles = $tbl_roles;
+        $this->tbl_member_roles = $tbl_member_roles;
         $this->tbl_admins = $tbl_admins;
         $this->tbl_attempts = $tbl_attempts;
         $this->tbl_deleted = $tbl_deleted;
         $this->tbl_tokens = $tbl_tokens;
         $this->tbl_cookies = $tbl_cookies;
-        $this->tbl_appConfig = $tbl_appConfig;
-        $this->tbl_mailLog = $tbl_mailLog;
+        $this->tbl_app_config = $tbl_app_config;
+        $this->tbl_mail_log = $tbl_mail_log;
 
         // Connect to server and select database
         try {
             $this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
         } catch (PDOException $e) {
-
             die($e->getMessage());
-
         }
     }
     public static function getInstance()
@@ -126,8 +122,13 @@ class DbConn
         }
 
         return static::$instance;
-
     }
+
+    public function __destruct()
+    {
+        $this->conn = null;
+    }
+
     /**
     * Prevents cloning
     * @return void

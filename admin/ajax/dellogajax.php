@@ -17,31 +17,23 @@ if ((new AuthorizationHandler)->pageOk("superadminpage")) {
     $ids = json_decode($uid);
 
     if ((isset($ids)) && sizeof($ids) >= 1) {
-
         try {
-
-            foreach($ids as $id){
+            foreach ($ids as $id) {
 
                 //Deletes user
                 $dresponse = Delete::deleteLog($id);
 
                 //Success
                 if ($dresponse['status'] == 1) {
-
                     echo json_encode($dresponse);
-
-                    } else {
-                        //Validation error from empty form variables
-                        //header('HTTP/1.1 400 Bad Request');
-                        throw new Exception("Failure");
+                } else {
+                    //Validation error from empty form variables
+                    //header('HTTP/1.1 400 Bad Request');
+                    throw new Exception("Failure");
                 }
             }
-
-        } catch(Exception $ex) {
-
+        } catch (Exception $ex) {
             echo json_encode(array("status"=>0,"message"=>$ex->getMessage()));
-
         }
-
     }
 }
