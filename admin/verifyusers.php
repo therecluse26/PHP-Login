@@ -4,7 +4,7 @@
 **/
 $pagetype = 'adminpage';
 $title = 'Admin Verification';
-require '../login/partials/pagehead.php';
+require '../login/misc/pagehead.php';
 
 $users = UserData::userVerifyList();
 $x = 0;

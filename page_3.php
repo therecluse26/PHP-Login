@@ -1,8 +1,13 @@
 <?php
+
+// Example of overriding the menu in phplogin_menu.php
+$barmenu = array(
+    "Index Page" => "index.php"
+); 
+
 $title = "The very fancy Page 3";
 $pagetype = "userpage"; // Allow only logged in users
-include "top_menu.php";
-include "login/partials/pagehead.php";
+include "login/misc/pagehead.php";
 ?>
 </head>
 <body>

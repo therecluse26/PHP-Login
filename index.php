@@ -1,7 +1,6 @@
 <?php
 $title = 'Home';
-include "top_menu.php";
-include "login/partials/pagehead.php";
+include "login/misc/pagehead.php";
 ?>
 </head>
 <body>

@@ -1,8 +1,7 @@
 <?php
 $title = "The fancy Page 2";
 $pagetype = "userpage"; // Allow only logged in users
-include "top_menu.php";
-include "login/partials/pagehead.php";
+include "login/misc/pagehead.php";
 ?>
 </head>
 <body>

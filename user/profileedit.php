@@ -1,7 +1,7 @@
 <?php
 $pagetype = 'userpage';
 $title = 'Edit Profile';
-require '../login/partials/pagehead.php';
+require '../login/misc/pagehead.php';
 $uid = $_SESSION['uid'];
 $usr = profileData::pullAllUserInfo($uid);
 if (@get_headers($usr['userimage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['userimage'] == '') {

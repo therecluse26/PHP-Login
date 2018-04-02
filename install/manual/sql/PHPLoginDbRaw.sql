@@ -1,4 +1,4 @@
-SET 
+SET
 @base_dir = 'C:\\xampp2\\htdocs\\PHP-Login\\', /* Base directory of PHP-Login (for Windows, use double backslashes) */
 @base_url = 'http://localhost/PHP-Login', /* Website base URL */
 @site_name = 'Just a Website', /* Your website name */
@@ -82,13 +82,13 @@ CREATE TABLE `cookies` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `deletedmembers`
+-- Table structure for table `deleted_members`
 --
 
-DROP TABLE IF EXISTS `deletedmembers`;
+DROP TABLE IF EXISTS `deleted_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deletedmembers` (
+CREATE TABLE `deleted_members` (
   `id` char(23) NOT NULL,
   `username` varchar(65) NOT NULL DEFAULT '',
   `password` varchar(65) NOT NULL DEFAULT '',
@@ -102,13 +102,13 @@ CREATE TABLE `deletedmembers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `loginattempts`
+-- Table structure for table `login_attempts`
 --
 
-DROP TABLE IF EXISTS `loginattempts`;
+DROP TABLE IF EXISTS `login_attempts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `loginattempts` (
+CREATE TABLE `login_attempts` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Username` varchar(65) DEFAULT NULL,
   `IP` varchar(20) NOT NULL,
@@ -119,13 +119,13 @@ CREATE TABLE `loginattempts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `maillog`
+-- Table structure for table `mail_log`
 --
 
-DROP TABLE IF EXISTS `maillog`;
+DROP TABLE IF EXISTS `mail_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `maillog` (
+CREATE TABLE `mail_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL DEFAULT 'generic',
   `status` varchar(45) DEFAULT NULL,
@@ -138,13 +138,13 @@ CREATE TABLE `maillog` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `memberinfo`
+-- Table structure for table `member_info`
 --
 
-DROP TABLE IF EXISTS `memberinfo`;
+DROP TABLE IF EXISTS `member_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `memberinfo` (
+CREATE TABLE `member_info` (
   `userid` char(23) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(55) DEFAULT NULL,
@@ -192,7 +192,7 @@ CREATE TABLE `members` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER add_admin AFTER INSERT ON members FOR EACH ROW BEGIN IF (NEW.admin = 1) THEN  INSERT INTO admins (adminid, userid, active, superadmin ) VALUES (uuid_short(), NEW.id, 1, 0 ); END IF; END */;;
+/*!50003 CREATE*/ /*!50003 TRIGGER add_admin AFTER INSERT ON members FOR EACH ROW BEGIN IF (NEW.admin = 1) THEN  INSERT INTO admins (adminid, userid, active, superadmin ) VALUES (uuid_short(), NEW.id, 1, 0 ); END IF; END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -207,7 +207,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER add_admin_beforeUpdate BEFORE UPDATE ON members FOR EACH ROW BEGIN set @s = (SELECT superadmin from admins where userid = NEW.id); set @a = (SELECT adminid from admins where userid = NEW.id); IF (NEW.admin = 1 && isnull(@a)) THEN INSERT INTO admins ( adminid, userid, active, superadmin ) VALUES ( uuid_short(), NEW.id, 1, 0 ); ELSEIF (NEW.admin = 0) THEN IF (@s = 0) THEN DELETE FROM admins WHERE userid = NEW.id and superadmin = 0; ELSEIF (@s = 1) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Cannot delete superadmin'; END IF; END IF; END */;;
+/*!50003 CREATE*/ /*!50003 TRIGGER add_admin_beforeUpdate BEFORE UPDATE ON members FOR EACH ROW BEGIN set @s = (SELECT superadmin from admins where userid = NEW.id); set @a = (SELECT adminid from admins where userid = NEW.id); IF (NEW.admin = 1 && isnull(@a)) THEN INSERT INTO admins ( adminid, userid, active, superadmin ) VALUES ( uuid_short(), NEW.id, 1, 0 ); ELSEIF (NEW.admin = 0) THEN IF (@s = 0) THEN DELETE FROM admins WHERE userid = NEW.id and superadmin = 0; ELSEIF (@s = 1) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Cannot delete superadmin'; END IF; END IF; END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -222,7 +222,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER move_to_deleted_members AFTER DELETE ON members FOR EACH ROW BEGIN DELETE FROM deleted_members WHERE deleted_members.id = OLD.id; UPDATE admins SET active = '0' where admins.userid = OLD.id;  INSERT INTO deleted_members ( id, username, password, email, verified, admin) VALUES ( OLD.id, OLD.username, OLD.password, OLD.email, OLD.verified, OLD.admin ); END */;;
+/*!50003 CREATE*/ /*!50003 TRIGGER move_to_deleted_members AFTER DELETE ON members FOR EACH ROW BEGIN DELETE FROM deleted_members WHERE deleted_members.id = OLD.id; UPDATE admins SET active = '0' where admins.userid = OLD.id;  INSERT INTO deleted_members ( id, username, password, email, verified, admin) VALUES ( OLD.id, OLD.username, OLD.password, OLD.email, OLD.verified, OLD.admin ); END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -264,7 +264,7 @@ DELIMITER ;;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;;
 /*!50003 SET @saved_time_zone      = @@time_zone */ ;;
 /*!50003 SET time_zone             = 'SYSTEM' */ ;;
-/*!50106 CREATE*/ /*!50117 DEFINER=`root`@`localhost`*/ /*!50106 EVENT `cleanupOldDeleted` ON SCHEDULE EVERY 1 DAY STARTS '2017-03-20 18:33:40' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Removes deleted records older than 30 days.' DO BEGIN DELETE FROM deleted_members WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY); END */ ;;
+/*!50106 CREATE*/ /*!50106 EVENT `cleanupOldDeleted` ON SCHEDULE EVERY 1 DAY STARTS '2017-03-20 18:33:40' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Removes deleted records older than 30 days.' DO BEGIN DELETE FROM deleted_members WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY); END */ ;;
 /*!50003 SET time_zone             = @saved_time_zone */ ;;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;;
@@ -288,7 +288,7 @@ DELIMITER ;
 
 -- Dump completed on 2017-03-20 19:41:31
 
-REPLACE INTO app_config (`sortorder`,`setting`,`category`,`value`,`type`,`description`,`required`) VALUES (27,'active_email','Messages','Your new account is now active! Click this link to log in!','text','Email message when account is verified',1), (26,'active_msg','Messages','Your account has been verified!','text','Display message when account is verified',1), (21,'admin_verify','Security','false','boolean','Require admin verification',1), (6,'avatar_dir','Website','/user/avatars','text','Directory where user avatars should be stored inside of base site directory. Do not include base_dir path.',1), (2,'base_dir','Website', @base_dir ,'hidden','Base directory of website in filesystem. \"C:\\...\" in windows, \"/...\" in unix systems',1), (3,'base_url','Website', @base_url, 'url','Base URL of website. Example: \"http://sitename.com\"',1), (19,'cookie_expire_seconds','Security','2592000','number','Cookie expiration (in seconds)',1), (13,'from_email','Mailer',@mail_user,'email','From email address. Should typically be the same as \"mail_user\" email.',1), (14,'from_name','Mailer','Test Website','text','Name that shows up in \"from\" field of emails',1), (4,'htmlhead','Website','<!DOCTYPE html><html lang=\'en\'><head><meta charset=\'utf-8\'><meta name=\'viewport\' content-width=\'device-width\', initial-scale=\'1\', shrink-to-fit=\'no\'>','textarea','Main HTML header of website (without login-specific includes and script tags). Do not close <html> tag! Will break application functionality',1), (20,'jwt_secret','Security','php-login','text','Secret for JWT for tokens (Can be anything)',1), (18,'login_timeout','Security','300','number','Cooloff time for too many failed logins (in seconds)',1), (12,'mail_port','Mailer',@mail_port,'number','Mail port. Common settings are 465 for ssl, 587 for tls, 25 for other',1), (10,'mail_pw','Mailer',@mail_pw,'password','Email password to authenticate mailer',1), (11,'mail_security','Mailer',@mail_security,'text','Mail security type. Possible values are \"ssl\", \"tls\" or leave blank',1), (8,'mail_server','Mailer',@mail_server,'text','Mail server address. Example: \"smtp.email.com\"',1), (7,'mail_server_type','Mailer','smtp','text','Type of email server. SMTP is most typical. Other server types untested.',1), (9,'mail_user','Mailer',@mail_user,'email','Email user',1), (5,'mainlogo','Website','','url','URL of main site logo. Example \"http://sitename.com/logo.jpg\"',1), (17,'max_attempts','Security','5','number','Maximum login attempts',1), (16,'password_min_length','Security','6','number','Minimum password length if \"password_policy_enforce\" is set to true',1), (15,'password_policy_enforce','Security','true','boolean','Require a mixture of upper and lowercase letters and minimum password length (set by \"password_min_length\")',1), (28,'reset_email','Messages','Click the link below to reset your password','text','Email message when user wants to reset their password',1), (23,'signup_requires_admin','Messages','Thank you for signing up! Before you can login, your account needs to be activated by an administrator.','text','Message displayed when user signs up, but requires admin approval',1), (22,'signup_thanks','Messages','Thank you for signing up! You will receive an email shortly confirming the verification of your account.','text','Message displayed when user signs up and can verify themselves via email',1), (1,'site_name','Website', @site_name,'text','Website name',1), (24,'verify_email_admin','Messages','Thank you for signing up! Your account will be reviewed by an admin shortly','text','Email message when account requires admin verification',1), (25,'verify_email_noadmin','Messages','Click this link to verify your new account!','text','Email message when user can verify themselves',1), (29, 'curl_enabled','Website',@curl_enabled, 'boolean','Enable curl for various processes such as background email sending', 1), (30, 'email_working','Mailer','false', 'hidden','Indicates if email settings are correct and can connect to a mail server', 1), (31, 'admin_email','Website',@sa_email, 'text','Site administrator email address', 1);
+REPLACE INTO app_config (`sortorder`,`setting`,`category`,`value`,`type`,`description`,`required`) VALUES (27,'active_email','Messages','Your new account is now active! Click this link to log in!','text','Email message when account is verified',1), (26,'active_msg','Messages','Your account has been verified!','text','Display message when account is verified',1), (21,'admin_verify','Security','false','boolean','Require admin verification',1), (6,'avatar_dir','Website','/user/avatars','text','Directory where user avatars should be stored inside of base site directory. Do not include base_dir path.',1), (2,'base_dir','Website', @base_dir ,'hidden','Base directory of website in filesystem. \"C:\\...\" in windows, \"/...\" in unix systems',1), (3,'base_url','Website', @base_url, 'url','Base URL of website. Example: \"http://sitename.com\"',1), (19,'cookie_expire_seconds','Security','2592000','number','Cookie expiration (in seconds)',1), (13,'from_email','Mailer',@mail_user,'email','From email address. Should typically be the same as \"mail_user\" email.',1), (14,'from_name','Mailer','Test Website','text','Name that shows up in \"from\" field of emails',1), (4,'htmlhead','Website','<!DOCTYPE html><html lang=\'en\'><head><meta charset=\'utf-8\'><meta name=\'viewport\' content-width=\'device-width\', initial-scale=\'1\', shrink-to-fit=\'no\'>','textarea','Main HTML header of website (without login-specific includes and script tags). Do not close <html> tag! Will break application functionality',1), (20,'jwt_secret','Security','php-login','text','Secret for JWT for tokens (Can be anything)',1), (18,'login_timeout','Security','300','number','Cooloff time for too many failed logins (in seconds)',1), (12,'mail_port','Mailer',@mail_port,'number','Mail port. Common settings are 465 for ssl, 587 for tls, 25 for other',1), (10,'mail_pw','Mailer',@mail_pw,'password','Email password to authenticate mailer',1), (11,'mail_security','Mailer',@mail_security,'text','Mail security type. Possible values are \"ssl\", \"tls\" or leave blank',1), (8,'mail_server','Mailer',@mail_server,'text','Mail server address. Example: \"smtp.email.com\"',1), (7,'mail_server_type','Mailer','smtp','text','Type of email server. SMTP is most typical. Other server types untested.',1), (9,'mail_user','Mailer',@mail_user,'email','Email user',1), (5,'mainlogo','Website','','url','URL of main site logo. Example \"http://sitename.com/logo.jpg\"',1), (17,'max_attempts','Security','5','number','Maximum login attempts',1), (16,'password_min_length','Security','6','number','Minimum password length if \"password_policy_enforce\" is set to true',1), (15,'password_policy_enforce','Security','true','boolean','Require a mixture of upper and lowercase letters and minimum password length (set by \"password_min_length\")',1), (28,'reset_email','Messages','Click the link below to reset your password','text','Email message when user wants to reset their password',1), (23,'signup_requires_admin','Messages','Thank you for signing up! Before you can login, your account needs to be activated by an administrator.','text','Message displayed when user signs up, but requires admin approval',1), (22,'signup_thanks','Messages','Thank you for signing up! You will receive an email shortly confirming the verification of your account.','text','Message displayed when user signs up and can verify themselves via email',1), (1,'site_name','Website', @site_name,'text','Website name',1), (24,'verify_email_admin','Messages','Thank you for signing up! Your account will be reviewed by an admin shortly','text','Email message when account requires admin verification',1), (25,'verify_email_noadmin','Messages','Click this link to verify your new account!','text','Email message when user can verify themselves',1), (29, 'curl_enabled','Website',@curl_enabled, 'boolean','Enable curl for various processes such as background email sending', 1), (30, 'email_working','Mailer','false', 'hidden','Indicates if email settings are correct and can connect to a mail server', 1), (31, 'admin_email','Website',@sa_email, 'text','Site administrator email address', 1),(32, 'timezone', 'Website', '".date_default_timezone_get()."', 'timezone', 'Server time zone', 1),(33, 'token_validity','Security','24','number','Token validity in Hours (default 24 hours)','1');
 
 SET FOREIGN_KEY_CHECKS= 0; REPLACE INTO members (id, username, password, email, verified, admin) values(@sa_id, @sa_user, @sa_password, @sa_email, 1, 1); SET FOREIGN_KEY_CHECKS= 1;
 

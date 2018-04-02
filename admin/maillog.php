@@ -4,7 +4,7 @@
 **/
 $pagetype = 'superadminpage';
 $title = 'Mail Log';
-require_once '../login/partials/pagehead.php';
+require_once '../login/misc/pagehead.php';
 $logcount = EmailLogger::pullLogCount();
 ?>
 

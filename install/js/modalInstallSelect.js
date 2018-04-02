@@ -1,3 +1,3 @@
 $(document).ready(function(){
-   $('#instTypeModal').modal('show'); 
+   $('#instTypeModal').modal('show');
 });

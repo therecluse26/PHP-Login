@@ -2,7 +2,6 @@
 if ($this->admin_verify == 'true') {
     $verify_email_msg = $this->verify_email_admin;
     $verify_footer = '';
-
 } else {
     $verify_email_msg = $this->verify_email_noadmin;
     $verify_footer = '<table class="vb-outer" width="100%" cellpadding="0" border="0" cellspacing="0" id="ko_buttonBlock_7">

@@ -1,7 +1,7 @@
 <?php
 $pagetype = 'userpage';
 $title = 'Account Settings';
-require '../login/partials/pagehead.php';
+require '../login/misc/pagehead.php';
 $uid = $_SESSION['uid'];
 $usr = UserData::pullUserById($uid);
 ?>

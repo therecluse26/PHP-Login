@@ -1,16 +1,16 @@
-SET 
+SET
 @base_dir = {{base_dir}},
 @base_url = {{base_url}},
-@site_name = {{site_name}}, 
-@curl_enabled = {{curl_enabled}}, 
+@site_name = {{site_name}},
+@curl_enabled = {{curl_enabled}},
 @mail_server = {{mail_server}},
 @mail_user = {{mail_user}},
-@mail_pw = {{mail_pw}}, 
-@mail_security = 'tls', 
+@mail_pw = {{mail_pw}},
+@mail_security = 'tls',
 @mail_port = '587',
 @sa_user = {{sa_user}},
 @sa_id = {{sa_id}},
-@sa_email = {{sa_email}}, 
+@sa_email = {{sa_email}},
 @sa_password = {{sa_password}},
 @time_zone = {{time_zone}};
 
@@ -24,6 +24,10 @@ SET
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+CREATE SCHEMA IF NOT EXISTS `{{db_name}}`;
+
+USE `{{db_name}}`;
 
 --
 -- Table structure for table `admins`
@@ -83,13 +87,13 @@ CREATE TABLE `cookies` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `deletedmembers`
+-- Table structure for table `deleted_members`
 --
 
-DROP TABLE IF EXISTS `deletedmembers`;
+DROP TABLE IF EXISTS `deleted_members`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deletedmembers` (
+CREATE TABLE `deleted_members` (
   `id` char(23) NOT NULL,
   `username` varchar(65) NOT NULL DEFAULT '',
   `password` varchar(65) NOT NULL DEFAULT '',
@@ -103,13 +107,13 @@ CREATE TABLE `deletedmembers` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `loginattempts`
+-- Table structure for table `login_attempts`
 --
 
-DROP TABLE IF EXISTS `loginattempts`;
+DROP TABLE IF EXISTS `login_attempts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `loginattempts` (
+CREATE TABLE `login_attempts` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Username` varchar(65) DEFAULT NULL,
   `IP` varchar(20) NOT NULL,
@@ -120,13 +124,13 @@ CREATE TABLE `loginattempts` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `maillog`
+-- Table structure for table `mail_log`
 --
 
-DROP TABLE IF EXISTS `maillog`;
+DROP TABLE IF EXISTS `mail_log`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `maillog` (
+CREATE TABLE `mail_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(45) NOT NULL DEFAULT 'generic',
   `status` varchar(45) DEFAULT NULL,
@@ -139,13 +143,13 @@ CREATE TABLE `maillog` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `memberinfo`
+-- Table structure for table `member_info`
 --
 
-DROP TABLE IF EXISTS `memberinfo`;
+DROP TABLE IF EXISTS `member_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `memberinfo` (
+CREATE TABLE `member_info` (
   `userid` char(23) NOT NULL,
   `firstname` varchar(45) NOT NULL,
   `lastname` varchar(55) DEFAULT NULL,
@@ -193,7 +197,7 @@ CREATE TABLE `members` (
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER add_admin AFTER INSERT ON members FOR EACH ROW BEGIN IF (NEW.admin = 1) THEN  INSERT INTO admins (adminid, userid, active, superadmin ) VALUES (uuid_short(), NEW.id, 1, 0 ); END IF; END */;;
+/*!50003 CREATE*/ /*!50003 TRIGGER add_admin AFTER INSERT ON members FOR EACH ROW BEGIN IF (NEW.admin = 1) THEN  INSERT INTO admins (adminid, userid, active, superadmin ) VALUES (uuid_short(), NEW.id, 1, 0 ); END IF; END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -208,7 +212,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER add_admin_beforeUpdate BEFORE UPDATE ON members FOR EACH ROW BEGIN set @s = (SELECT superadmin from admins where userid = NEW.id); set @a = (SELECT adminid from admins where userid = NEW.id); IF (NEW.admin = 1 && isnull(@a)) THEN INSERT INTO admins ( adminid, userid, active, superadmin ) VALUES ( uuid_short(), NEW.id, 1, 0 ); ELSEIF (NEW.admin = 0) THEN IF (@s = 0) THEN DELETE FROM admins WHERE userid = NEW.id and superadmin = 0; ELSEIF (@s = 1) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Cannot delete superadmin'; END IF; END IF; END */;;
+/*!50003 CREATE*/ /*!50003 TRIGGER add_admin_beforeUpdate BEFORE UPDATE ON members FOR EACH ROW BEGIN set @s = (SELECT superadmin from admins where userid = NEW.id); set @a = (SELECT adminid from admins where userid = NEW.id); IF (NEW.admin = 1 && isnull(@a)) THEN INSERT INTO admins ( adminid, userid, active, superadmin ) VALUES ( uuid_short(), NEW.id, 1, 0 ); ELSEIF (NEW.admin = 0) THEN IF (@s = 0) THEN DELETE FROM admins WHERE userid = NEW.id and superadmin = 0; ELSEIF (@s = 1) THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Cannot delete superadmin'; END IF; END IF; END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -223,7 +227,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER move_to_deleted_members AFTER DELETE ON members FOR EACH ROW BEGIN DELETE FROM deleted_members WHERE deleted_members.id = OLD.id; UPDATE admins SET active = '0' where admins.userid = OLD.id;  INSERT INTO deleted_members ( id, username, password, email, verified, admin) VALUES ( OLD.id, OLD.username, OLD.password, OLD.email, OLD.verified, OLD.admin ); END */;;
+/*!50003 CREATE*/ /*!50003 TRIGGER move_to_deleted_members AFTER DELETE ON members FOR EACH ROW BEGIN DELETE FROM deleted_members WHERE deleted_members.id = OLD.id; UPDATE admins SET active = '0' where admins.userid = OLD.id;  INSERT INTO deleted_members ( id, username, password, email, verified, admin) VALUES ( OLD.id, OLD.username, OLD.password, OLD.email, OLD.verified, OLD.admin ); END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -265,7 +269,7 @@ DELIMITER ;;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;;
 /*!50003 SET @saved_time_zone      = @@time_zone */ ;;
 /*!50003 SET time_zone             = 'SYSTEM' */ ;;
-/*!50106 CREATE*/ /*!50117 DEFINER=`root`@`localhost`*/ /*!50106 EVENT `cleanupOldDeleted` ON SCHEDULE EVERY 1 DAY STARTS '2017-03-20 18:33:40' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Removes deleted records older than 30 days.' DO BEGIN DELETE FROM deleted_members WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY); END */ ;;
+/*!50106 CREATE*/ /*!50106 EVENT `cleanupOldDeleted` ON SCHEDULE EVERY 1 DAY STARTS '2017-03-20 18:33:40' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Removes deleted records older than 30 days.' DO BEGIN DELETE FROM deleted_members WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY); END */ ;;
 /*!50003 SET time_zone             = @saved_time_zone */ ;;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;;

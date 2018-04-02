@@ -17,18 +17,14 @@ if (!$auth->pageOk($pagetype)) {
         header("location:".$this->base_url."/login/index.php?refurl=".$refurl);
     }
     exit;
-
 } elseif ($auth->isLoggedIn() && $pagetype == "loginpage") {
-
-    if (array_key_exists("refurl", $_GET)){
+    if (array_key_exists("refurl", $_GET)) {
 
         //Goes to referred url
         $refurl = urldecode($_GET["refurl"]);
 
         header("location:".$refurl);
-
     } else {
-
         header("location:".$this->base_url."/index.php");
     }
 }
