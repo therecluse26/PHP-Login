@@ -26,7 +26,7 @@ try {
     if ($validToken && ($decoded->pw_reset == "true")) {
         $conf = AppConfig::pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
 
-        $user = UserData::pullUserById($userid);
+        $user = UserHandler::pullUserById($userid);
 
         $pwresp = PasswordPolicy::validate($pw1, $pw2, (bool) $conf['password_policy_enforce'], (int) $conf['password_min_length']);
 

@@ -80,6 +80,11 @@ class DbConn
     */
     public $tbl_mail_log;
     /**
+    * Table where mail send logs are stored
+    * @var string
+    */
+    public $tbl_member_jail;
+    /**
     * Makes this a singleton class
     * @var Singleton
     */
@@ -106,6 +111,7 @@ class DbConn
         $this->tbl_cookies = $tbl_cookies;
         $this->tbl_app_config = $tbl_app_config;
         $this->tbl_mail_log = $tbl_mail_log;
+        $this->tbl_member_jail = $tbl_member_jail;
 
         // Connect to server and select database
         try {

@@ -11,8 +11,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating database <span class='dbtable'>{$dbname}</span>";
-                    $sqlcreate = "CREATE DATABASE IF NOT EXISTS {$dbname} DEFAULT CHARACTER SET utf8
-  DEFAULT COLLATE utf8_general_ci;";
+                    $sqlcreate = "CREATE DATABASE IF NOT EXISTS {$dbname} DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;";
                     $c = $conn->exec($sqlcreate);
 
                     unset($c);
@@ -28,7 +27,19 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "members</span> table";
-                    $sqlmembers = "SET FOREIGN_KEY_CHECKS= 0; CREATE TABLE IF NOT EXISTS {$tblprefix}members (`id` char(23) NOT NULL, `username` varchar(65) NOT NULL DEFAULT '', `password` varchar(255) NOT NULL DEFAULT '', `email` varchar(65) NOT NULL DEFAULT '', `verified` tinyint(1) NOT NULL DEFAULT '0', `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`), UNIQUE KEY `username_UNIQUE` (`username`), UNIQUE KEY `id_UNIQUE` (`id`), UNIQUE KEY `email_UNIQUE` (`email`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqlmembers = "SET FOREIGN_KEY_CHECKS= 0; CREATE TABLE IF NOT EXISTS {$tblprefix}members (
+                                      `id` char(23) NOT NULL,
+                                      `username` varchar(65) NOT NULL DEFAULT '',
+                                      `password` varchar(255) NOT NULL DEFAULT '',
+                                      `email` varchar(65) NOT NULL DEFAULT '',
+                                      `verified` tinyint(1) NOT NULL DEFAULT '0',
+                                      `banned` tinyint(1) NOT NULL DEFAULT '0',
+                                      `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                    PRIMARY KEY (`id`),
+                                    UNIQUE KEY `username_UNIQUE` (`username`),
+                                    UNIQUE KEY `id_UNIQUE` (`id`),
+                                    UNIQUE KEY `email_UNIQUE` (`email`) )
+                                  ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                     $m = $conn->exec($sqlmembers);
 
                     unset($m);
@@ -45,14 +56,15 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "roles</span> table";
                     $sqlroles = "SET FOREIGN_KEY_CHECKS= 0; CREATE TABLE IF NOT EXISTS {$tblprefix}roles (
-                      `id` int(11) NOT NULL AUTO_INCREMENT,
-                      `name` varchar(45) NOT NULL,
-                      `description` varchar(255) DEFAULT NULL,
-                      `required` tinyint(1) NOT NULL DEFAULT '0',
-                      `default_role` tinyint(1) DEFAULT NULL,
-                      PRIMARY KEY (`id`),
-                      UNIQUE KEY `name_UNIQUE` (`name`),
-                      UNIQUE KEY `default_role_UNIQUE` (`default_role`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                                    `name` varchar(45) NOT NULL,
+                                    `description` varchar(255) DEFAULT NULL,
+                                    `required` tinyint(1) NOT NULL DEFAULT '0',
+                                    `default_role` tinyint(1) DEFAULT NULL,
+                                  PRIMARY KEY (`id`),
+                                  UNIQUE KEY `name_UNIQUE` (`name`),
+                                  UNIQUE KEY `default_role_UNIQUE` (`default_role`) )
+                                ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                     $m = $conn->exec($sqlroles);
 
                     unset($m);
@@ -69,7 +81,18 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "deleted_members</span> table";
-                    $sqldeleted_members = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}deleted_members ( `id` char(23) NOT NULL, `username` varchar(65) NOT NULL DEFAULT '', `password` varchar(65) NOT NULL DEFAULT '', `email` varchar(65) NOT NULL, `verified` tinyint(1) NOT NULL DEFAULT '0', `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`id`), UNIQUE KEY `id_UNIQUE` (`id`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqldeleted_members = "SET FOREIGN_KEY_CHECKS = 0;
+                                            CREATE TABLE IF NOT EXISTS {$tblprefix}deleted_members (
+                                                `id` char(23) NOT NULL,
+                                                `username` varchar(65) NOT NULL DEFAULT '',
+                                                `password` varchar(65) NOT NULL DEFAULT '',
+                                                `email` varchar(65) NOT NULL,
+                                                `verified` tinyint(1) NOT NULL DEFAULT '0',
+                                                `banned` tinyint(1) NOT NULL DEFAULT '0',
+                                                `mod_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                              PRIMARY KEY (`id`), UNIQUE KEY `id_UNIQUE` (`id`) )
+                                            ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+
                     $dm = $conn->exec($sqldeleted_members);
 
                     unset($dm);
@@ -85,7 +108,16 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "login_attempts</span> table";
-                    $sqllogin_attempts = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}login_attempts ( `ID` int(11) NOT NULL AUTO_INCREMENT, `Username` varchar(65) DEFAULT NULL, `IP` varchar(20) NOT NULL, `Attempts` int(11) NOT NULL, `LastLogin` datetime NOT NULL, PRIMARY KEY (`ID`) ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqllogin_attempts = "SET FOREIGN_KEY_CHECKS = 0;
+                                          CREATE TABLE IF NOT EXISTS {$tblprefix}login_attempts (
+                                              `id` int(11) NOT NULL AUTO_INCREMENT,
+                                              `username` varchar(65) DEFAULT NULL,
+                                              `ip` varchar(20) NOT NULL,
+                                              `attempts` int(11) NOT NULL,
+                                              `lastlogin` datetime NOT NULL,
+                                            PRIMARY KEY (`ID`) )
+                                          ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+                                          SET FOREIGN_KEY_CHECKS = 1;";
                     $la = $conn->exec($sqllogin_attempts);
 
                     unset($la);
@@ -101,7 +133,23 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "member_info</span> table";
-                    $sqlmember_info = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}member_info ( `userid` char(23) NOT NULL, `firstname` varchar(45) NOT NULL, `lastname` varchar(55) DEFAULT NULL, `phone` varchar(20) DEFAULT NULL, `address1` varchar(45) DEFAULT NULL, `address2` varchar(45) DEFAULT NULL, `city` varchar(45) DEFAULT NULL, `state` varchar(30) DEFAULT NULL, `country` varchar(45) DEFAULT NULL, `bio` varchar(20000) DEFAULT NULL, `userimage` varchar(255) DEFAULT NULL, UNIQUE KEY `userid_UNIQUE` (`userid`), KEY `fk_userid_idx` (`userid`), CONSTRAINT `fk_userid` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqlmember_info = "SET FOREIGN_KEY_CHECKS = 0;
+                                      CREATE TABLE IF NOT EXISTS {$tblprefix}member_info (
+                                          `userid` char(23) NOT NULL,
+                                          `firstname` varchar(45) NOT NULL,
+                                          `lastname` varchar(55) DEFAULT NULL,
+                                          `phone` varchar(20) DEFAULT NULL,
+                                          `address1` varchar(45) DEFAULT NULL,
+                                          `address2` varchar(45) DEFAULT NULL,
+                                          `city` varchar(45) DEFAULT NULL,
+                                          `state` varchar(30) DEFAULT NULL,
+                                          `country` varchar(45) DEFAULT NULL,
+                                          `bio` varchar(20000) DEFAULT NULL,
+                                          `userimage` varchar(255) DEFAULT NULL,
+                                        UNIQUE KEY `userid_UNIQUE` (`userid`),
+                                        KEY `fk_userid_idx` (`userid`),
+                                        CONSTRAINT `fk_userid` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION )
+                                      ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                     $mi = $conn->exec($sqlmember_info);
 
                     unset($mi);
@@ -117,7 +165,16 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "cookies</span> table";
-                    $sqlcookies = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}cookies ( `cookieid` char(23) NOT NULL, `userid` char(23) NOT NULL, `tokenid` char(25) NOT NULL, `expired` tinyint(1) NOT NULL DEFAULT '0', `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`userid`), CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqlcookies = "SET FOREIGN_KEY_CHECKS = 0;
+                                  CREATE TABLE IF NOT EXISTS {$tblprefix}cookies (
+                                      `cookieid` char(23) NOT NULL,
+                                      `userid` char(23) NOT NULL,
+                                      `tokenid` char(25) NOT NULL,
+                                      `expired` tinyint(1) NOT NULL DEFAULT '0',
+                                      `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                    PRIMARY KEY (`userid`),
+                                    CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE )
+                                  ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                     $cook = $conn->exec($sqlcookies);
 
                     unset($cook);
@@ -133,7 +190,17 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "tokens</span> table";
-                    $sqltokens = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}tokens ( `tokenid` char(25) NOT NULL, `userid` char(23) NOT NULL, `expired` tinyint(1) NOT NULL DEFAULT '0', `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, PRIMARY KEY (`tokenid`), UNIQUE KEY `tokenid_UNIQUE` (`tokenid`), UNIQUE KEY `userid_UNIQUE` (`userid`), CONSTRAINT `userid_t` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqltokens = "SET FOREIGN_KEY_CHECKS = 0;
+                                  CREATE TABLE IF NOT EXISTS {$tblprefix}tokens (
+                                      `tokenid` char(25) NOT NULL,
+                                      `userid` char(23) NOT NULL,
+                                      `expired` tinyint(1) NOT NULL DEFAULT '0',
+                                      `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                    PRIMARY KEY (`tokenid`),
+                                    UNIQUE KEY `tokenid_UNIQUE` (`tokenid`),
+                                    UNIQUE KEY `userid_UNIQUE` (`userid`),
+                                    CONSTRAINT `userid_t` FOREIGN KEY (`userid`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE )
+                                  ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                     $tkn = $conn->exec($sqltokens);
                     unset($tkn);
                     break 1;
@@ -148,7 +215,18 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating <span class='dbtable'>" . $tblprefix . "app_config</span> table";
-                    $sqlconfig = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}app_config (`setting` char(26) NOT NULL, `value` varchar(12000) NOT NULL, `sortorder` int(5), `category` varchar(25) NOT NULL, `type` varchar(15) NOT NULL, `description` varchar(140), `required` tinyint(1) NOT NULL DEFAULT '0', PRIMARY KEY (`setting`), UNIQUE KEY `setting_UNIQUE` (`setting`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                    $sqlconfig = "SET FOREIGN_KEY_CHECKS = 0;
+                                  CREATE TABLE IF NOT EXISTS {$tblprefix}app_config (
+                                      `setting` char(26) NOT NULL,
+                                      `value` varchar(12000) NOT NULL,
+                                      `sortorder` int(5),
+                                      `category` varchar(25) NOT NULL,
+                                      `type` varchar(15) NOT NULL,
+                                      `description` varchar(140),
+                                      `required` tinyint(1) NOT NULL DEFAULT '0',
+                                    PRIMARY KEY (`setting`),
+                                    UNIQUE KEY `setting_UNIQUE` (`setting`) )
+                                  ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                     $cnf = $conn->exec($sqlconfig);
 
                     unset($cnf);
@@ -166,15 +244,16 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                   $status = "Creating <span class='dbtable'>" . $tblprefix . "roles</span> table";
                   $sqlmemberroles = "SET FOREIGN_KEY_CHECKS= 0; CREATE TABLE IF NOT EXISTS {$tblprefix}member_roles (
-                      `id` int(11) NOT NULL AUTO_INCREMENT,
-                      `member_id` char(23) NOT NULL,
-                      `role_id` int(11) NOT NULL,
-                      PRIMARY KEY (`id`),
-                      KEY `member_id_idx` (`member_id`),
-                      KEY `fk_role_id_idx` (`role_id`),
-                      CONSTRAINT `fk_member_id` FOREIGN KEY (`member_id`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-                      CONSTRAINT `fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `{$tblprefix}roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE )
-                      ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
+                                        `id` int(11) NOT NULL AUTO_INCREMENT,
+                                        `member_id` char(23) NOT NULL,
+                                        `role_id` int(11) NOT NULL,
+                                      UNIQUE KEY `uq_unique_idx` (`member_id`,`role_id`),
+                                      PRIMARY KEY (`id`),
+                                      KEY `member_id_idx` (`member_id`),
+                                      KEY `fk_role_id_idx` (`role_id`),
+                                      CONSTRAINT `fk_member_id` FOREIGN KEY (`member_id`) REFERENCES `{$tblprefix}members` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+                                      CONSTRAINT `fk_role_id` FOREIGN KEY (`role_id`) REFERENCES `{$tblprefix}roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE )
+                                    ENGINE=InnoDB DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
                   $m = $conn->exec($sqlmemberroles);
 
                   unset($m);
@@ -191,7 +270,11 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating triggers";
-                    $sqldrtrig = "DROP TRIGGER IF EXISTS move_to_deleted_members; DROP TRIGGER IF EXISTS add_admin; DROP TRIGGER IF EXISTS add_admin_beforeUpdate; DROP TRIGGER IF EXISTS stop_delete_required;";
+                    $sqldrtrig = "DROP TRIGGER IF EXISTS move_to_deleted_members;
+                                  DROP TRIGGER IF EXISTS add_admin;
+                                  DROP TRIGGER IF EXISTS assign_default_role;
+                                  DROP TRIGGER IF EXISTS add_admin_beforeUpdate;
+                                  DROP TRIGGER IF EXISTS stop_delete_required;";
                     $drtr = $conn->exec($sqldrtrig);
                     //$drtr = "blah";
                     unset($drtr);
@@ -207,9 +290,15 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $status = "Creating triggers";
-                    $sqldeleted_membersTrigger = "CREATE TRIGGER move_to_deleted_members AFTER DELETE ON {$tblprefix}members FOR EACH ROW BEGIN DELETE FROM {$tblprefix}deleted_members WHERE {$tblprefix}deleted_members.id = OLD.id; INSERT INTO {$tblprefix}deleted_members ( id, username, password, email, verified) VALUES ( OLD.id, OLD.username, OLD.password, OLD.email, OLD.verified ); END;";
-                    $dmt = $conn->exec($sqldeleted_membersTrigger);
+                    $status = "Creating basic roles";
+                    $sqlinsertroles = "SET FOREIGN_KEY_CHECKS = 0;
+                                          REPLACE INTO {$tblprefix}roles
+                                          (`id`, `name`, `description`, `required`, `default_role`)
+                                          VALUES (1, 'Superadmin', 'Master administrator of site', 1, NULL),
+                                          (2, 'Admin', 'Site administrator', 1, NULL),
+                                          (3, 'Standard User', 'Default site role for standard users', 1, 1);
+                                      SET FOREIGN_KEY_CHECKS = 1;";
+                    $dmt = $conn->exec($sqlinsertroles);
                     unset($dmt);
                     break 1;
                     sleep(0.5);
@@ -218,30 +307,8 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
+
             case 12:
-
-            try {
-                $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $status = "Creating basic roles";
-                $sqlinsertroles = "SET FOREIGN_KEY_CHECKS = 0;
-                                      REPLACE INTO {$tblprefix}roles
-                                      (`id`, `name`, `description`, `required`, `default_role`)
-                                      VALUES (1, 'Superadmin', 'Master administrator of site', 1, NULL),
-                                      (2, 'Admin', 'Site administrator', 1, NULL),
-                                      (3, 'Standard User', 'Default site role for standard users', 1, 1);
-                                  SET FOREIGN_KEY_CHECKS = 1;";
-                $dmt = $conn->exec($sqlinsertroles);
-                unset($dmt);
-                break 1;
-                sleep(0.5);
-            } catch (Exception $e) {
-                throw new Exception($e->getMessage());
-                $failure = 1;
-                break 1;
-            }
-
-            case 13:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -261,15 +328,16 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-            case 14:
+
+            case 13:
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating superadmin user";
                     $sqlAddSuperAdmin = $conn->prepare("SET FOREIGN_KEY_CHECKS= 0;
-                                                            REPLACE INTO {$tblprefix}members
-                                                            (id, username, password, email, verified)
-                                                            VALUES (:said, :superadmin, :sapw, :saemail, 1);
+                                                          INSERT INTO {$tblprefix}members
+                                                          (id, username, password, email, verified)
+                                                          VALUES (:said, :superadmin, :sapw, :saemail, 1);
                                                         SET FOREIGN_KEY_CHECKS= 1;");
                     $sqlAddSuperAdmin->bindParam(':said', $said);
                     $sqlAddSuperAdmin->bindParam(':superadmin', $superadmin);
@@ -286,8 +354,39 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     break 1;
                 }
 
-            case 15:
+            case 14:
+                try {
+                    $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
+                    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                    $status = "Creating triggers";
+                    $sqlTriggerDeletedMembers = "CREATE TRIGGER move_to_deleted_members AFTER
+                                                  DELETE ON {$tblprefix}members FOR EACH ROW
+                                                  BEGIN
+                                                    DELETE FROM {$tblprefix}deleted_members
+                                                      WHERE {$tblprefix}deleted_members.id = OLD.id;
+                                                    INSERT INTO {$tblprefix}deleted_members (id, username, password, email, verified)
+                                                    VALUES ( OLD.id, OLD.username, OLD.password, OLD.email, OLD.verified );
+                                                  END;";
+                    $dmt = $conn->exec($sqlTriggerDeletedMembers);
 
+                    $sqlTriggersDefaultRole = 'CREATE TRIGGER assign_default_role AFTER
+                                                INSERT ON '.$tblprefix.'members FOR EACH ROW
+                                                BEGIN
+                                                  SET @default_role = (SELECT id FROM '.$tblprefix.'roles WHERE default_role = 1 LIMIT 1);
+                                                  INSERT INTO '.$tblprefix.'member_roles (member_id, role_id) VALUES (NEW.id, @default_role);
+                                                END;';
+
+                    $dr = $conn->exec($sqlTriggersDefaultRole);
+                    unset($dmt, $dr);
+                    break 1;
+                    sleep(0.5);
+                } catch (Exception $e) {
+                    throw new Exception($e->getMessage());
+                    $failure = 1;
+                    break 1;
+                }
+
+            case 15:
               try {
                   $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -384,7 +483,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $failure = 1;
                     break 1;
                 }
-                case 17:
+            case 17:
                 try {
                     //Create MailLog Table
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
@@ -393,14 +492,14 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $values = "";
 
                     $sqlappsettings = "SET FOREIGN_KEY_CHECKS = 0; CREATE TABLE IF NOT EXISTS {$tblprefix}mail_log (
-                                        `id` int(11) NOT NULL AUTO_INCREMENT,
-                                        `type` varchar(45) NOT NULL DEFAULT 'generic',
-                                        `status` varchar(45) DEFAULT NULL,
-                                        `recipient` varchar(5000) DEFAULT NULL,
-                                        `response` mediumtext NOT NULL,
-                                        `isread` tinyint(1) NOT NULL DEFAULT b'0',
-                                        `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                                        PRIMARY KEY (`id`)
+                                          `id` int(11) NOT NULL AUTO_INCREMENT,
+                                          `type` varchar(45) NOT NULL DEFAULT 'generic',
+                                          `status` varchar(45) DEFAULT NULL,
+                                          `recipient` varchar(5000) DEFAULT NULL,
+                                          `response` mediumtext NOT NULL,
+                                          `isread` tinyint(1) NOT NULL DEFAULT b'0',
+                                          `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                          PRIMARY KEY (`id`)
                                       ) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8; SET FOREIGN_KEY_CHECKS = 1;";
 
                     $dm = $conn->exec($sqlappsettings);
@@ -409,16 +508,74 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     break 1;
                     sleep(0.5);
                 } catch (Exception $e) {
-                    throw new Exception("Failed to create application settings. " . $e->getMessage());
+                    throw new Exception("Failed to create mail log. " . $e->getMessage());
                     $failure = 1;
                     break 1;
                 }
 
-            case 18:
+              case 18:
+                  try {
+                      //Create MailLog Table
+                      $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
+                      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                      $status = "Creating banned user table";
+
+                      $sqljail = "CREATE TABLE {$tblprefix}member_jail (
+                                            `id` int(11) NOT NULL AUTO_INCREMENT,
+                                            `user_id` char(23) NOT NULL,
+                                            `banned_hours` FLOAT NOT NULL DEFAULT '24',
+                                            `reason` varchar(2000) DEFAULT NULL,
+                                            `timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                          PRIMARY KEY (`id`),
+                                          UNIQUE KEY `user_id_UNIQUE` (`user_id`),
+                                          KEY `fk_userid_idx` (`user_id`),
+                                          CONSTRAINT `fk_userid_jail` FOREIGN KEY (`user_id`) REFERENCES {$tblprefix}members (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
+                                        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+
+                      $dm = $conn->exec($sqljail);
+
+                      unset($dm);
+                      break 1;
+                      sleep(0.5);
+                  } catch (Exception $e) {
+                      throw new Exception("Failed to create banned users table. " . $e->getMessage());
+                      $failure = 1;
+                      break 1;
+                  }
+
+              case 19:
+                  try {
+                      //Create MailLog Table
+                      $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
+                      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                      $status = "Creating banned users view";
+
+                      $sqljail = "CREATE
+                                  VIEW `vw_banned_users` AS
+                                      SELECT
+                                          {$tblprefix}member_jail.user_id AS `user_id`,
+                                          {$tblprefix}member_jail.timestamp AS `banned_timestamp`,
+                                          {$tblprefix}member_jail.banned_hours AS `banned_hours`,
+                                          ( {$tblprefix}member_jail.banned_hours - (TIME_TO_SEC(TIMEDIFF(NOW(), {$tblprefix}member_jail.timestamp)) / 3600)) AS `hours_remaining`
+                                      FROM
+                                          {$tblprefix}member_jail;";
+
+                      $dm = $conn->exec($sqljail);
+
+                      unset($dm);
+                      break 1;
+                      sleep(0.5);
+                  } catch (Exception $e) {
+                      throw new Exception("Failed to create banned users view. " . $e->getMessage());
+                      $failure = 1;
+                      break 1;
+                  }
+
+            case 20:
                 require "confgen.php";
                 break 1;
 
-            case 19:
+            case 21:
                 try {
                     //Change file permissions
                     $status = "Changing file permissions";
@@ -428,7 +585,7 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     break 1;
                     sleep(1.5);
                 } catch (Exception $e) {
-                    throw new Exception("Failed to create application settings. " . $e->getMessage());
+                    throw new Exception("Failed to change file permissions. " . $e->getMessage());
                     $failure = 1;
                     break 1;
                 }

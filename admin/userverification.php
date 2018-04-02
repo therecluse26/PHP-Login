@@ -5,7 +5,7 @@
 $pagetype = 'adminpage';
 $title = 'Admin Verification';
 require '../login/misc/pagehead.php';
-$users = UserData::getUserVerifyList();
+$users = UserHandler::getUserVerifyList();
 $x = 0;
 ?>
 
@@ -44,9 +44,9 @@ $x = 0;
                     <td>'.$user['email'].'</td>
                     <td>'.$user['timestamp'].'</td>
                     <td><button id="verbutton'.$x.'" class="btn btn-success btn-sm btn-fixed pull-right"
-                            onclick="verifyUser(\''.$user['id'].'\',\''.$user['email'].'\',\''.$user['username'].'\',\''.$x.'\');">Verify</button>
+                            onclick="verifyUser(\''.$user['id'].'\',\''.$user['email'].'\',\''.addslashes($user['username']).'\',\''.$x.'\');">Verify</button>
                         <button id="delbutton'.$x.'" class="btn btn-danger btn-sm btn-fixed pull-right"
-                            onclick="deleteUser(\''.$user['id'].'\',\''.$user['email'].'\',\''.$user['username'].'\',\''.$x.'\');">Delete</button>
+                            onclick="deleteUser(\''.$user['id'].'\',\''.$user['email'].'\',\''.addslashes($user['username']).'\',\''.$x.'\');">Delete</button>
                         <input type="checkbox" value="'.$user['id'].'" id="'.$x.'" hidden></input>
                     </td>
                   </tr>';

@@ -22,7 +22,7 @@ try {
         } else {
 
             //Valid cookie
-            $user = UserData::pullUserById($cookieDbPull['userid']);
+            $user = UserHandler::pullUserById($cookieDbPull['userid']);
             $_SESSION['uid'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];

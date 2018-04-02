@@ -63,11 +63,11 @@ class RoleHandler extends DbConn
     public function listAllRoles(): array
     {
         try {
-            $sql = "SELECT DISTINCT id, name, description, default_role FROM ".$this->tbl_roles;
+            $sql = "SELECT DISTINCT id, name, description, default_role FROM ".$this->tbl_roles." WHERE id != 1";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_NUM);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $result;
         } catch (PDOException $e) {
@@ -91,7 +91,7 @@ class RoleHandler extends DbConn
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':role_id', $role_id);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_NUM);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $result;
         } catch (PDOException $e) {
@@ -107,7 +107,7 @@ class RoleHandler extends DbConn
     public function listUserRoles($user_id): array
     {
         try {
-            $sql = "SELECT r.id, r.name, r.description FROM ".$this->tbl_member_roles." mr
+            $sql = "SELECT r.id, r.name FROM ".$this->tbl_member_roles." mr
                   INNER JOIN roles r on mr.role_id = r.id
                   INNER JOIN members m on mr.member_id = m.id
                   WHERE m.id = :member_id";
@@ -115,7 +115,7 @@ class RoleHandler extends DbConn
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':member_id', $user_id);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_NUM);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             return $result;
         } catch (PDOException $e) {

@@ -3,7 +3,7 @@ $pagetype = 'userpage';
 $title = 'Account Settings';
 require '../login/misc/pagehead.php';
 $uid = $_SESSION['uid'];
-$usr = UserData::pullUserById($uid);
+$usr = UserHandler::pullUserById($uid);
 ?>
 <script src="js/accountupdate.js"></script>
 <script src="../login/js/jquery.validate.min.js"></script>

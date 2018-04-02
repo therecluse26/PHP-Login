@@ -82,4 +82,27 @@ class EmailLogger
 
         return $result;
     }
+
+    public static function deleteLog($logid)
+    {
+        try {
+            $ddb = new DbConn;
+            $tbl_mail_log = $ddb->tbl_mail_log;
+            $derr = array();
+
+            $dstmt = $ddb->conn->prepare('update '.$tbl_mail_log.' set isread = 1 WHERE id = :logid');
+            $dstmt->bindParam(':logid', $logid);
+            $dstmt->execute();
+            $derr['status'] = 1;
+            $derr['message'] = $dstmt->rowCount();
+        } catch (PDOException $d) {
+            $derr['status'] = 0;
+            $derr['message'] = 0;
+            trigger_error('Error: ' . $d->getMessage());
+        }
+
+        $resp = ($derr == '') ? true : $derr;
+
+        return $resp;
+    }
 }

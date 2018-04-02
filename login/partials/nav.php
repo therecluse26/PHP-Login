@@ -81,7 +81,8 @@ if ($auth->isLoggedIn()) {
                 <!-- Admin Controls -->
                 <?php if ($auth->isAdmin()): ?>
                       <li role="separator" class="divider"></li>
-                    <li><a href="<?php echo $this->base_url; ?>/admin/userverification.php">Verify/Delete Users</a></li>
+                      <li><a href="<?php echo $this->base_url; ?>/admin/usermanagement.php">Manage Active Users</a></li>
+                      <li><a href="<?php echo $this->base_url; ?>/admin/userverification.php">Verify/Delete Users</a></li>
                 <?php endif; ?>
                 <!-- Superadmin Controls -->
                 <?php if ($auth->isSuperAdmin()): ?>

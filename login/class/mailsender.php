@@ -43,7 +43,7 @@ class MailSender extends AppConfig
 
         if ($type == 'Verify') {
 
-            $admins = UserData::adminEmailList();
+            $admins = UserHandler::adminEmailList();
 
             foreach($userarr as $usr){
 

@@ -23,18 +23,20 @@ class LoginHandler extends AppConfig
         $timeout_minutes = round(($login_timeout / 60), 1);
 
         try {
-            $tbl_members = $this->tbl_members;
             $err = '';
         } catch (PDOException $e) {
             $err = "Error: " . $e->getMessage();
         }
 
-        $stmt = $this->conn->prepare("SELECT id, username, email, password, verified FROM ".$tbl_members." WHERE username = :myusername");
+        $stmt = $this->conn->prepare("SELECT id, username, email, password, verified, banned FROM ".$this->tbl_members." WHERE username = :myusername");
         $stmt->bindParam(':myusername', $myusername);
         $stmt->execute();
 
         // Gets query result
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+
 
         if ($curr_attempts >= $max_attempts && $timeDiff < $login_timeout) {
 
@@ -44,22 +46,41 @@ class LoginHandler extends AppConfig
 
              //If max attempts not exceeded, continue
             // Checks password entered against db password hash
-            if (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '1') {
-
+            if (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '0') {
                 //Success! Register $myusername, $mypassword and return "true"
                 $success = 'true';
 
-                session_start();
+                $this->init_session($result, $cookie);
+            } elseif (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '1') {
+                //Account banned
+                $uid = $result['id'];
 
-                $_SESSION['uid'] = $result['id'];
-                $_SESSION['username'] = $result['username'];
-                $_SESSION['ip_address'] = getenv('REMOTE_ADDR');
-                $_SESSION['verified'] = $result['verified'];
+                $bstmt = $this->conn->prepare("SELECT hours_remaining FROM `vw_banned_users` WHERE user_id = :uid;");
+                $bstmt->bindParam(':uid', $uid);
+                $bstmt->execute();
+                $bresult = $bstmt->fetch(PDO::FETCH_ASSOC);
 
-                if ($cookie == 1) {
-                    //Creates cookie
-                    include_once $this->base_dir."/login/ajax/cookiecreate.php";
+                if ($bresult['hours_remaining'] <= 0) {
+                    $uid = $result['id'];
+
+                    // Delete from member_jail, update banned record in members table and allow login
+                    $bstmt = $this->conn->prepare("DELETE FROM ".$this->tbl_member_jail." WHERE user_id = :uid;");
+                    $bstmt->bindParam(':uid', $uid);
+                    $bstmt->execute();
+
+                    $bstmt = $this->conn->prepare("UPDATE ".$this->tbl_members." SET banned = 0 WHERE id = :uid;");
+                    $bstmt->bindParam(':uid', $uid);
+                    $bstmt->execute();
+
+                    $success = 'true';
+
+                    $this->init_session($result, $cookie);
+                } else {
+                    $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Your account is currently suspended</div>";
                 }
+
+
+                //error_log($ban_complete);
             } elseif (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
 
                 //Account not yet verified
@@ -78,11 +99,10 @@ class LoginHandler extends AppConfig
     public function checkAttempts($username)
     {
         try {
-            $tbl_attempts = $this->tbl_attempts;
             $ip_address = $_SERVER["REMOTE_ADDR"];
             $err = '';
 
-            $sql = "SELECT Attempts as attempts, lastlogin FROM ".$tbl_attempts." WHERE IP = :ip and Username = :username";
+            $sql = "SELECT Attempts as attempts, lastlogin FROM ".$this->tbl_attempts." WHERE IP = :ip and Username = :username";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':ip', $ip_address);
@@ -107,7 +127,6 @@ class LoginHandler extends AppConfig
     public function insertAttempt($username)
     {
         try {
-            $tbl_attempts = $this->tbl_attempts;
             $ip_address = $_SERVER["REMOTE_ADDR"];
             $login_timeout = (int)$this->login_timeout;
             $max_attempts = (int)$this->max_attempts;
@@ -116,7 +135,7 @@ class LoginHandler extends AppConfig
             $attcheck = $this->checkAttempts($username);
             $curr_attempts = $attcheck['attempts'];
 
-            $stmt = $this->conn->prepare("INSERT INTO ".$tbl_attempts." (ip, attempts, lastlogin, username) values(:ip, 1, :lastlogin, :username)");
+            $stmt = $this->conn->prepare("INSERT INTO ".$this->tbl_attempts." (ip, attempts, lastlogin, username) values(:ip, 1, :lastlogin, :username)");
             $stmt->bindParam(':ip', $ip_address);
             $stmt->bindParam(':lastlogin', $datetimeNow);
             $stmt->bindParam(':username', $username);
@@ -136,7 +155,6 @@ class LoginHandler extends AppConfig
     public function updateAttempts($username)
     {
         try {
-            $tbl_attempts = $this->tbl_attempts;
             $ip_address = $_SERVER["REMOTE_ADDR"];
             $login_timeout = (int)$this->login_timeout;
             $max_attempts = (int)$this->max_attempts;
@@ -154,15 +172,15 @@ class LoginHandler extends AppConfig
 
             if ($curr_attempts >= $max_attempts && $timeDiff < $login_timeout) {
                 if ($timeDiff >= $login_timeout) {
-                    $sql = "UPDATE ".$tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
+                    $sql = "UPDATE ".$this->tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
                     $curr_attempts = 1;
                 }
             } else {
                 if ($timeDiff < $login_timeout) {
-                    $sql = "UPDATE ".$tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
+                    $sql = "UPDATE ".$this->tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
                     $curr_attempts++;
                 } elseif ($timeDiff >= $login_timeout) {
-                    $sql = "UPDATE ".$tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
+                    $sql = "UPDATE ".$this->tbl_attempts." SET attempts = :attempts, lastlogin = :lastlogin where ip = :ip and username = :username";
                     $curr_attempts = 1;
                 }
 
@@ -182,6 +200,22 @@ class LoginHandler extends AppConfig
 
         return $resp;
     }
+
+    public function init_session($result, $cookie)
+    {
+        session_start();
+
+        $_SESSION['uid'] = $result['id'];
+        $_SESSION['username'] = $result['username'];
+        $_SESSION['ip_address'] = getenv('REMOTE_ADDR');
+        $_SESSION['verified'] = $result['verified'];
+
+        if ($cookie == 1) {
+            //Creates cookie
+            include_once $this->base_dir."/login/ajax/cookiecreate.php";
+        }
+    }
+
     public static function logout()
     {
         if (isset($_COOKIE["usertoken"])) {

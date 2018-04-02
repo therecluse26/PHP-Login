@@ -17,3 +17,4 @@
     $tbl_cookies = $tbl_prefix."cookies";
     $tbl_app_config = $tbl_prefix."app_config";
     $tbl_mail_log = $tbl_prefix."mail_log";
+    $tbl_member_jail = $tbl_prefix."member_jail";

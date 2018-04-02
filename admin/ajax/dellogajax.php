@@ -21,7 +21,7 @@ if ((new AuthorizationHandler)->pageOk("superadminpage")) {
             foreach ($ids as $id) {
 
                 //Deletes user
-                $dresponse = Delete::deleteLog($id);
+                $dresponse = EmailLogger::deleteLog($id);
 
                 //Success
                 if ($dresponse['status'] == 1) {

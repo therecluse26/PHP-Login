@@ -12,7 +12,7 @@ $resp = array();
 $conf = AppConfig::pullMultiSettings(array("jwt_secret","base_url"));
 
 try {
-    $user = UserData::pullUserByEmail($email);
+    $user = UserHandler::pullUserByEmail($email);
 
     if (!$user) {
         throw new Exception("No user found!");

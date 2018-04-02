@@ -8,7 +8,7 @@ use \Firebase\JWT\JWT;
 $uid = $_SESSION['uid'];
 
 try {
-    $user = UserData::pullUserById($uid);
+    $user = UserHandler::pullUserById($uid);
 
     if (!$user) {
 

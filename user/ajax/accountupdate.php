@@ -40,7 +40,7 @@ try {
                 throw new Exception("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Must provide a valid email address</div><div id=\"returnVal\" style=\"display:none;\">false</div>");
             } else {
                 //CHECK DATABASE FOR EXISTING EMAIL
-                $emailtaken = UserData::pullUserByEmail($tryemail);
+                $emailtaken = UserHandler::pullUserByEmail($tryemail);
 
                 if ($emailtaken['email'] == $tryemail) {
                     //EMAIL EXISTS

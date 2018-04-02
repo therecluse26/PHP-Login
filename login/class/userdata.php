@@ -35,46 +35,6 @@ class UserData extends DbConn
         return $result;
     }
 
-    public static function pullUserByEmail($email)
-    {
-        $db = new DbConn;
-        $tbl_members = $db->tbl_members;
-        $result = array();
-
-        try {
-            $sql = "SELECT id, email, username FROM ".$tbl_members." WHERE email = :email LIMIT 1";
-            $stmt = $db->conn->prepare($sql);
-            $stmt->bindParam(':email', $email);
-            $stmt->execute();
-
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $result = "Error: " . $e->getMessage();
-        }
-
-        return $result;
-    }
-
-    public static function pullUserById($id)
-    {
-        $db = new DbConn;
-        $tbl_members = $db->tbl_members;
-        $result = array();
-
-        try {
-            $sql = "SELECT id, email, username FROM ".$tbl_members." WHERE id = :id LIMIT 1";
-            $stmt = $db->conn->prepare($sql);
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $result = "Error: " . $e->getMessage();
-        }
-
-        return $result;
-    }
-
     public static function pullUserPassword($id)
     {
         $db = new DbConn;
@@ -132,63 +92,5 @@ class UserData extends DbConn
         } else {
             return false;
         }
-    }
-
-    public static function getUserVerifyList()
-    {
-        try {
-            $db = new DbConn;
-            $tbl_members = $db->tbl_members;
-
-            $stmt = $db->conn->prepare("SELECT id, email, username, mod_timestamp as timestamp FROM ".$tbl_members."
-                                        WHERE verified = 0 ORDER BY timestamp desc");
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $result = "Error: " . $e->getMessage();
-        }
-
-        return $result;
-    }
-
-    public static function getAllActiveUsers()
-    {
-        try {
-            $db = new DbConn;
-            $tbl_members = $db->tbl_members;
-
-            $stmt = $db->conn->prepare("SELECT m.id, m.email, m.username, m.mod_timestamp as timestamp, GROUP_CONCAT(r.name) roles FROM ".$tbl_members." m
-                                        INNER JOIN member_roles mr on mr.member_id = m.id
-                                        INNER JOIN roles r on mr.role_id = r.id
-                                        WHERE r.name NOT IN ('Superadmin')
-                                        AND m.verified = 1
-                                        GROUP BY m.id
-                                        ORDER BY timestamp desc");
-
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $result = "Error: " . $e->getMessage();
-        }
-
-        return $result;
-    }
-
-    public static function adminEmailList()
-    {
-        try {
-            $db = new DbConn;
-
-            $stmt = $db->conn->prepare("SELECT email FROM ".$db->tbl_members." m
-                                        INNER JOIN member_roles mr on mr.member_id = m.id
-                                        INNER JOIN roles r on mr.role_id = r.id
-                                        WHERE r.name in ('Admin', 'Superadmin')");
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $result = "Error: " . $e->getMessage();
-        }
-
-        return $result;
     }
 }

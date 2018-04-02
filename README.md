@@ -9,7 +9,7 @@ Technologies used:
 
 - `PHP` *_required_
 	- Version `7.0+` recommended
-	- Minimum version: `5.5`
+	- Minimum version: `5.6`
 	- `pdo_mysql` extension required
 	- Recommended to enable `shell_exec`
 
@@ -34,6 +34,10 @@ Technologies used:
 	- Version `5.2`
 - `JSON Web Tokens` (JWT) (Firebase implementation)
 	- Version `5.0`
+
+##### Other libraries used
+- `DataTables`
+	- Version `1.10.16`
 
 
 Installation
