@@ -1,4 +1,4 @@
-PHP-Login 3.0
+PHP-Login 3.1
 =============
 
 PHP-Login is a simple login and signup system built with PHP, MySQL (with PDO), jQuery and Bootstrap 3. It is meant to be a starting point for PHP developers to build sites from and includes basic user management classes and methods.
@@ -59,15 +59,15 @@ Select an installation option from the pop-up modal that appears: `Automated` or
 
 Enter all relevant information into the form, submit, and wait for install to complete.
 
-<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" />
+<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" height="400px" />
 
 This will generate necessary database connection and configuration files, pull required `Composer` dependencies, and create/seed the database with user supplied data.
 
-<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress" style="width:300px;display:block;margin:auto;" />
+<img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_inprogress.png" alt="Automated Installer In Progress" style="display:block;margin:auto;" height="300px" />
 
 ##### If any errors occur, or if you for some reason feel like being awesome, you may install manually. See the secton entitled [Manual Installation Instructions](#maninstall) for more information.
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="width:300px;display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="display:block;margin:auto;" height="300px" />
 
 Continue to [Post Installation Instructions](#postinstall)
 
@@ -81,7 +81,7 @@ The manual installation process is, well, more manual than the automated install
 
 Fill out all requested information on this page and click the `Generate Configuration` button on the bottom.
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_empty.png" alt="Manual Install Form" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_empty.png" alt="Manual Install Form" style="display:block;margin:auto;" height="500px" />
 
 Configuration and SQL scripts will be generated. Several manual steps will now be necessary.
 
@@ -91,7 +91,7 @@ Configuration and SQL scripts will be generated. Several manual steps will now b
 
 - Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies.
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" height="500px" />
 
 Installation is now complete, however, a few steps are still necessary before your site is functional. Proceed to [Post Installation Instructions](#postinstall)
 
@@ -102,17 +102,17 @@ Post Installation
 -----------------
 Now that basic installation is completed, we will need to login and do some simple site configuration. Navigate to the root of your site to login under the superadmin account you just created: ex: `[your_site]/login/index.php`
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/loginfrm_empty.png" alt="Log in" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/loginfrm_empty.png" alt="Log in" style="display:block;margin:auto;" height="300px" />
 
 Once you are signed in for the first time under your superadmin account, we need to finish editing site configuration. Click on the top right corner of your screen where your username is located and select `Edit Site Config` to continue.
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/dropdown_menu.png" alt="Edit Site Config" style="height:200px;display:block;margin:auto;"/>
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/dropdown_menu.png" alt="Edit Site Config" style="display:block;margin:auto;" height="200px" />
 
 On the `Edit Site Configuration` page, numerous configuration options can be set. Be aware, that some of these changes (such as `base_url`) can lead to a broken site if configured incorrectly. If any of these config changes do lead to a non-functioning site, you can recover it by updating the `app_config` MySQL database table to the correct values.
 
 For baseline functionality, ensure that proper SMTP settings are configured in the `Mailer` tab. Once this is filled out, click `Save` and then `Test Email Config` to show if a successful email connection was made or otherwise show connection/authentication errors.
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/superadmin_email_config.png" alt="Mail Config" style="display:block;margin:auto;" />
+ <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/superadmin_email_config.png" alt="Mail Config" style="display:block;margin:auto;" height="400px" />
 
 
 *_For quick reference, hover over the name of each setting to see a description of what it does_
@@ -177,3 +177,9 @@ Configuration Settings
 - `active_msg` - Message displayed when account is successfully verified
 - `active_email` - Email sent to user confirming account verification
 - `reset_email` - Email sent to user when password reset is requested
+
+## Version 3.1 Change Log
+- Superadmin-definable roles
+- User management panel(s)
+- Banning
+- Various bugfixes

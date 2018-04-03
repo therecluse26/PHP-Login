@@ -1,4 +1,6 @@
 <?php
+
+
 /**
 * Contains all cookie handling methods
 **/
@@ -14,21 +16,19 @@ class CookieHandler
     **/
     public static function generateCookie($cookieid, $userid, $tokenid, $token, $exptime)
     {
-
         try {
             setcookie("usertoken", $token, time() + $exptime, "/", "", false, true);
 
             $db = new DbConn;
-            $stmt = $db->conn->prepare("REPLACE INTO $db->tbl_cookies (cookieid, userid, tokenid, expired) values(:cookieid, :userid, :tokenid, 0)");
+            $stmt = $db->conn->prepare("REPLACE INTO $db->tbl_cookies (cookieid, userid, tokenid, expired)
+                                        VALUES (:cookieid, :userid, :tokenid, 0)");
             $stmt->bindParam(':cookieid', $cookieid);
             $stmt->bindParam(':userid', $userid);
             $stmt->bindParam(':tokenid', $tokenid);
             $stmt->execute();
 
             return true;
-
         } catch (Exception $e) {
-
             return $e->getMessage();
         }
     }
@@ -41,19 +41,15 @@ class CookieHandler
         $cookie = array();
 
         try {
-
             if (!isset($_COOKIE[$usertoken])) {
-
                 $cookie['status'] = false;
                 return $cookie;
-
             } else {
                 $cookie['status'] = true;
                 $cookie['value'] = $_COOKIE[$usertoken];
                 return $cookie;
             }
         } catch (Exception $e) {
-
             return $e->getMessage();
         }
     }
@@ -67,7 +63,9 @@ class CookieHandler
     {
         try {
             $db = new DbConn;
-            $stmt = $db->conn->prepare("SELECT cookieid, userid, tokenid, expired FROM $db->tbl_cookies WHERE userid = :userid and tokenid = :tokenid and cookieid = :cookieid and expired = 0");
+            $stmt = $db->conn->prepare("SELECT cookieid, userid, tokenid, expired FROM $db->tbl_cookies
+                                        WHERE userid = :userid AND tokenid = :tokenid AND cookieid = :cookieid
+                                        AND expired = 0");
             $stmt->bindParam(':cookieid', $cookieid);
             $stmt->bindParam(':userid', $userid);
             $stmt->bindParam(':tokenid', $tokenid);
@@ -75,10 +73,45 @@ class CookieHandler
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $result;
-
         } catch (Exception $e) {
-
             return $e->getMessage();
+        }
+    }
+
+    /**
+    * Initializes cookie file
+    */
+    public static function initializeCookie()
+    {
+        $conf = new AppConfig;
+        require $conf->base_dir."/login/vendor/autoload.php";
+
+        $uid = $_SESSION['uid'];
+
+        try {
+            $user = UserHandler::pullUserById($uid);
+
+            if (!$user) {
+                throw new Exception("No user found!");
+            }
+
+            $secret = $conf->jwt_secret;
+            $tokenid = uniqid('t_', true);
+            $cookieid = uniqid();
+            $userid = $user['id'];
+            //Data passed in JWT
+            $payload = array(
+              "iss" => $conf->base_url,
+              "tokenid"=>$tokenid,
+              "cookieid"=>$cookieid,
+              "userid" => $userid,
+            );
+
+            $token = \Firebase\JWT\JWT::encode($payload, $secret);
+
+            $cookie = self::generateCookie($cookieid, $userid, $tokenid, $token, (int)$conf->cookie_expire_seconds);
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 }

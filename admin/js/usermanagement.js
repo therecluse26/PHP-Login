@@ -28,7 +28,7 @@ function userRolesList(id) {
   $.ajax({
     type: "POST",
     url: "ajax/getuserroles.php",
-    data: { "user_id": id },
+    data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     async: false,
     success: function(role_array){
 
@@ -54,10 +54,11 @@ function banUser(id, btn_id, ban_hours, ban_reason){
   $.ajax({
     type: "POST",
     url: "ajax/banuserajax.php",
-    data: { "uid": uidJSON, "ban_hours": ban_hours, "ban_reason": ban_reason },
+    data: { "uid": uidJSON, "ban_hours": ban_hours, "ban_reason": ban_reason, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
     async: false,
     success: function(resp){
 
+      console.log(resp);
       usertable.row( $('#'+btn_id).parents('tr') ).remove().draw();
 
     }
@@ -107,7 +108,7 @@ $(document).ready(function() {
     processing: true,
     paging: true,
     serverSide: true,
-    ajax: "ajax/usermanagementajax.php",
+    ajax: "ajax/usermanagementajax.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
     scrollY: "600px",
     scrollCollapse: true,
     lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
@@ -136,6 +137,49 @@ $(document).ready(function() {
       //console.log("selected");
   });
 });
+
+
+$('#saveRoles').click(function(){
+
+    var sendData = new FormData();
+    var formData = [];
+    var new_roles = [];
+
+    var id = $('#user_id').val();
+    $('#roles-selected > option').each(function(){
+      var value = $(this).val();
+      var name = $(this).text()
+      new_roles.push({"role_id": value, "role_name": name});
+    });
+
+    formData.push(toObject(new_roles));
+    formJson = JSON.stringify(formData);
+    sendData.append("_token", $('[name=csrf_token').val());
+    sendData.append('formData', formJson);
+    sendData.append('userId', id);
+
+    $.ajax({
+      type: "POST",
+      url: "users/"+id+"/roles",
+      processData: false,
+      contentType: false,
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: sendData,
+      success: function(response){
+
+        $('#rolesModal').modal('toggle');
+
+        $("#rolestd_" + id).empty();
+
+        $.each(response[0], function(key, value){
+          $('#rolestd_' + id).append('<a href="#" id="roles_'+id+'">'+value.role_name+'</a><br>');
+        });
+
+      }
+    });
+  });
 
 
 //Role assignment box button logic

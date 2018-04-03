@@ -12,7 +12,7 @@ $(document).ready(function (e) {
         $.ajax({
             url: "ajax/testemailajax.php",
             type: "GET",
-            data: "t=1",
+            data: "t=1&csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
             dataType: "json",
             contentType: false,
             processData: false,
@@ -58,6 +58,8 @@ $(document).ready(function (e) {
 
     //Ajax form submit
     $("#savebtn").click(function (e) {
+
+      formData.append("csrf_token", $('meta[name="csrf_token"]').attr("value"));
 
     e.preventDefault();
 

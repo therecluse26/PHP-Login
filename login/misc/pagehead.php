@@ -31,15 +31,15 @@ try {
     * This object's class extends AppConfig, so AppConfig variables can be pulled from it
     **/
     $auth = new AuthorizationHandler;
-    $conf = new PageConstruct;
+    $conf = new PageConstruct($auth);
 
     if (!isset($_SESSION)) {
         session_start();
-
         date_default_timezone_set($conf->timezone);
     }
 
-    $conf->buildHead($pagetype, $title);
+    //Builds page head and returns CSRF token object
+    $csrf = $conf->buildHead($pagetype, $title);
 
     //Checks for cookie
     if (isset($_COOKIE['usertoken'])) {

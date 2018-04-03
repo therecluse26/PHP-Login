@@ -22,7 +22,7 @@ function forwardBack(direction){
     $.ajax({
         type: "GET",
         url: "ajax/maillogajax.php",
-        data: "limit="+limit+"&offset="+offset,
+        data: "limit="+limit+"&offset="+offset+"&csrf_token="+$('meta[name="csrf_token"]').attr("value"),
         dataType: 'HTML',
         beforeSend: function () {
            $('#mailLogOutput').html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");
@@ -67,7 +67,7 @@ function forwardBtn(){
     $.ajax({
         type: "GET",
         url: "ajax/maillogajax.php",
-        data: "limit="+limit+"&offset="+offset,
+        data: "limit="+limit+"&offset="+offset+"&csrf_token="+$('meta[name="csrf_token"]').attr("value"),
         dataType: 'HTML',
         beforeSend: function () {
            $('#mailLogOutput').html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");
@@ -114,7 +114,7 @@ function backBtn(){
     $.ajax({
         type: "GET",
         url: "ajax/maillogajax.php",
-        data: "limit="+limit+"&offset="+offset,
+        data: "limit="+limit+"&offset="+offset+"&csrf_token="+$('meta[name="csrf_token"]').attr("value"),
         dataType: 'HTML',
         beforeSend: function () {
            $('#mailLogOutput').html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");

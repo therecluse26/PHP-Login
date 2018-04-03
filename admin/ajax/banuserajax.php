@@ -1,20 +1,27 @@
 <?php
 /**
-* AJAX page for user deletion in userverification.php
+* AJAX page for user banning
 **/
-require '../../login/autoload.php';
+try {
+    require '../../login/autoload.php';
 
-session_start();
+    session_start();
 
-if ((new AuthorizationHandler)->pageOk("adminpage")) {
-    $uid = $_POST['uid'];
-    $ban_hours = $_POST['ban_hours'];
-    $ban_reason = $_POST['ban_reason'];
+    $request = new CSRFHandler;
+    $auth = new AuthorizationHandler;
 
-    $eresult = UserData::userDataPull($uid, 0);
+    if ($request->valid_token() && $auth->isAdmin()) {
+        if (isset($_POST['uid']) && isset($_POST['ban_hours']) && isset($_POST['ban_reason'])) {
+            $uid = $_POST['uid'];
+            $ban_hours = $_POST['ban_hours'];
+            $ban_reason = $_POST['ban_reason'];
+        } else {
+            throw new Exception("Missing data");
+        }
 
-    foreach ($eresult as $e) {
-        try {
+        $eresult = UserData::userDataPull($uid, 0);
+
+        foreach ($eresult as $e) {
             $singleId = $e['id'];
 
             //Deletes user
@@ -28,8 +35,10 @@ if ((new AuthorizationHandler)->pageOk("adminpage")) {
                 //header('HTTP/1.1 400 Bad Request');
                 throw new Exception("Failure");
             }
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
         }
+    } else {
+        throw new Exception("Unauthorized");
     }
+} catch (Exception $ex) {
+    echo $ex->getMessage();
 }

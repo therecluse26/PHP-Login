@@ -1,9 +1,10 @@
 <?php
+
 class profileData extends DbConn
 {
-    public static function pullUserFields($uid, $fieldarr) {
-
-        $fields = implode (", ", $fieldarr);
+    public static function pullUserFields($uid, $fieldarr)
+    {
+        $fields = implode(", ", $fieldarr);
 
         try {
             //Pull specific user data
@@ -17,14 +18,13 @@ class profileData extends DbConn
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
             return $result;
-
         } catch (PDOException $e) {
-
-                $result = "Error: " . $e->getMessage();
+            $result = "Error: " . $e->getMessage();
         }
     }
 
-    public static function pullAllUserInfo($uid) {
+    public static function pullAllUserInfo($uid)
+    {
 
         //Pull user info into edit form
         $db = new DbConn;
@@ -37,10 +37,10 @@ class profileData extends DbConn
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $result;
-
     }
 
-    public static function upsertUserInfo($uid, $dataarray) {
+    public static function upsertUserInfo($uid, $dataarray)
+    {
 
         //Upsert user data
         $db = new DbConn;
@@ -51,8 +51,8 @@ class profileData extends DbConn
 
         $insdata = implode('\', \'', $dataarray);
 
-        foreach($dataarray as $key => $value){
-            if (isset($updata)){
+        foreach ($dataarray as $key => $value) {
+            if (isset($updata)) {
                 $updata = $updata.$key.' = '.$db->conn->quote($value).', ';
             } else {
                 $updata = $key.' = '.$db->conn->quote($value).', ';
@@ -67,7 +67,5 @@ class profileData extends DbConn
         $status = $stmt->execute(array_values($dataarray));
 
         return $status;
-
     }
-
 }

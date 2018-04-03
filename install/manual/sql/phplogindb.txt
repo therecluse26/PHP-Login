@@ -292,7 +292,14 @@ VIEW `vw_banned_users` AS
         `member_jail`.`banned_hours` AS `banned_hours`,
         (`member_jail`.`banned_hours` - (TIME_TO_SEC(TIMEDIFF(NOW(), `member_jail`.`timestamp`)) / 3600)) AS `hours_remaining`
     FROM
-        `member_jail`
+        `member_jail`;
+
+
+CREATE EVENT `unbanUsers`
+    ON SCHEDULE EVERY 15 MINUTE
+    DO
+    DELETE FROM `vw_banned_users` where hours_remaining < 0;
+    UPDATE `members` m SET m.banned = 0 where m.banned = 1 AND m.id not in (select v.user_id from `vw_banned_users` v);
 
 
 /*** DATABASE SEEDING ***/

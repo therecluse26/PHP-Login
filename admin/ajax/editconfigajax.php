@@ -3,20 +3,21 @@
 * AJAX page for saving configuration in editconfig.php
 **/
 require "../../login/autoload.php";
-$conf = new AppConfig;
+try {
+    session_start();
+    $conf = new AppConfig;
+    $request = new CSRFHandler;
+    $auth = new AuthorizationHandler;
 
-session_start();
-
-if ((new AuthorizationHandler)->pageOk("superadminpage")) {
-
-    try {
-
+    if ($request->valid_token() && $auth->isSuperAdmin()) {
+        unset($_POST['csrf_token']);
         $update = $conf->updateMultiSettings($_POST);
 
         echo json_encode($update);
-
-    } catch (Exception $e) {
-
-        echo $e->getMessage();
+    } else {
+        throw new Exception("Unauthorized");
     }
+} catch (Exception $e) {
+    error_log($e->getMessage());
+    echo json_encode($e->getMessage());
 }

@@ -1,4 +1,5 @@
 <?php
+
 class UserHandler extends DbConn
 {
     public static function pullUserByEmail($email)
@@ -185,7 +186,7 @@ class UserHandler extends DbConn
     /**
     * Bans user by `$userid`
     **/
-    public static function banUser($user_id, $ban_hours = 24, $reason = null)
+    public static function banUser($user_id, $ban_hours = 0, $reason = null)
     {
         try {
             $db = new DbConn;

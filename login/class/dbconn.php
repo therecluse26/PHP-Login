@@ -1,4 +1,6 @@
 <?php
+
+
 /**
 * Database connection class. This base class is extended or utilized by numerous other classes.
 */

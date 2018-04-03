@@ -1,4 +1,9 @@
 <?php
+
+
+/**
+* Miscellaneous utility functions
+*/
 class MiscFunctions
 {
     public static function mySqlErrors($response)

@@ -1,7 +1,8 @@
 <?php
+
 class PasswordForm extends DbConn
 {
-    public function resetPw ($uid, $password_raw)
+    public function resetPw($uid, $password_raw)
     {
         try {
             $resp = array();
@@ -23,14 +24,11 @@ class PasswordForm extends DbConn
             $resp['status'] = true;
 
             return $resp;
-
         } catch (PDOException $e) {
-
             $resp['message'] = 'Error: ' . $e->getMessage();
             $resp['status'] = false;
 
             return $resp;
         }
-
     }
 }

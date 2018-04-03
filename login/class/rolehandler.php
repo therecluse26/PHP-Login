@@ -41,7 +41,8 @@ class RoleHandler extends DbConn
         $db = new DbConn;
 
         try {
-            $sql = "SELECT id FROM ".$db->tbl_roles." WHERE default_role = 1";
+            $sql = "SELECT id FROM ".$db->tbl_roles."
+                    WHERE default_role = 1";
 
             $stmt = $db->conn->prepare($sql);
             $stmt->execute();
@@ -63,7 +64,8 @@ class RoleHandler extends DbConn
     public function listAllRoles(): array
     {
         try {
-            $sql = "SELECT DISTINCT id, name, description, default_role FROM ".$this->tbl_roles." WHERE id != 1";
+            $sql = "SELECT DISTINCT id, name, description, default_role
+                    FROM ".$this->tbl_roles." WHERE id != 1";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();

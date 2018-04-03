@@ -1,19 +1,18 @@
 <?php
-class EmailSettings extends AppConfig {
 
-    public function testMailSettings(){
 
-        if ($this->mail_server == ''){
-
+class EmailSettings extends AppConfig
+{
+    public function testMailSettings()
+    {
+        if ($this->mail_server == '') {
             $resp['status'] = 'false';
             $resp['message'] = "No mail server specified!";
 
             $this->updateMultiSettings(array('email_working'=>'false'));
 
             return $resp;
-
         } else {
-
             $resp = array();
             /**
              * This uses the SMTP class alone to check that a connection can be made to an SMTP server,
@@ -21,7 +20,6 @@ class EmailSettings extends AppConfig {
              */
 
             if ($this->mail_server_type == 'smtp') {
-
                 date_default_timezone_set('Etc/UTC');
 
                 require_once $this->base_dir.'/login/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
@@ -56,21 +54,17 @@ class EmailSettings extends AppConfig {
                     //If server supports authentication, do it (even if no encryption)
                     if (is_array($e) && array_key_exists('AUTH', $e)) {
                         if ($smtp->authenticate($this->mail_user, $this->mail_pw)) {
-
                             $resp['status'] = 'true';
                             $resp['message'] = "Successful Connection!";
 
                             $this->updateMultiSettings(array('email_working'=>'false'));
 
                             return $resp;
-
                         } else {
                             throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
                         }
                     }
-
                 } catch (Exception $e) {
-
                     $resp['status'] = 'false';
                     $resp['message'] = 'SMTP error: ' . $e->getMessage();
 
@@ -80,7 +74,6 @@ class EmailSettings extends AppConfig {
                 }
                 //Whatever happened, close the connection.
                 $smtp->quit(true);
-
             }
         }
     }

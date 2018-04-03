@@ -1,5 +1,4 @@
 <?php
-
 // Verifies a users authorization
 class AuthorizationHandler extends RoleHandler
 {

@@ -4,6 +4,9 @@ var croppedimg;
 var imgChange = false;
 
 function ajaxSend(formData){
+
+  formData.append("csrf_token", $('meta[name="csrf_token"]').attr("value"));
+
     $.ajax({
         url: "ajax/profileupdate.php",
         type: "POST",
@@ -27,7 +30,7 @@ function ajaxSend(formData){
             $.ajax({
               url: "ajax/getimage.php",
               type: "POST",
-              data: "",
+              data: {"csrf_token": $('meta[name="csrf_token"]').attr("value")},
               success: function (img) {
 
                 croppedimg.croppie('destroy');

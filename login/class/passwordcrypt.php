@@ -1,4 +1,6 @@
 <?php
+
+
 class PasswordCrypt
 {
     public static function encryptPw($password)

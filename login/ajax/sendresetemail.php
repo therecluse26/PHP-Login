@@ -1,8 +1,8 @@
 <?php
 $pagetype = 'loginpage';
 $title = 'Forgot Password';
-require_once '../autoload.php';
-require_once '../vendor/autoload.php';
+require '../autoload.php';
+require '../vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
 

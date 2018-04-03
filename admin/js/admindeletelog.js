@@ -3,9 +3,9 @@ function deleteLog(id, btnid){
     var uidJSON = "[" + JSON.stringify(id) + "]";
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "ajax/dellogajax.php",
-        data: "uid="+ uidJSON,
+        data: {"uid": uidJSON, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
         dataType: 'JSON',
         beforeSend: function () {
            $('#delbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");
@@ -48,9 +48,9 @@ function deleteSelectedLogs(){
     var idsJSON = JSON.stringify(searchIDs);
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "ajax/dellogajax.php",
-        data: "uid="+idsJSON+"&m=v",
+        data: {"uid": idsJSON, "m": "v", "csrf_token": $('meta[name="csrf_token"]').attr("value")},
         dataType: 'HTML',
         beforeSend: function () {
 

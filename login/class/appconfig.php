@@ -1,4 +1,6 @@
 <?php
+
+
 /**
 * Handles application configuration settings stored in database `app_config` table
 **/

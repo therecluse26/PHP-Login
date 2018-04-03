@@ -1,4 +1,5 @@
 <?php
+
 class EmailLogger
 {
     public static function logResponse($emailresp, $recipient, $type, $mailstatus)

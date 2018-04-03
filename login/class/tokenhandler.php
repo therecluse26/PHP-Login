@@ -1,4 +1,5 @@
 <?php
+
 class TokenHandler
 {
     public static function selectToken($tokenid, $userid, $expire)

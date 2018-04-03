@@ -11,9 +11,9 @@ function verifyAll(){
     var idsJSON = JSON.stringify(searchIDs);
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "ajax/verajax.php",
-        data: "uid="+idsJSON+"&m=v",
+        data: {"uid":idsJSON, "m":"v", "csrf_token": $('meta[name="csrf_token"]').attr("value")},
         dataType: 'HTML',
         beforeSend: function () {
 

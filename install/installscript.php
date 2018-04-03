@@ -312,12 +312,21 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                 try {
                     $conn = new PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpw);
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                    $status = "Creating <span class='dbtable'>cleanupOldDeleted</span> event";
+                    $status = "Creating scheduled events";
                     $sqlcleanupOldDeletedEvent = "SET GLOBAL event_scheduler = ON;
                                                   CREATE EVENT IF NOT EXISTS cleanupOldDeleted ON SCHEDULE
-                                                  EVERY 1 DAY COMMENT 'Removes deleted records older than 30 days.'
-                                                  DO BEGIN DELETE FROM {$tblprefix}deleted_members
-                                                  WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY); END;";
+                                                    EVERY 1 DAY COMMENT 'Removes deleted records older than 30 days.'
+                                                    DO BEGIN
+                                                      DELETE FROM {$tblprefix}deleted_members
+                                                      WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY);
+                                                    END;
+                                                  CREATE EVENT IF NOT EXISTS unbanUsers
+                                                      ON SCHEDULE EVERY 15 MINUTE
+                                                      DO BEGIN
+                                                        DELETE FROM vw_banned_users where hours_remaining < 0;
+                                                        UPDATE {$tblprefix}members m SET m.banned = 0 where m.banned = 1
+                                                        AND m.id not in (select v.user_id from vw_banned_users v);
+                                                      END;";
                     $code = $conn->exec($sqlcleanupOldDeletedEvent);
 
                     unset($code);

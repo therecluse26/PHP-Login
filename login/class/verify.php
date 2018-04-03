@@ -1,13 +1,13 @@
 <?php
+
 class Verify extends DbConn
 {
     public static function verifyUser($userarr, $verify)
     {
         try {
-
             $idset = [];
 
-            foreach($userarr as $user){
+            foreach ($userarr as $user) {
                 array_push($idset, $user['id']);
             }
 
@@ -23,23 +23,15 @@ class Verify extends DbConn
 
                 $vresp['status'] = true;
                 $vresp['message'] = '';
-
             } else {
-
                 $vresp['status'] = false;
                 $vresp['message'] = 'User(s) not found';
             }
-
-
-
         } catch (PDOException $v) {
-
             $vresp['status'] = false;
             $vresp['message'] = 'Error: ' . $v->getMessage();
         }
 
         return $vresp;
-
     }
 }
-

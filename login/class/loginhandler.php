@@ -1,4 +1,6 @@
 <?php
+
+
 /**
 * Contains all methods used in login form
 **/
@@ -28,14 +30,13 @@ class LoginHandler extends AppConfig
             $err = "Error: " . $e->getMessage();
         }
 
-        $stmt = $this->conn->prepare("SELECT id, username, email, password, verified, banned FROM ".$this->tbl_members." WHERE username = :myusername");
+        $stmt = $this->conn->prepare("SELECT id, username, email, password, verified, banned
+                                      FROM ".$this->tbl_members." WHERE username = :myusername");
         $stmt->bindParam(':myusername', $myusername);
         $stmt->execute();
 
         // Gets query result
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
 
 
         if ($curr_attempts >= $max_attempts && $timeDiff < $login_timeout) {
@@ -201,6 +202,9 @@ class LoginHandler extends AppConfig
         return $resp;
     }
 
+    /**
+    * Initializes session
+    */
     public function init_session($result, $cookie)
     {
         session_start();
@@ -212,10 +216,13 @@ class LoginHandler extends AppConfig
 
         if ($cookie == 1) {
             //Creates cookie
-            include_once $this->base_dir."/login/ajax/cookiecreate.php";
+            CookieHandler::initializeCookie();
         }
     }
 
+    /**
+    * Logs user out and destroys session
+    */
     public static function logout()
     {
         if (isset($_COOKIE["usertoken"])) {

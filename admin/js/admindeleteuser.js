@@ -3,9 +3,9 @@ function deleteUser(id, username, email, btnid){
     var uidJSON = "[" + JSON.stringify(id) + "]";
 
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "ajax/deluserajax.php",
-        data: "uid="+ uidJSON,
+        data: {"uid": uidJSON, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
         dataType: 'HTML',
         beforeSend: function () {
             $('#delbutton'+btnid).html("<p class='text-center'><img class='verloader' src='../login/images/load.gif'></p>");

@@ -1,4 +1,6 @@
 <?php
+
+
 class NewUser extends DbConn
 {
     public function createUser($userarr)

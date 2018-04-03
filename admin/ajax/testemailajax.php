@@ -3,28 +3,32 @@
 * AJAX page for testing email settings in editconfig.php
 **/
 
-require '../../login/autoload.php';
+try {
+    require '../../login/autoload.php';
 
-session_start();
+    session_start();
 
-if ((new AuthorizationHandler)->pageOk("superadminpage")) {
-    
-    if ($_GET['t'] == '1') {
+    $request = new CSRFHandler;
+    $auth = new AuthorizationHandler;
 
-        $test = new EmailSettings;
+    if ($request->valid_token() && $auth->isSuperAdmin()) {
+        if ($_GET['t'] == '1') {
+            $test = new EmailSettings;
 
-        $resp = $test->testMailSettings();
+            $resp = $test->testMailSettings();
 
-        unset($test);
+            unset($test);
 
-        if ($resp['status'] == 'false'){
+            if ($resp['status'] == 'false') {
+            }
 
+            $jsonresp = json_encode($resp);
 
-
+            echo $jsonresp;
         }
-
-        $jsonresp = json_encode($resp);
-
-        echo $jsonresp;
+    } else {
+        throw new Exception("Unauthorized");
     }
+} catch (Exception $e) {
+    echo json_encode($e->getMessage());
 }

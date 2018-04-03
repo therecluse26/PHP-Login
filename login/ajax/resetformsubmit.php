@@ -1,7 +1,7 @@
 <?php
 $pagetype = 'loginpage';
-require_once '../autoload.php';
-require_once '../vendor/autoload.php';
+require '../autoload.php';
+require '../vendor/autoload.php';
 
 //Pull username, generate new ID and hash password
 $jwt = $_POST['t'];
