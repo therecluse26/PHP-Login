@@ -1,6 +1,4 @@
 <?php
-
-
 /**
 * Contains all cookie handling methods
 **/

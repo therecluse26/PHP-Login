@@ -1,8 +1,47 @@
+//User Management scripts
+
+/* HANDLES POPOVERS FOR USER INFO */
+function userInfoPull(id, elem) {
+  $.ajax({
+    type: "POST",
+    url: "ajax/getuserinfo.php",
+    data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
+    async: false,
+    success: function(user_info){
+      user_info = JSON.parse(user_info);
+      var user_info_html = '';
+      for(var prop in user_info){
+        if (user_info[prop] != '' && user_info[prop] != null){
+          if(prop == 'UserImage'){
+            user_info_html += '<br><div class="img-thumbnail"><img src="'+user_info[prop]+'" height="240px"></div>';
+          } else {
+            user_info_html += '<div><b>' + prop.replace(/([A-Z])/g, ' $1') + ': </b>'+ user_info[prop] +'</div>';
+          }
+        }
+      }
+      $(elem).attr('data-content', user_info_html).popover('show', {"html": true});
+    }
+  });
+};
+$('body').on('mouseover', "a[id^='info_']", function(){
+  if( $(this).attr('data-content') ){
+    $(this).popover('show', {"html": true});
+  } else {
+    var id = this.id.split('_')[1];
+    userInfoPull(id, this);
+  }
+});
+$('body').on('mouseleave', "a[id^='info_']", function(){
+  $(this).popover('hide');
+});
+/****************************/
+
+
+/* HANDLES MODAL FOR USER ROLES */
 $('body').on('click', "a[id^='roles_']", function(){
   $('#rolesButton').click();
   var id = this.id.split('_')[1];
   var role_array = JSON.parse(userRolesList(id));
-
   $('#roles-selected').empty();
   $('#roles-available').empty();
   $('#user_id').val(id);
@@ -14,16 +53,9 @@ $('body').on('click', "a[id^='roles_']", function(){
   })
 });
 
-function toObject(arr) {
-  var rv = {};
-  for (var i = 0; i < arr.length; ++i)
-    rv[i] = arr[i];
-  return rv;
-}
-
 function userRolesList(id) {
 
-  var return_val = null;
+  var return_arr = null;
 
   $.ajax({
     type: "POST",
@@ -31,14 +63,62 @@ function userRolesList(id) {
     data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     async: false,
     success: function(role_array){
-
-      return_val = role_array;
-
+      return_arr = role_array;
     }
   });
-  return return_val;
+  return return_arr;
 
-}
+};
+
+$('#saveRoles').click(function(){
+
+    var sendData = new FormData();
+    var formData = [];
+    var new_roles = [];
+
+    var id = $('#user_id').val();
+    $('#roles-selected > option').each(function(){
+      var value = $(this).val();
+      var name = $(this).text()
+      new_roles.push({"role_id": value, "role_name": name});
+    });
+
+    formData.push(toObject(new_roles));
+    formJson = JSON.stringify(formData);
+    sendData.append('formData', formJson);
+    sendData.append('userId', id);
+    sendData.append('csrf_token', $('meta[name="csrf_token"]').attr("value"));
+
+    $.ajax({
+      type: "POST",
+      url: "ajax/updateuserroles.php",
+      processData: false,
+      contentType: false,
+      data: sendData,
+      success: function(response){
+
+        if (response != 'false'){
+
+          response = JSON.parse(response);
+
+          $('#rolesModal').modal('toggle');
+          $("#rolestd_" + id).empty();
+
+          $.each(response[0], function(key, value){
+            $('#rolestd_' + id).append('<a href="#" id="roles_'+id+'">'+value.role_name+'</a><br>');
+            usertable.row( $('#rolestd_' + id).parents('tr')  ).draw("full-hold");
+            //usertable.draw("full-hold");
+          });
+
+        } else {
+          alert('User must have at least one role!');
+        }
+      }
+    });
+  });
+  /****************************/
+
+
 
 function banUser(id, btn_id, ban_hours, ban_reason){
 
@@ -54,11 +134,11 @@ function banUser(id, btn_id, ban_hours, ban_reason){
   $.ajax({
     type: "POST",
     url: "ajax/banuserajax.php",
-    data: { "uid": uidJSON, "ban_hours": ban_hours, "ban_reason": ban_reason, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
+    data: { "uid": uidJSON, "ban_hours": ban_hours, "ban_reason": ban_reason,
+            "csrf_token": $('meta[name="csrf_token"]').attr("value")},
     async: false,
     success: function(resp){
 
-      console.log(resp);
       usertable.row( $('#'+btn_id).parents('tr') ).remove().draw();
 
     }
@@ -66,7 +146,7 @@ function banUser(id, btn_id, ban_hours, ban_reason){
 
 }
 
-//Initialize DataTable
+/* DATATABLE INITIALIZATION */
 $(document).ready(function() {
   usertable = $('#userlist').DataTable({
     dom: "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
@@ -83,7 +163,10 @@ $(document).ready(function() {
           }
         },
         { name: "username",
-          searchable: true
+          searchable: true,
+          render: function(data, type, row){
+            return "<a role='button' data-container='body' data-html='true' data-toggle='popover' data-trigger='focus' class='btn btn-primary' id='info_"+row[0]+"'>"+data+"</a>";
+          }
         },
         { name: "email",
           searchable: true
@@ -119,67 +202,25 @@ $(document).ready(function() {
     buttons: [
         "selectAll",
         "selectNone",
-        {
-            text: 'Ban Selected',
-            action: function ( e, dt, node, config ) {
-
+        { text: 'Ban Selected',
+          action: function ( e, dt, node, config ) {
+            var selected_array = dt.rows( { selected: true } ).data();
+            if (selected_array.length > 0) {
               var ban_hours = Number(window.prompt("How long (in hours) for this ban?"));
               var ban_reason = window.prompt("What is the reason for this ban?");
-              var selected_array = dt.rows( { selected: true } ).data();
-
               for (var i = 0, len = selected_array.length; i < len; i++) {
                 banUser(selected_array[i][0], 'banbtn_'+selected_array[i][0], ban_hours, ban_reason);
               }
             }
+          },
+          className: "btn-warning"
         }
     ]
   }).on("select", function(){
       //console.log("selected");
   });
 });
-
-
-$('#saveRoles').click(function(){
-
-    var sendData = new FormData();
-    var formData = [];
-    var new_roles = [];
-
-    var id = $('#user_id').val();
-    $('#roles-selected > option').each(function(){
-      var value = $(this).val();
-      var name = $(this).text()
-      new_roles.push({"role_id": value, "role_name": name});
-    });
-
-    formData.push(toObject(new_roles));
-    formJson = JSON.stringify(formData);
-    sendData.append("_token", $('[name=csrf_token').val());
-    sendData.append('formData', formJson);
-    sendData.append('userId', id);
-
-    $.ajax({
-      type: "POST",
-      url: "users/"+id+"/roles",
-      processData: false,
-      contentType: false,
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      data: sendData,
-      success: function(response){
-
-        $('#rolesModal').modal('toggle');
-
-        $("#rolestd_" + id).empty();
-
-        $.each(response[0], function(key, value){
-          $('#rolestd_' + id).append('<a href="#" id="roles_'+id+'">'+value.role_name+'</a><br>');
-        });
-
-      }
-    });
-  });
+/****************************/
 
 
 //Role assignment box button logic
@@ -225,3 +266,11 @@ $('#saveRoles').click(function(){
         e.preventDefault();
     });
 }(jQuery));
+
+// Converts array to object
+function toObject(arr) {
+  var rv = {};
+  for (var i = 0; i < arr.length; ++i)
+    rv[i] = arr[i];
+  return rv;
+}

@@ -295,12 +295,15 @@ VIEW `vw_banned_users` AS
         `member_jail`;
 
 
+DELIMITER $
 CREATE EVENT `unbanUsers`
-    ON SCHEDULE EVERY 15 MINUTE
-    DO
+    ON SCHEDULE EVERY 5 MINUTE
+DO
+BEGIN
     DELETE FROM `vw_banned_users` where hours_remaining < 0;
     UPDATE `members` m SET m.banned = 0 where m.banned = 1 AND m.id not in (select v.user_id from `vw_banned_users` v);
-
+END $
+DELIMITER ;
 
 /*** DATABASE SEEDING ***/
 

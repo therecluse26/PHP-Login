@@ -1,6 +1,4 @@
 <?php
-
-
 /**
 * Contains all methods used in login form
 **/
@@ -47,12 +45,12 @@ class LoginHandler extends AppConfig
 
              //If max attempts not exceeded, continue
             // Checks password entered against db password hash
-            if (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '0') {
+            if (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '0') {
                 //Success! Register $myusername, $mypassword and return "true"
                 $success = 'true';
 
                 $this->init_session($result, $cookie);
-            } elseif (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '1') {
+            } elseif (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '1') {
                 //Account banned
                 $uid = $result['id'];
 
@@ -82,7 +80,7 @@ class LoginHandler extends AppConfig
 
 
                 //error_log($ban_complete);
-            } elseif (PasswordCrypt::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
+            } elseif (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
 
                 //Account not yet verified
                 $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Your account has been created, but you cannot log in until it has been verified</div>";

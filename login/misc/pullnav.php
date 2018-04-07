@@ -5,7 +5,7 @@ if (array_key_exists('username', $_SESSION)) {
 
     //Checks for proper mailer configuration. Only checks connection if email_working db entry is false
     if ($conf->email_working == 'false') {
-        $mailtest = new EmailSettings;
+        $mailtest = new MailHandler;
 
         $mailresult = $mailtest->testMailSettings();
 

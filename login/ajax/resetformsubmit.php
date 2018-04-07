@@ -28,14 +28,14 @@ try {
 
         $user = UserHandler::pullUserById($userid);
 
-        $pwresp = PasswordPolicy::validate($pw1, $pw2, (bool) $conf['password_policy_enforce'], (int) $conf['password_min_length']);
+        $pwresp = PasswordHandler::validatePolicy($pw1, $pw2, (bool) $conf['password_policy_enforce'], (int) $conf['password_min_length']);
 
         //Validation passed
         if ($pwresp['status'] == true) {
 
             //Tries inserting into database and add response to variable
 
-            $a = new PasswordForm;
+            $a = new PasswordHandler;
 
             $response = $a->resetPw($user['id'], $pw1);
 

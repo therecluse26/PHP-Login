@@ -31,7 +31,7 @@ try {
     * This object's class extends AppConfig, so AppConfig variables can be pulled from it
     **/
     $auth = new AuthorizationHandler;
-    $conf = new PageConstruct($auth);
+    $conf = new PageConstructor($auth);
 
     if (!isset($_SESSION)) {
         session_start();

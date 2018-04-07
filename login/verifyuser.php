@@ -18,14 +18,14 @@ $userarr = UserData::userDataPull($uids, 0);
 
 try {
     //Updates the verify column on user
-    $vresponse = Verify::verifyUser($userarr, 1);
+    $vresponse = UserHandler::verifyUser($userarr, 1);
 
     //Success
     if ($vresponse['status'] == true) {
         echo '<form class="form-signin" action="'.$conf->signin_url.'"><div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'.$conf->active_msg.'</div><br><input type="submit" class="btn btn-lg btn-primary btn-block" value="Click Here to Log In"></button></form>';
 
         //Send verification email
-        $m = new MailSender;
+        $m = new MailHandler;
 
         //SEND MAIL
         $m->sendMail($userarr, 'Active');

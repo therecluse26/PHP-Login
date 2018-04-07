@@ -127,6 +127,8 @@ class RoleHandler extends DbConn
         return $return;
     }
 
+
+
     public function createRole($role_name, $role_desc, $default = false): bool
     {
     }
@@ -141,9 +143,42 @@ class RoleHandler extends DbConn
 
     public function assignRole($role_id, $user_id): bool
     {
+        try {
+            $sql = "REPLACE INTO ".$this->tbl_member_roles."
+                    (member_id, role_id) values (:member_id, :role_id)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':member_id', $user_id);
+            $stmt->bindParam(':role_id', $role_id);
+            $stmt->execute();
+
+            $return = true;
+        } catch (PDOException $e) {
+            $return = false;
+        }
+
+        return $return;
     }
 
     public function unassignRole($role_id, $user_id): bool
     {
+        error_log("unassignRole {$role_id}: ". $user_id);
+        return false;
+    }
+
+    public function unassignAllRoles($user_id): bool
+    {
+        try {
+            $sql = "DELETE FROM ".$this->tbl_member_roles."
+                    WHERE member_id = :member_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':member_id', $user_id);
+            $stmt->execute();
+
+            $return = true;
+        } catch (PDOException $e) {
+            $return = false;
+        }
+
+        return $return;
     }
 }

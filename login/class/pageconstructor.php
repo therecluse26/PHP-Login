@@ -2,7 +2,7 @@
 /**
 * Builds the site skeleton, handles redirects and security
 **/
-class PageConstruct extends AppConfig
+class PageConstructor extends AppConfig
 {
     /**
     * IP address

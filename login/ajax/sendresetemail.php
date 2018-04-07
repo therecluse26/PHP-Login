@@ -45,9 +45,8 @@ try {
     $tokenInsert = TokenHandler::replaceToken($user['id'], $tokenid, 0);
 
     if ($tokenInsert) {
-
         //Mail reset link w/token to user
-        $mail = new MailSender($conf);
+        $mail = new MailHandler;
 
         $mailResult = $mail->sendResetMail($reset_url, $user['email'], $user['username']);
 

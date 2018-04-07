@@ -1,5 +1,7 @@
 <?php
-
+/**
+* Handles non-profile related user data
+*/
 class UserData extends DbConn
 {
     public static function userDataPull($ids, $admin)

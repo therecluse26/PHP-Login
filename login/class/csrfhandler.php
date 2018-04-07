@@ -1,6 +1,9 @@
 <?php
 class CSRFHandler
 {
+    /**
+    * Handles CSRF protection for ajax and other requests
+    */
     public $token;
 
     public function __construct()

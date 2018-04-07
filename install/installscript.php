@@ -314,20 +314,28 @@ function installDb($i, $dbhost, $dbname, $dbuser, $dbpw, $tblprefix, $superadmin
                     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                     $status = "Creating scheduled events";
                     $sqlcleanupOldDeletedEvent = "SET GLOBAL event_scheduler = ON;
-                                                  CREATE EVENT IF NOT EXISTS cleanupOldDeleted ON SCHEDULE
-                                                    EVERY 1 DAY COMMENT 'Removes deleted records older than 30 days.'
-                                                    DO BEGIN
-                                                      DELETE FROM {$tblprefix}deleted_members
-                                                      WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY);
-                                                    END;
-                                                  CREATE EVENT IF NOT EXISTS unbanUsers
-                                                      ON SCHEDULE EVERY 15 MINUTE
-                                                      DO BEGIN
-                                                        DELETE FROM vw_banned_users where hours_remaining < 0;
-                                                        UPDATE {$tblprefix}members m SET m.banned = 0 where m.banned = 1
-                                                        AND m.id not in (select v.user_id from vw_banned_users v);
-                                                      END;";
+                                                  DELIMITER $
+                                                  CREATE EVENT IF NOT EXISTS cleanupOldDeleted
+                                                  	ON SCHEDULE EVERY 1 DAY
+                                                  DO
+                                                  BEGIN
+                                                    DELETE FROM {$tblprefix}deleted_members
+                                                    WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY);
+                                                  END $
+                                                  DELIMITER ;";
                     $code = $conn->exec($sqlcleanupOldDeletedEvent);
+
+                    $sqlUnbanUsersSql = "DELIMITER $
+                                          CREATE EVENT `unbanUsers`
+                                              ON SCHEDULE EVERY 15 MINUTE
+                                          DO
+                                          BEGIN
+                                              DELETE FROM `vw_banned_users` where hours_remaining < 0;
+                                              UPDATE {$tblprefix}members m SET m.banned = 0 where m.banned = 1 AND m.id not in (select v.user_id from `vw_banned_users` v);
+                                          END $
+                                          DELIMITER ;";
+
+                    $code = $conn->exec($sqlUnbanUsersSql);
 
                     unset($code);
                     break 1;

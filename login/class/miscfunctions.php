@@ -1,6 +1,4 @@
 <?php
-
-
 /**
 * Miscellaneous utility functions
 */

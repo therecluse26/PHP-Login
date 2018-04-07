@@ -20,7 +20,7 @@ try {
 
         try {
             //Updates the verify column on user
-            $vresponse = Verify::verifyUser($userarr, 1);
+            $vresponse = UserHandler::verifyUser($userarr, 1);
 
             //Success
             if ($vresponse['status'] == true) {

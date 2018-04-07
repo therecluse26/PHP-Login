@@ -11,14 +11,12 @@ try {
         unset($_GET['csrf_token']);
         $columns = array(
             array( 'db' => 'id', 'dt' => 0 ),
-            array( 'db' => 'type', 'dt' => 1 ),
-            array( 'db' => 'status', 'dt' => 2 ),
-            array( 'db' => 'recipient', 'dt' => 3 ),
-            array( 'db' => 'response', 'dt' => 4 ),
-            array( 'db' => 'timestamp', 'dt' => 5 )
+            array( 'db' => 'username', 'dt' => 1 ),
+            array( 'db' => 'email', 'dt' => 2 ),
+            array( 'db' => 'timestamp', 'dt' => 3 )
         );
 
-        $data = MailHandler::getUnreadLogs($_GET, $columns);
+        $data = AdminFunctions::getUnverifiedUsers($_GET, $columns);
 
         echo json_encode($data);
     } else {

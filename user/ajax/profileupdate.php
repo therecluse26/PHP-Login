@@ -9,18 +9,15 @@ try {
 
     if ($request->valid_token() && $auth->isLoggedIn()) {
         unset($_POST['csrf_token']);
-        
+
         $conf = AppConfig::pullMultiSettings(array("base_dir","base_url","avatar_dir"));
         $uid = $_SESSION['uid'];
         $form = $_POST;
 
         if (array_key_exists('userimage', $form)) {
             $extension = 'jpg';
-
             $imgtarget = $conf["base_dir"].$conf["avatar_dir"]."/".$uid .".". $extension;
-
             $imgurl = $conf["base_url"].$conf["avatar_dir"]."/".$uid .".". $extension;
-
             $form['userimage'] = $imgurl;
 
             try {

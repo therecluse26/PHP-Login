@@ -1,5 +1,7 @@
 <?php
-
+/**
+* Handles token storage in database
+*/
 class TokenHandler
 {
     public static function selectToken($tokenid, $userid, $expire)

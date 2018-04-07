@@ -1,6 +1,8 @@
 <?php
-
-class profileData extends DbConn
+/**
+* Handles user profile data in member_info table
+*/
+class ProfileData extends DbConn
 {
     public static function pullUserFields($uid, $fieldarr)
     {
@@ -12,7 +14,8 @@ class profileData extends DbConn
             $tbl_memberinfo = $db->tbl_memberinfo;
 
             // prepare sql and bind parameters
-            $stmt = $db->conn->prepare("SELECT $fields from $tbl_memberinfo WHERE userid = :userid");
+            $stmt = $db->conn->prepare("SELECT $fields from $tbl_memberinfo
+                                        WHERE userid = :userid");
             $stmt->bindParam(':userid', $uid);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -25,13 +28,14 @@ class profileData extends DbConn
 
     public static function pullAllUserInfo($uid)
     {
-
         //Pull user info into edit form
         $db = new DbConn;
         $tbl_memberinfo = $db->tbl_memberinfo;
 
         // prepare sql and bind parameters
-        $stmt = $db->conn->prepare("SELECT firstname, lastname, phone, address1, address2, city, state, country, bio, userimage from $tbl_memberinfo WHERE userid = :userid");
+        $stmt = $db->conn->prepare("SELECT FirstName, LastName, Phone, Address1,
+                                    Address2, City, State, Country, Bio, UserImage
+                                    from $tbl_memberinfo WHERE userid = :userid");
         $stmt->bindParam(':userid', $uid);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -62,7 +66,8 @@ class profileData extends DbConn
         $updata = rtrim($updata, ", ");
 
         // prepare sql and bind parameters
-        $stmt = $db->conn->prepare("INSERT INTO ".$tbl_memberinfo." (userid, {$columnString}) values ('$uid', {$valueString}) ON DUPLICATE KEY UPDATE $updata");
+        $stmt = $db->conn->prepare("INSERT INTO ".$tbl_memberinfo." (userid, {$columnString})
+                                    values ('$uid', {$valueString}) ON DUPLICATE KEY UPDATE $updata");
 
         $status = $stmt->execute(array_values($dataarray));
 

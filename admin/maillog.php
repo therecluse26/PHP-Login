@@ -1,41 +1,38 @@
 <?php
 /**
-* Page that allows admins to verify or delete new (unverified) users
+* Page that allows admins to check and delete logs of emails sent by site
+* (Does not track emails themselves, only send statuses)
 **/
 $pagetype = 'superadminpage';
 $title = 'Mail Log';
 require '../login/misc/pagehead.php';
-$logcount = EmailLogger::pullLogCount();
 ?>
 
-<script src="js/admindeletelog.js"></script>
-<script src="js/admincheckrow.js"></script>
-<script src="js/forwardback.js"></script>
-
+<link rel="stylesheet" type="text/css" href="../login/js/DataTables/datatables.min.css"/>
+<script type="text/javascript" src="../login/js/DataTables/datatables.min.js"></script>
 </head>
 <body>
+  <?php require 'login/misc/pullnav.php'; ?>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3>Manage Roles</h3>
 
-<?php require 'login/misc/pullnav.php'; ?>
-
-<div id="limithid" hidden>20</div>
-<div id="offsethid" hidden>0</div>
-<div id="currenthid" hidden></div>
-<div id="rowcounthid" hidden><?php echo $logcount['rowcount']; ?></div>
-
-<div class="container-fluid">
-<?php
-
-echo '<div class="pull-left"><h3>Mail Log</h3></div>
-<div class="pull-right">
-<button id="leftbtn" type="button" class="btn btn-default" onClick="backBtn();"><span class="glyphicon glyphicon-arrow-left"></span></button>
-<button id="rightbtn" type="button" class="btn btn-default" onClick="forwardBtn();"><span class="glyphicon glyphicon-arrow-right"></span></button>
-</div><br><br><div class="pull-right"><span id="pageCount"></span><span id="rowcount">'.$logcount['rowcount'].'</span></div>';
-?>
-
-<div id="mailLogOutput">
-</div>
-    </table>
+        <table id="mailList" class="table table-sm">
+          <thead>
+            <th></th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Recipient</th>
+            <th>Response Message</th>
+            <th>Timestamp</th>
+          </thead>
+        </table>
+      </div>
     </div>
-    </form>
-    </body>
+  </div>
+
+  <script type="application/javascript" src="js/maillog.js"></script>
+
+</body>
 </html>

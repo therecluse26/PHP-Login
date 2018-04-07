@@ -2,7 +2,6 @@
 /**
 * AJAX page for testing email settings in editconfig.php
 **/
-
 try {
     require '../../login/autoload.php';
 
@@ -13,7 +12,7 @@ try {
 
     if ($request->valid_token() && $auth->isSuperAdmin()) {
         if ($_GET['t'] == '1') {
-            $test = new EmailSettings;
+            $test = new MailHandler;
 
             $resp = $test->testMailSettings();
 

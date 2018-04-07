@@ -17,7 +17,7 @@ try {
             array( 'db' => 'timestamp', 'dt' => 4 )
         );
 
-        $data = UserHandler::getActiveUsers($_GET, $columns);
+        $data = AdminFunctions::getActiveUsers($_GET, $columns);
 
         echo json_encode($data);
     } else {

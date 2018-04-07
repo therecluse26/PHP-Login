@@ -8,7 +8,7 @@ if (isset($_GET["usr"])) {
     $userarr = unserialize(base64_decode(urldecode($_GET["usr"])));
 
     try {
-        $m = new MailSender;
+        $m = new MailHandler;
         $m->sendMail($userarr, "Active");
     } catch (Exception $e) {
         trigger_error($e->getMessage());
@@ -20,7 +20,7 @@ if (isset($_GET["usr"])) {
     $userarr = unserialize(base64_decode($userurlparm));
 
     try {
-        $m = new MailSender;
+        $m = new MailHandler;
         $m->sendMail($userarr, "Active");
     } catch (Exception $e) {
         trigger_error($e->getMessage());

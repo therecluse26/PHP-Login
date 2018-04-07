@@ -3,13 +3,14 @@
 * Page that allows admins to verify or delete new (unverified) users
 **/
 $pagetype = 'adminpage';
-$title = 'Manage Active Users';
+$title = 'Manage Roles';
 require '../login/misc/pagehead.php';
+$x = 0;
+
 ?>
 
 <script type="text/javascript" src="../login/js/DataTables/datatables.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../login/js/DataTables/datatables.min.css"/>
-<link rel="stylesheet" type="text/css" href="css/usermanagement.css"/>
 
 </head>
 <body>
@@ -17,14 +18,14 @@ require '../login/misc/pagehead.php';
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-12">
-        <h3>Manage Active Users</h3>
+        <h3>Manage Roles</h3>
 
-        <table id="userlist" class="table table-sm">
+        <table id="roleList" class="table table-sm">
           <thead>
             <th></th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role(s)</th>
+            <th>Role Name</th>
+            <th>Description</th>
+            <th>User(s)</th>
             <th>Timestamp</th>
           </thead>
         </table>
@@ -32,9 +33,9 @@ require '../login/misc/pagehead.php';
     </div>
   </div>
 
-<?php include "partials/usermanagementmodals.html";?>
+<?php //include "partials/rolemanagementmodals.html";?>
 
-  <script type="application/javascript" src="js/usermanagement.js"></script>
+  <script type="application/javascript" src="js/rolemanagement.js"></script>
 
 </body>
 </html>

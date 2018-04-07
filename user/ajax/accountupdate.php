@@ -25,11 +25,11 @@ try {
                 }
 
                 if (array_key_exists('password1', $_POST) && array_key_exists('password2', $_POST)) {
-                    $pwvalid = PasswordPolicy::validate($_POST['password1'], $_POST['password2'], $conf["password_policy_enforce"], $conf["password_min_length"]);
+                    $pwvalid = PasswordHandler::validatePolicy($_POST['password1'], $_POST['password2'], $conf["password_policy_enforce"], $conf["password_min_length"]);
 
 
                     if ($pwvalid['status'] == true) {
-                        $_POST['password'] = PasswordCrypt::encryptPw($_POST['password1']);
+                        $_POST['password'] = PasswordHandler::encryptPw($_POST['password1']);
 
                         unset($_POST['password1']);
                         unset($_POST['password2']);
