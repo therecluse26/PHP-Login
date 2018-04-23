@@ -35,13 +35,6 @@ Technologies used:
 - `JSON Web Tokens` (JWT) (Firebase implementation)
 	- Version `5.0`
 
-Donate
------------
-This is under active development and requires a significant amount of time and effort. Please consider donating a few bucks to help out a fellow open-source developer :) 
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](S92WESH3YPVWC)
-
-
 Installation
 ------------
 ### Clone the Repository
