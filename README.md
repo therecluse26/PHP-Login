@@ -35,6 +35,18 @@ Technologies used:
 - `JSON Web Tokens` (JWT) (Firebase implementation)
 	- Version `5.0`
 
+Donate
+-----------
+This is under active development and requires a significant amount of time and effort. Please consider donating a few bucks to help out a fellow open-source developer :) 
+
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="S92WESH3YPVWC">
+<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+</form>
+
+
 
 Installation
 ------------
