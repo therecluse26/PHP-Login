@@ -6,6 +6,17 @@ function userInfoPull(id, elem) {
     url: "ajax/getuserinfo.php",
     data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     async: false,
+    beforeSend: function(){
+      $.LoadingOverlay('show', {
+        image: '../login/images/Spin-0.8s-200px.svg',
+        imageAnimation: false,
+        imageColor: '#428bca',
+        fade: [200, 100]
+      });
+    },
+    complete: function(){
+      $.LoadingOverlay("hide");
+    },
     success: function(user_info){
       user_info = JSON.parse(user_info);
       var user_info_html = '';
@@ -48,6 +59,17 @@ function roleUsersList(id) {
     type: "POST",
     url: "ajax/getroleusers.php",
     data: { "role_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
+    beforeSend: function(){
+      $.LoadingOverlay('show', {
+        image: '../login/images/Spin-0.8s-200px.svg',
+        imageAnimation: false,
+        imageColor: '#428bca',
+        fade: [200, 100]
+      });
+    },
+    complete: function(){
+      $.LoadingOverlay("hide");
+    },
     success: function(user_array){
       user_array = JSON.parse(user_array);
       $('#usersButton').click();
@@ -103,6 +125,17 @@ $('#saveUsers').click(function(){
       processData: false,
       contentType: false,
       data: sendData,
+      beforeSend: function(){
+        $.LoadingOverlay('show', {
+          image: '../login/images/Spin-0.8s-200px.svg',
+          imageAnimation: false,
+          imageColor: '#428bca',
+          fade: [200, 100]
+        });
+      },
+      complete: function(){
+        $.LoadingOverlay("hide");
+      },
       success: function(response){
 
         if (response != 'false'){
@@ -180,17 +213,6 @@ $(document).ready(function() {
       //console.log("selected");
   });
 
-  $(document).ajaxStart(function(){
-    $.LoadingOverlay('show', {
-      image: '../login/images/Spin-0.8s-200px.svg',
-      imageAnimation: false,
-      imageColor: '#428bca',
-      fade: [200, 100]
-    });
-  });
-  $(document).ajaxStop(function(){
-    $.LoadingOverlay("hide");
-  });
 
 
 });

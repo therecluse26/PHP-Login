@@ -61,6 +61,17 @@ function userRolesList(id) {
     url: "ajax/getuserroles.php",
     data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     async: false,
+    beforeSend: function(){
+      $.LoadingOverlay('show', {
+        image: '../login/images/Spin-0.8s-200px.svg',
+        imageAnimation: false,
+        imageColor: '#428bca',
+        fade: [200, 100]
+      });
+    },
+    complete: function(){
+      $.LoadingOverlay("hide");
+    },
     success: function(role_array){
       return_arr = role_array;
     }
@@ -94,6 +105,17 @@ $('#saveRoles').click(function(){
       processData: false,
       contentType: false,
       data: sendData,
+      beforeSend: function(){
+      $.LoadingOverlay('show', {
+          image: '../login/images/Spin-0.8s-200px.svg',
+          imageAnimation: false,
+          imageColor: '#428bca',
+          fade: [200, 100]
+        });
+      },
+      complete: function(){
+        $.LoadingOverlay("hide");
+      },
       success: function(response){
 
         if (response != 'false'){
@@ -136,6 +158,17 @@ function banUser(id, btn_id, ban_hours, ban_reason){
     data: { "uid": uidJSON, "ban_hours": ban_hours, "ban_reason": ban_reason,
             "csrf_token": $('meta[name="csrf_token"]').attr("value")},
     async: false,
+    beforeSend: function(){
+      $.LoadingOverlay('show', {
+        image: '../login/images/Spin-0.8s-200px.svg',
+        imageAnimation: false,
+        imageColor: '#428bca',
+        fade: [200, 100]
+      });
+    },
+    complete: function(){
+      $.LoadingOverlay("hide");
+    },
     success: function(resp){
 
       usertable.row( $('#'+btn_id).parents('tr') ).remove().draw();
@@ -219,18 +252,6 @@ $(document).ready(function() {
       //console.log("selected");
   });
 
-  $(document).ajaxStart(function(){
-    console.log(this);
-    $.LoadingOverlay('show', {
-      image: '../login/images/Spin-0.8s-200px.svg',
-      imageAnimation: false,
-      imageColor: '#428bca',
-      fade: [200, 100]
-    });
-  });
-  $(document).ajaxStop(function(){
-    $.LoadingOverlay("hide");
-  });
 
 });
 /****************************/
