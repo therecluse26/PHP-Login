@@ -2,7 +2,7 @@
 if ((isset($_SESSION)) && array_key_exists('username', $_SESSION)) {
     session_destroy();
 }
-$pagetype = 'loginpage';
+$userrole = 'loginpage';
 $title = 'Sign Up';
 require 'misc/pagehead.php';
 ?>

@@ -1,5 +1,5 @@
 <?php
-$pagetype = 'loginpage';
+$userrole = 'loginpage';
 require '../autoload.php';
 require '../vendor/autoload.php';
 

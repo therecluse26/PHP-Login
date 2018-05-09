@@ -1,12 +1,5 @@
 <?php
-
-// Example of overriding the menu in phplogin_menu.php
-$barmenu = array(
-    "Index Page" => "index.php"
-);
-
-$title = "The very fancy Page 3";
-$pagetype = "userpage"; // Allow only logged in users
+$title = "Public Page";
 include "login/misc/pagehead.php";
 ?>
 </head>
@@ -14,8 +7,14 @@ include "login/misc/pagehead.php";
   <?php require 'login/misc/pullnav.php'; ?>
     <div class="container">
 
-        <h2>Page 3</h2>
-        <p>Still here <?=$_SESSION["username"]?>?</p>
+        <h2>Public Page</h2>
+        <p>
+          This page doesn't require being logged in!
+          <br><br>
+          The <?php echo highlight_string("<?php require 'login/misc/pullnav.php';?>", true);?>
+          tag can be removed if you don't want the navbar
+          at the top of the page.
+        </p>
 
     </div>
 </body>

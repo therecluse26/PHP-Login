@@ -26,7 +26,11 @@ $(document).ready(function (e) {
                         var alertType = "danger";
                     }
 
-                    $(this).html("<div class=\"alert alert-"+alertType+" alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>"+json.message+"</div>").fadeIn();
+                    $(this).html("<div class=\"alert alert-"+alertType+" alert-dismissable\">\
+                                  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">\
+                                    &times;\
+                                  </button>"+json.message+"</div>"
+                                ).fadeIn();
                 });
             },
             beforeSend: function () {

@@ -1,7 +1,7 @@
 <?php
 //Pulls navbar
 if (array_key_exists('username', $_SESSION)) {
-    $conf->pullNav($_SESSION['username'], $pagetype);
+    $conf->pullNav($_SESSION['username']);
 
     //Checks for proper mailer configuration. Only checks connection if email_working db entry is false
     if ($conf->email_working == 'false') {
@@ -16,5 +16,5 @@ if (array_key_exists('username', $_SESSION)) {
         }
     }
 } else {
-    $conf->pullNav(null, $pagetype);
+    $conf->pullNav();
 }

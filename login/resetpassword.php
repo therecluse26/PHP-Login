@@ -1,8 +1,8 @@
 <?php
-    $pagetype = 'loginpage';
-    $title = 'Reset Password';
-    require 'misc/pagehead.php';
-    require 'vendor/autoload.php';
+$userrole = 'loginpage';
+$title = 'Reset Password';
+require 'misc/pagehead.php';
+require 'vendor/autoload.php';
 ?>
 
 <script src="js/resetpw.js"></script>

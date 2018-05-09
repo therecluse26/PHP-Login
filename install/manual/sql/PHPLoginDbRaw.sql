@@ -200,7 +200,6 @@ CREATE TABLE `member_jail` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
@@ -210,12 +209,10 @@ CREATE TABLE `member_jail` (
 /*!50003 SET character_set_client  = latin1 */ ;
 /*!50003 SET character_set_results = latin1 */ ;
 /*!50003 SET collation_connection  = latin1_swedish_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50003 TRIGGER move_to_deleted_members AFTER DELETE ON members FOR EACH ROW BEGIN DELETE FROM deleted_members WHERE deleted_members.id = OLD.id; INSERT INTO deleted_members ( id, username, password, email, verified ) VALUES ( OLD.id, OLD.username, OLD.password, OLD.email, OLD.verified ); END */;;
 DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
@@ -275,13 +272,11 @@ DELIMITER ;;
 /*!50003 SET character_set_client  = latin1 */ ;;
 /*!50003 SET character_set_results = latin1 */ ;;
 /*!50003 SET collation_connection  = latin1_swedish_ci */ ;;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;;
 /*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;;
 /*!50003 SET @saved_time_zone      = @@time_zone */ ;;
 /*!50003 SET time_zone             = 'SYSTEM' */ ;;
 /*!50106 CREATE*/ /*!50106 EVENT `cleanupOldDeleted` ON SCHEDULE EVERY 1 DAY STARTS '2017-03-20 18:33:40' ON COMPLETION NOT PRESERVE ENABLE COMMENT 'Removes deleted records older than 30 days.' DO BEGIN DELETE FROM deleted_members WHERE mod_timestamp < DATE_SUB(NOW(), INTERVAL 30 DAY); END */ ;;
 /*!50003 SET time_zone             = @saved_time_zone */ ;;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;;
 /*!50003 SET character_set_results = @saved_cs_results */ ;;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;;

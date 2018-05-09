@@ -83,11 +83,13 @@ if ($auth->isLoggedIn()) {
                       <li role="separator" class="divider"></li>
                       <li><a href="<?php echo $this->base_url; ?>/admin/usermanagement.php">Manage Active Users</a></li>
                       <li><a href="<?php echo $this->base_url; ?>/admin/userverification.php">Verify/Delete Users</a></li>
+                      <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
+
                 <?php endif; ?>
                 <!-- Superadmin Controls -->
                 <?php if ($auth->isSuperAdmin()): ?>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/rolemanagement.php">Manage Roles</a></li>
                     <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
-                    <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
 
                 <?php endif; ?>
                 <li role="separator" class="divider"></li>

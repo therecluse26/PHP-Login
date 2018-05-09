@@ -45,6 +45,16 @@ class DbConn
     */
     public $tbl_memberinfo;
     /**
+    * Table where role data is stored
+    * @var string
+    */
+    public $tbl_roles;
+    /**
+    * Table where user role associations are stored
+    * @var string
+    */
+    public $tbl_member_roles;
+    /**
     * Admin table
     * @var string
     */
@@ -80,7 +90,7 @@ class DbConn
     */
     public $tbl_mail_log;
     /**
-    * Table where mail send logs are stored
+    * Table where banned users are stored
     * @var string
     */
     public $tbl_member_jail;

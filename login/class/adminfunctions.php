@@ -101,6 +101,67 @@ class AdminFunctions
             return $result;
         }
     }
+    /**
+    * Returns list of all active users for DataTables consumption
+    */
+    public static function getAllRoles($request, $columns)
+    {
+        $bindings = array();
+
+        try {
+            $db = new DbConn;
+
+            $where_sql = MiscFunctions::dt_filter($request, $columns, $bindings);
+            $order_sql = MiscFunctions::dt_order($request, $columns);
+            $limit_sql = MiscFunctions::dt_limit($request, $columns);
+
+            if (!$where_sql == '') {
+                $where_sql .= " AND";
+            }
+
+            $stmt = $db->conn->prepare("SELECT r.id, r.name, r.description, r.required,
+                                      r.default_role, NULL as users FROM ".$db->tbl_roles." r
+                                      WHERE r.name != 'Standard User' $where_sql
+                                      $order_sql
+                                      $limit_sql");
+
+            $records_total = $db->conn->prepare("SELECT count(r.id) FROM ".$db->tbl_roles." r
+                                                WHERE r.name != 'Standard User'");
+
+            $records_filtered = $db->conn->prepare("SELECT count(r.id) FROM ".$db->tbl_roles." r
+                                                  WHERE r.name != 'Standard User' $where_sql");
+            // Bind parameters
+            if (is_array($bindings)) {
+                for ($i=0, $ien=count($bindings) ; $i<$ien ; $i++) {
+                    $binding = $bindings[$i];
+                    $stmt->bindValue($binding['key'], $binding['val'], $binding['type']);
+                    $records_filtered->bindValue($binding['key'], $binding['val'], $binding['type']);
+                }
+            }
+
+            $records_total->execute();
+            $records_filtered->execute();
+            $stmt->execute();
+
+            $role_count = $records_total->fetchColumn();
+            $filtered_role_count = $records_filtered->fetchColumn();
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $return_data = array(
+            "draw"            => $request['draw'],
+            "recordsTotal"    => $role_count,
+            "recordsFiltered" => $filtered_role_count,
+            "data" => MiscFunctions::data_output($columns, $data)
+          );
+
+            $result = json_encode($return_data);
+
+            return $return_data;
+        } catch (PDOException $e) {
+            $result = "Error: " . $e->getMessage();
+            return $result;
+        }
+    }
 
     /**
     * Returns list of all active users for DataTables consumption

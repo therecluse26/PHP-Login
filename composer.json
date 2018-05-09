@@ -7,15 +7,10 @@
             "name": "Brad Magyar",
             "email": "braddmagyar@gmail.com",
             "role": "Developer"
-        },
-        {
-            "name": "Fethi El Hassasna",
-            "email": "fethica@me.com",
-            "role": "Developer"
         }
     ],
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": ">=5.6 <=7.2",
         "ext-pdo": "*",
         "components/jquery": "^3.1",
         "components/bootstrap": "^3",

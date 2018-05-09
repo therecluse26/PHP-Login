@@ -40,7 +40,12 @@ class LoginHandler extends AppConfig
         if ($curr_attempts >= $max_attempts && $timeDiff < $login_timeout) {
 
             //Too many failed attempts
-            $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again</div>";
+            $success = "<div class=\"alert alert-danger alert-dismissable\">
+                          <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
+                            &times;
+                          </button>
+                          Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again
+                        </div>";
         } else {
 
              //If max attempts not exceeded, continue
@@ -75,7 +80,12 @@ class LoginHandler extends AppConfig
 
                     $this->init_session($result, $cookie);
                 } else {
-                    $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Your account is currently suspended</div>";
+                    $success = "<div class=\"alert alert-danger alert-dismissable\">
+                                  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
+                                    &times;
+                                  </button>
+                                  Your account is currently suspended
+                                </div>";
                 }
 
 
@@ -83,11 +93,21 @@ class LoginHandler extends AppConfig
             } elseif (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
 
                 //Account not yet verified
-                $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Your account has been created, but you cannot log in until it has been verified</div>";
+                $success = "<div class=\"alert alert-danger alert-dismissable\">
+                              <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
+                                &times;
+                              </button>
+                              Your account has been created, but you cannot log in until it has been verified
+                            </div>";
             } else {
 
                 //Wrong username or password
-                $success = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Wrong Username or Password</div>";
+                $success = "<div class=\"alert alert-danger alert-dismissable\">
+                              <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
+                                &times;
+                              </button>
+                              Wrong Username or Password
+                            </div>";
             }
         }
         return $success;

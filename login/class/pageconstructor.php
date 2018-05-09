@@ -21,11 +21,11 @@ class PageConstructor extends AppConfig
     * `secureheader.php` handles redirects and security.
     * `globalincludes.php` handles required js and css libraries for login script
     **/
-    public function buildHead($pagetype = 'page', $title = 'Page')
+    public function buildHead($userrole = null, $title = 'Page')
     {
         $ip = $_SERVER["REMOTE_ADDR"];
 
-        $this->secureHeader($pagetype);
+        $this->secureHeader($userrole);
 
         echo $this->htmlhead;
         echo "<title>".$title."</title>";
@@ -43,7 +43,7 @@ class PageConstructor extends AppConfig
     /**
     * Builds page navbar
     **/
-    public function pullNav($username = null, $pagetype = 'page', $barmenu = null)
+    public function pullNav($username = null, $barmenu = null)
     {
         $url = $this->base_url;
         $mainlogo = $this->mainlogo;
@@ -54,9 +54,9 @@ class PageConstructor extends AppConfig
     /**
     * Checks page security and handles auth redirects
     */
-    public function secureHeader($pagetype)
+    public function secureHeader($userrole = null)
     {
-        if (!$this->auth->pageOk($pagetype)) {
+        if (!$this->auth->hasRole($userrole)) {
             // Not authorized...
 
             if ($this->auth->isLoggedIn()) {
@@ -71,7 +71,7 @@ class PageConstructor extends AppConfig
                 header("location:".$this->base_url."/login/index.php?refurl=".$refurl);
             }
             exit;
-        } elseif ($this->auth->isLoggedIn() && $pagetype == "loginpage") {
+        } elseif ($this->auth->isLoggedIn() && $userrole == "loginpage") {
             if (array_key_exists("refurl", $_GET)) {
 
               //Goes to referred url

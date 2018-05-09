@@ -18,16 +18,16 @@ if ($auth->isLoggedIn()) {
     <h2>Menu Items:</h2>
 
     <p><b><em>Edit Profile</em></b> - Edit your own user profile information including your name, contact info, avatar, etc</p>
-
     <p><b><em>Account Settings</em></b> - Change your email address and/or password</p>';
 
     if ($auth->isAdmin()) {
+        echo '<p><b><em>Manage Active Users</em></b> - Admin manage active users and/or ban trolls</p>';
         echo '<p><b><em>Verify/Delete Users</em></b> - Admin mass verify or delete new user requests</p>';
+        echo '<p><b><em>Mail Log</em></b> - Admin mail status logging</p>';
     }
 
     if ($auth->isSuperAdmin()) {
         echo '<p><b><em>Edit Site Config</em></b> - Superadmin edit site configuration in one page</p>';
-        echo '<p><b><em>Mail Log</em></b> - Superadmin mail status logging</p>';
     }
 } else {
     echo '<div class="jumbotron text-center"><h1 class="display-1">Homepage</h1>

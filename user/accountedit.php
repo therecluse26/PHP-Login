@@ -1,5 +1,5 @@
 <?php
-$pagetype = 'userpage';
+$userrole = 'Standard User';
 $title = 'Account Settings';
 require '../login/misc/pagehead.php';
 $uid = $_SESSION['uid'];

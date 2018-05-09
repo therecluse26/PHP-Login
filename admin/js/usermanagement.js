@@ -1,5 +1,4 @@
 //User Management scripts
-
 /* HANDLES POPOVERS FOR USER INFO */
 function userInfoPull(id, elem) {
   $.ajax({
@@ -219,6 +218,20 @@ $(document).ready(function() {
   }).on("select", function(){
       //console.log("selected");
   });
+
+  $(document).ajaxStart(function(){
+    console.log(this);
+    $.LoadingOverlay('show', {
+      image: '../login/images/Spin-0.8s-200px.svg',
+      imageAnimation: false,
+      imageColor: '#428bca',
+      fade: [200, 100]
+    });
+  });
+  $(document).ajaxStop(function(){
+    $.LoadingOverlay("hide");
+  });
+
 });
 /****************************/
 

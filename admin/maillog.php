@@ -3,7 +3,7 @@
 * Page that allows admins to check and delete logs of emails sent by site
 * (Does not track emails themselves, only send statuses)
 **/
-$pagetype = 'superadminpage';
+$userrole = 'Admin';
 $title = 'Mail Log';
 require '../login/misc/pagehead.php';
 ?>

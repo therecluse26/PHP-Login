@@ -4,7 +4,7 @@
 *
 * Tags correspond to setting name, hover over them for setting description
 **/
-$pagetype = 'superadminpage';
+$userrole = 'Superadmin';
 $title = 'Edit Site Configuration';
 require '../login/misc/pagehead.php';
 $settingsArr = $conf->pullAllSettings(new AuthorizationHandler);
@@ -12,7 +12,6 @@ $settingsArr = $conf->pullAllSettings(new AuthorizationHandler);
 foreach ($settingsArr as $key => $value) {
     $groupedArr[$value[4]][] = $value;
 }
-
 ?>
 
 <script src="js/editconfig.js"></script>

@@ -2,7 +2,7 @@
 /**
 * Page that allows admins to verify or delete new (unverified) users
 **/
-$pagetype = 'adminpage';
+$userrole = 'Admin';
 $title = 'User Verification';
 require '../login/misc/pagehead.php';
 ?>

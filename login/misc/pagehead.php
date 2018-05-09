@@ -19,8 +19,8 @@ try {
         $n++;
     } while (!file_exists('/login/autoload.php') && $n < 20);
 
-    if (!isset($pagetype)) {
-        $pagetype = 'page';
+    if (!isset($userrole)) {
+        $userrole = null;
 
         if (!isset($title)) {
             $title = 'Page';
@@ -39,7 +39,7 @@ try {
     }
 
     //Builds page head and returns CSRF token object
-    $csrf = $conf->buildHead($pagetype, $title);
+    $csrf = $conf->buildHead($userrole, $title);
 
     //Checks for cookie
     if (isset($_COOKIE['usertoken'])) {

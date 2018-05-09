@@ -1,5 +1,5 @@
 <?php
-$pagetype = 'loginpage';
+$userrole = 'loginpage';
 $title = 'Login';
 include 'misc/pagehead.php';
 ?>

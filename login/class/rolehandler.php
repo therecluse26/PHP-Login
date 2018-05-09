@@ -80,6 +80,27 @@ class RoleHandler extends DbConn
     }
 
     /*
+    * Returns all roles
+    */
+    public function listAllUsers(): array
+    {
+        try {
+            $sql = "SELECT DISTINCT id, username
+                    FROM ".$this->tbl_members;
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            return $result;
+        } catch (PDOException $e) {
+            $return = false;
+        }
+
+        return $return;
+    }
+
+    /*
     * Returns all users of a given $role_id
     */
     public function listRoleUsers($role_id): array
@@ -92,6 +113,7 @@ class RoleHandler extends DbConn
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':role_id', $role_id);
+
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -102,6 +124,42 @@ class RoleHandler extends DbConn
 
         return $return;
     }
+
+    /*
+    * Returns all users of a given $role_id
+    */
+    public function updateRoleUsers($users, $role_id): bool
+    {
+        try {
+            $chunks = MiscFunctions::placeholders($users[0], ",", $role_id);
+
+            $this->conn->beginTransaction();
+
+            $sqldel = "DELETE FROM {$this->tbl_member_roles} where role_id = :role_id";
+
+            $stmtdel = $this->conn->prepare($sqldel);
+            $stmtdel->bindParam(':role_id', $role_id);
+            $stmtdel->execute();
+
+            $sql = "REPLACE INTO {$this->tbl_member_roles}
+                        (member_id, role_id)
+                        VALUES $chunks";
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+
+            $this->conn->commit();
+
+            return true;
+        } catch (PDOException $e) {
+            $this->conn->rollback();
+            error_log($e->getMessage());
+            $return = false;
+        }
+
+        return $return;
+    }
+
 
     /*
     * Returns all roles of a given $user_id

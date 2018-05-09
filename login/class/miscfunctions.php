@@ -49,6 +49,15 @@ class MiscFunctions
         return false;
     }
 
+    public static function placeholders($users, $separator= ",", $role_id)
+    {
+        $string = '';
+        foreach ($users as $u) {
+            $string .= '(\''.$u['user_id'] .'\', '. $role_id.'),';
+        }
+        return substr($string, 0, -1);
+    }
+
 
     /**
      * DATATABLES FUNCTIONS

@@ -2,12 +2,13 @@
 /**
 * Page that allows admins to verify or delete new (unverified) users
 **/
-$pagetype = 'adminpage';
+$userrole = 'Admin';
 $title = 'Manage Active Users';
 require '../login/misc/pagehead.php';
 ?>
 
 <script type="text/javascript" src="../login/js/DataTables/datatables.min.js"></script>
+<script type="text/javascript" src="../login/js/loadingoverlay.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../login/js/DataTables/datatables.min.css"/>
 <link rel="stylesheet" type="text/css" href="css/usermanagement.css"/>
 

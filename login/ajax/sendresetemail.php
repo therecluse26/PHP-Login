@@ -1,5 +1,5 @@
 <?php
-$pagetype = 'loginpage';
+$userrole = 'loginpage';
 $title = 'Forgot Password';
 require '../autoload.php';
 require '../vendor/autoload.php';

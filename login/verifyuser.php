@@ -1,5 +1,5 @@
 <?php
-$pagetype = 'loginpage';
+$userrole = 'loginpage';
 $title = 'Verify User';
 require 'misc/pagehead.php';
 ?>
