@@ -3,8 +3,14 @@
 * Page that allows admins to verify or delete new (unverified) users
 **/
 $userrole = 'Admin';
-$title = 'Manage Active Users';
+$title = 'User Management';
 require '../login/misc/pagehead.php';
+
+if (isset($_GET['f'])) {
+    $userfunction = $_GET['f'];
+} else {
+    $userfunction = "manageactive";
+}
 ?>
 
 <script type="text/javascript" src="../login/js/DataTables/datatables.min.js"></script>
@@ -16,26 +22,48 @@ require '../login/misc/pagehead.php';
 <body>
   <?php require 'login/misc/pullnav.php'; ?>
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-12">
-        <h3>Manage Active Users</h3>
 
-        <table id="userlist" class="table table-sm">
-          <thead>
-            <th></th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Role(s)</th>
-            <th>Timestamp</th>
-          </thead>
-        </table>
+
+    <ul class="nav nav-tabs">
+      <li class="nav-item <?php if ($userfunction === "manageactive") {
+    echo "active";
+}; ?>">
+        <a class="nav-link" href="?f=manageactive">Manage Active Users</a>
+      </li>
+      <li class="nav-item <?php if ($userfunction === "verification") {
+    echo "active";
+}; ?>">
+        <a class="nav-link" href="?f=verification">Verify/Delete New Users</a>
+      </li>
+      <li>
+
+      </li>
+    </ul>
+
+
+    <div class="row">
+      <div class="col-sm-12" id="tablecontainer">
+
+      <?php
+        switch ($userfunction) {
+          case "manageactive":
+            include "partials/activeuserstable.php";
+            break;
+          case "verification":
+            include "partials/verifydeleteusers.php";
+            break;
+          default:
+            include "partials/activeuserstable.php";
+            break;
+        }
+      ?>
+
+      </div>
+
       </div>
     </div>
   </div>
 
-<?php include "partials/usermanagementmodals.html";?>
-
-  <script type="application/javascript" src="js/usermanagement.js"></script>
 
 </body>
 </html>

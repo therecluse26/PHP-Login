@@ -77,22 +77,21 @@ if ($auth->isLoggedIn()) {
             <ul class="dropdown-menu" aria-labelledby="userDropdown">
                 <li><a href="<?php echo $this->base_url; ?>/user/profileedit.php">Edit Profile</a></li>
                 <li><a href="<?php echo $this->base_url; ?>/user/accountedit.php">Account Settings</a></li>
+                <li role="separator" class="divider"></li>
 
-                <!-- Admin Controls -->
-                <?php if ($auth->isAdmin()): ?>
-                      <li role="separator" class="divider"></li>
-                      <li><a href="<?php echo $this->base_url; ?>/admin/usermanagement.php">Manage Active Users</a></li>
-                      <li><a href="<?php echo $this->base_url; ?>/admin/userverification.php">Verify/Delete Users</a></li>
-                      <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
-
-                <?php endif; ?>
                 <!-- Superadmin Controls -->
                 <?php if ($auth->isSuperAdmin()): ?>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
                   <li><a href="<?php echo $this->base_url; ?>/admin/rolemanagement.php">Manage Roles</a></li>
-                    <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
-
+                  <li role="separator" class="divider"></li>
                 <?php endif; ?>
-                <li role="separator" class="divider"></li>
+                <!-- Admin Controls -->
+                <?php if ($auth->isAdmin()): ?>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/usermanagement.php">Manage Users</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
+                  <li role="separator" class="divider"></li>
+                <?php endif; ?>
+
                 <li><a href="<?php echo $this->base_url; ?>/login/logout.php">Logout</a></li>
             </ul>
         </li>
