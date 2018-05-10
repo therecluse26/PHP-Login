@@ -21,7 +21,8 @@ try {
     $tbl_tokens = $tbl_prefix."tokens";
     $tbl_cookies = $tbl_prefix."cookies";
     $tbl_app_config = $tbl_prefix."app_config";
-    $tbl_mail_log = $tbl_prefix."mail_log";';
+    $tbl_mail_log = $tbl_prefix."mail_log";
+    $tbl_member_jail = $tbl_prefix."member_jail";';
 
     fwrite($dbconf_file, $dbconf_text);
     fclose($dbconf_file);

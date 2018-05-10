@@ -47,6 +47,10 @@ $('body').on('mouseleave', "a[id^='info_']", function(){
 /****************************/
 
 
+
+
+
+
 /* HANDLES MODAL FOR ROLE USERS */
 $('body').on('click', "button[id^='usersbtn_']", function(){
   var id = this.id.split('_')[1];
@@ -84,7 +88,7 @@ function roleUsersList(id) {
         $('#users-available').append("<option value='"+value.id+"'>"+value.username+"</option>");
       })
 
-      $('#users').multiselect({
+      $("select[id^='users-']").multiselect({
           search: {
               left: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
               right: '<input type="text" name="q" class="form-control" placeholder="Search..." />',
@@ -261,7 +265,6 @@ $(document).ready(function() {
         e.preventDefault();
     });
 }(jQuery));
-
 
 // Converts array to object
 function toObject(arr) {

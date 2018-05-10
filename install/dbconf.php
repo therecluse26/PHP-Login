@@ -16,3 +16,4 @@ $tbl_deleted = $tbl_prefix."deleted_members";
 $tbl_tokens = $tbl_prefix."tokens";
 $tbl_cookies = $tbl_prefix."cookies";
 $tbl_mail_log = $tbl_prefix."mail_log";
+$tbl_member_jail = $tbl_prefix."member_jail";
