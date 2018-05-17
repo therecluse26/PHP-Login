@@ -21,6 +21,9 @@ if (str_replace(' ', '', $this->mainlogo) == '') {
 
 <?php
 
+// SIGN IN / USER SETTINGS BUTTON
+$auth = new AuthorizationHandler;
+
 if (!is_array($barmenu)) {
     // If no menu array is specified as override, try to fallback on menu file
     $menu_file = dirname(__FILE__) . "/barmenu.php";
@@ -30,9 +33,21 @@ if (!is_array($barmenu)) {
 }
 
 if (is_array($barmenu)) {
+    if ($auth->isSuperAdmin() && array_key_exists("superadmin", $barmenu) && is_array($barmenu["superadmin"])) {
+        $menu = $barmenu["superadmin"];
+    } elseif ($auth->isAdmin() && array_key_exists("admin", $barmenu) && is_array($barmenu["admin"])) {
+        $menu = $barmenu["admin"];
+    } elseif ($auth->isLoggedIn() && array_key_exists("user", $barmenu) && is_array($barmenu["user"])) {
+        $menu = $barmenu["user"];
+    } elseif (array_key_exists("anonymous", $barmenu) && is_array($barmenu["anonymous"])) {
+        $menu = $barmenu["anonymous"];
+    } else {
+        $menu = array();
+    }
+
     echo '<ul class="nav navbar-nav">';
 
-    foreach ($barmenu as $btn => $url) {
+    foreach ($menu as $btn => $url) {
         if (is_array($url)) {
             echo "<li class=\"dropdown\">";
             echo "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">";
@@ -53,12 +68,6 @@ if (is_array($barmenu)) {
 
     echo "</ul>";
 }
-
-?>
-
-<?php
-// SIGN IN / USER SETTINGS BUTTON
-$auth = new AuthorizationHandler;
 
 if ($auth->isLoggedIn()) {
     $usr = profileData::pullUserFields($_SESSION['uid'], array('firstname', 'lastname'));
