@@ -8,7 +8,10 @@
 ehthumbs.db
 Thumbs.db
 /nbproject/private/
-login/vendor*
+vendor*
 login/dbconf.php
 composer.lock
 install/cache
+install/db
+phinx.yml
+test/

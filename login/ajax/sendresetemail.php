@@ -1,24 +1,23 @@
 <?php
 $userrole = 'loginpage';
 $title = 'Forgot Password';
-require '../autoload.php';
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 use \Firebase\JWT\JWT;
 
 $email = $_POST['email'];
 $resp = array();
 
-$conf = AppConfig::pullMultiSettings(array("jwt_secret","base_url"));
+$config = PHPLogin\AppConfig::pullMultiSettings(array("jwt_secret","base_url"));
 
 try {
-    $user = UserHandler::pullUserByEmail($email);
+    $user = PHPLogin\UserHandler::pullUserByEmail($email);
 
     if (!$user) {
         throw new Exception("No user found!");
     }
 
-    $secret = $conf["jwt_secret"];
+    $secret = $config["jwt_secret"];
     $tokenid = uniqid('t_', true);
     $intltime = time();
     $nbftime = $intltime + 5;
@@ -28,7 +27,7 @@ try {
 
     //Data passed in JWT
     $payload = array(
-        "iss" => $conf["base_url"],
+        "iss" => $config["base_url"],
         "nbf" => $nbftime,
         "exp" => $exptime,
         "tokenid"=>$tokenid,
@@ -40,13 +39,13 @@ try {
 
     $jwt = JWT::encode($payload, $secret);
 
-    $reset_url = $conf["base_url"]."/login/resetpassword.php?t=".$jwt;
+    $reset_url = $config["base_url"]."/login/resetpassword.php?t=".$jwt;
 
-    $tokenInsert = TokenHandler::replaceToken($user['id'], $tokenid, 0);
+    $tokenInsert = PHPLogin\TokenHandler::replaceToken($user['id'], $tokenid, 0);
 
     if ($tokenInsert) {
         //Mail reset link w/token to user
-        $mail = new MailHandler;
+        $mail = new PHPLogin\MailHandler;
 
         $mailResult = $mail->sendResetMail($reset_url, $user['email'], $user['username']);
 

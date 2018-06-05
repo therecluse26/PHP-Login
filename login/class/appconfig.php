@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Handles application configuration settings stored in database `app_config` table
 **/
@@ -15,7 +17,7 @@ class AppConfig extends DbConn
         $sql = "SELECT setting, value FROM ".$this->tbl_app_config;
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
-        $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+        $settings = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
 
         //Pulls all properties from database
         foreach ($settings as $key => $value) {
@@ -29,8 +31,8 @@ class AppConfig extends DbConn
         }
     }
     /**
-    * Pulls single setting statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
-    * Calls can be made like so: AppConfig::pullSetting('setting_name', 'db_var_type')
+    * Pulls single setting statically from database without invoking new PHPLogin\AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
+    * Calls can be made like so: PHPLogin\AppConfig::pullSetting('setting_name', 'db_var_type')
     *
     * `setting_name` corresponds to "setting" entry in `app_config` table, and `db_var_type` should be desired db type such as `unsigned` for integers, `varchar`, etc.
     **/
@@ -46,8 +48,8 @@ class AppConfig extends DbConn
             $stmt = $db->conn->prepare($sql);
             $stmt->bindParam(':setting', $setting);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_NUM);
-        } catch (PDOException $e) {
+            $result = $stmt->fetch(\PDO::FETCH_NUM);
+        } catch (\PDOException $e) {
             $result[0] = "Error: " . $e->getMessage();
         }
 
@@ -56,8 +58,8 @@ class AppConfig extends DbConn
         return $result[0];
     }
     /**
-    * Pulls multiple settings statically from database without invoking new AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
-    * Calls can be made like so: `AppConfig::pullMultiSettings(array("setting1", "setting2", "etc"))`
+    * Pulls multiple settings statically from database without invoking new PHPLogin\AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
+    * Calls can be made like so: `PHPLogin\AppConfig::pullMultiSettings(array("setting1", "setting2", "etc"))`
     *
     * `$settingArray` = array of settings to be pulled from `app_config` table
     **/
@@ -72,8 +74,8 @@ class AppConfig extends DbConn
 
             $stmt = $db->conn->prepare($sql);
             $stmt->execute($settingArray);
-            $result = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
-        } catch (PDOException $e) {
+            $result = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
         }
 
@@ -88,14 +90,14 @@ class AppConfig extends DbConn
     **/
     public function pullAllSettings(AuthorizationHandler $auth)
     {
-        if ($auth->isAdmin()) {
+        if ($auth->isAdmin() || $auth->hasPermission('Edit Site Config')) {
             try {
                 $sql = "SELECT setting, value, description, type, category FROM ".$this->tbl_app_config." where type != 'hidden' order by -sortorder desc";
 
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute();
-                $result = $stmt->fetchAll(PDO::FETCH_NUM);
-            } catch (PDOException $e) {
+                $result = $stmt->fetchAll(\PDO::FETCH_NUM);
+            } catch (\PDOException $e) {
                 $result = "Error: " . $e->getMessage();
             }
         } else {
@@ -119,7 +121,7 @@ class AppConfig extends DbConn
                     $stmt->bindParam(":value", $value);
                     $stmt->bindParam(":setting", $setting);
                     $stmt->execute();
-                } catch (PDOException $e) {
+                } catch (\PDOException $e) {
                     $result['status'] = false;
                     $result['message'] = "Error: " . $e->getMessage();
                 }

@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 class CSRFHandler
 {
     /**

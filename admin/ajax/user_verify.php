@@ -3,24 +3,24 @@
 * AJAX page for user verification in userverification.php
 **/
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
+    $conf = new PHPLogin\AppConfig;
 
-    if ($request->valid_token() && $auth->isAdmin()) {
-        $conf = AppConfig::pullMultiSettings(array("base_url", "base_dir", "curl_enabled"));
+    if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('Verify Users'))) {
+        $config = PHPLogin\AppConfig::pullMultiSettings(array("base_url", "base_dir", "curl_enabled"));
 
-        //Pulls variables from url. Can pass 1 (verified) or 0 (unverified/blocked) into url
         $uid = $_POST['uid'];
 
-        $userarr = UserData::userDataPull($uid, 0);
+        $userarr = PHPLogin\UserData::userDataPull($uid, 0);
 
         try {
             //Updates the verify column on user
-            $vresponse = UserHandler::verifyUser($userarr, 1);
+            $vresponse = PHPLogin\UserHandler::verifyUser($userarr, 1);
 
             //Success
             if ($vresponse['status'] == true) {
@@ -37,12 +37,12 @@ try {
                     return !in_array($function, $disabled);
                 }
 
-                if ($conf['curl_enabled'] == 'true') {
+                if ($config['curl_enabled'] == 'true') {
                     //shell_exec enabled
-                    shell_exec('curl '.$conf['base_url'].'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
+                    shell_exec('curl '.$config['base_url'].'/login/ajax/emailqueue.php?usr='.$userurlparm.'  > /dev/null 2>/dev/null &');
                 } else {
                     //shell_exec is disabled
-                    include $conf['base_dir'].'/login/ajax/emailqueue.php';
+                    include $config['base_dir'].'/login/ajax/emailqueue.php';
                 }
             } else {
                 //Validation error from empty form variables
@@ -53,6 +53,7 @@ try {
             echo $ex->getMessage();
         }
     } else {
+        http_response_code(401);
         throw new Exception("Unauthorized");
     }
 } catch (Exception $e) {

@@ -3,7 +3,7 @@ $userrole = 'Standard User';
 $title = 'Account Settings';
 require '../login/misc/pagehead.php';
 $uid = $_SESSION['uid'];
-$usr = UserHandler::pullUserById($uid);
+$usr = PHPLogin\UserHandler::pullUserById($uid);
 ?>
 <script src="js/accountupdate.js"></script>
 <script src="../login/js/jquery.validate.min.js"></script>
@@ -11,7 +11,7 @@ $usr = UserHandler::pullUserById($uid);
 
 </head>
 <body>
-  <?php require 'login/misc/pullnav.php'; ?>
+  <?php require '../login/misc/pullnav.php'; ?>
     <div class="container">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">

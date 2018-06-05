@@ -1,18 +1,18 @@
 <?php
-require '../../login/autoload.php';
+require '../../vendor/autoload.php';
 
 try {
     session_start();
 
-    $role_db = new RoleHandler;
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $role_db = new PHPLogin\RoleHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
-    if ($request->valid_token() && $auth->isAdmin()) {
+    if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('Assign Users to Roles'))) {
         $role_id = $_POST['role_id'];
 
         $role_users = $role_db->listRoleUsers($role_id);
-        $users = $role_db->listAllUsers();
+        $users = $role_db->listAllActiveUsers();
 
         $combo_array = [];
         $combo_array['all_users'] = $combo_array['role_users'] = $combo_array['diff_users'] = [];

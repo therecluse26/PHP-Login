@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Handles all email-related logic
 */
@@ -11,9 +13,9 @@ class MailHandler extends AppConfig
     public function sendMail($userarr, $type)
     {
         $resp = array();
-        require_once $this->base_dir.'/login/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+        require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
-        $mail = new PHPMailer;
+        $mail = new \PHPMailer;
         $mail->isHTML(true);
         $mail->CharSet = "text/html; charset=UTF-8;";
         $mail->WordWrap = 80;
@@ -93,13 +95,13 @@ class MailHandler extends AppConfig
             $status = $mail->Send();
             $debugMsg = ob_get_contents();
             ob_get_clean();
-            MailHandler::logResponse($debugMsg, $usr, $type, $status);
+            self::logResponse($debugMsg, $usr, $type, $status);
 
             $resp['status'] = true;
             $resp['message'] = '';
 
             return $resp;
-        } catch (phpmailerException $e) {
+        } catch (\phpmailerException $e) {
             $resp['status'] = false;
             $resp['message'] = $e->errorMessage();
 
@@ -110,10 +112,10 @@ class MailHandler extends AppConfig
     public function sendResetMail($reset_url, $to_email, $username)
     {
         $resp = array();
-        require_once $this->base_dir.'/login/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+        require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
         try {
-            $mail = new PHPMailer(true);
+            $mail = new \PHPMailer(true);
             $mail->isHTML(true);
             $mail->CharSet = "text/html; charset=UTF-8;";
             $mail->WordWrap = 80;
@@ -164,16 +166,16 @@ class MailHandler extends AppConfig
 
             $emailToLog = array("email"=>$to_email);
 
-            MailHandler::logResponse($debugMsg, $emailToLog, 'Password Reset', $status);
+            self::logResponse($debugMsg, $emailToLog, 'Password Reset', $status);
 
             $resp['status'] = true;
             $resp['message'] = "Password reset sent! Check your email";
             return $resp;
-        } catch (phpmailerException $e) {
+        } catch (\phpmailerException $e) {
             $resp['status'] = false;
             $resp['message'] = $e->errorMessage();
             return $resp;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $resp['status'] = false;
             $resp['message'] = $e->getMessage();
             return $resp;
@@ -228,7 +230,7 @@ class MailHandler extends AppConfig
             $active_user_count = $records_total->fetchColumn();
             $filtered_user_count = $records_filtered->fetchColumn();
 
-            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
             $return_data = array(
                 "draw"            => $request['draw'],
@@ -240,7 +242,7 @@ class MailHandler extends AppConfig
             $result = json_encode($return_data);
 
             return $return_data;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
             return $result;
         }
@@ -261,7 +263,7 @@ class MailHandler extends AppConfig
             }
 
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = 'Error: ' . $e->getMessage();
         }
 
@@ -292,7 +294,7 @@ class MailHandler extends AppConfig
                 $response = $emailresp;
 
                 if (AppConfig::pullSetting('email_working') == 'true') {
-                    $emailSettings = new MailHandler;
+                    $emailSettings = new self();
                     $emailSettings->testMailSettings();
                 }
             };
@@ -307,7 +309,7 @@ class MailHandler extends AppConfig
             $stmt->bindParam(':response', $response);
             $stmt->execute();
             unset($stmt);
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = "Error: " . $e->getMessage();
         }
         //Determines returned value ('true' or error code)
@@ -339,19 +341,19 @@ class MailHandler extends AppConfig
             if ($this->mail_server_type == 'smtp') {
                 date_default_timezone_set('Etc/UTC');
 
-                require_once $this->base_dir.'/login/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+                require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
-                $smtp = new SMTP;
+                $smtp = new \SMTP;
                 //Enable connection-level debug output
                 //$smtp->do_debug = SMTP::DEBUG_CONNECTION;
                 try {
                     //Connect to an SMTP server
                     if (!$smtp->connect($this->mail_server, $this->mail_port)) {
-                        throw new Exception('Connect failed');
+                        throw new \Exception('Connect failed');
                     }
                     //Say hello
                     if (!$smtp->hello(gethostname())) {
-                        throw new Exception('EHLO failed: ' . $smtp->getError()['error']);
+                        throw new \Exception('EHLO failed: ' . $smtp->getError()['error']);
                     }
                     //Get the list of ESMTP services the server offers
                     $e = $smtp->getServerExtList();
@@ -359,11 +361,11 @@ class MailHandler extends AppConfig
                     if (is_array($e) && array_key_exists('STARTTLS', $e)) {
                         $tlsok = $smtp->startTLS();
                         if (!$tlsok) {
-                            throw new Exception('Failed to start encryption: ' . $smtp->getError()['error']);
+                            throw new \Exception('Failed to start encryption: ' . $smtp->getError()['error']);
                         }
                         //Repeat EHLO after STARTTLS
                         if (!$smtp->hello(gethostname())) {
-                            throw new Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
+                            throw new \Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
                         }
                         //Get new capabilities list, which will usually now include AUTH if it didn't before
                         $e = $smtp->getServerExtList();
@@ -378,10 +380,10 @@ class MailHandler extends AppConfig
 
                             return $resp;
                         } else {
-                            throw new Exception('Authentication failed: ' . $smtp->getError()['error']);
+                            throw new \Exception('Authentication failed: ' . $smtp->getError()['error']);
                         }
                     }
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     $resp['status'] = 'false';
                     $resp['message'] = 'SMTP error: ' . $e->getMessage();
 

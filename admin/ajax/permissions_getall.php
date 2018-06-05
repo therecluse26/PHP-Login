@@ -1,24 +1,24 @@
 <?php
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
-    if ($request->valid_token() && $auth->isSuperAdmin()) {
+    if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('View Permissions'))) {
         unset($_GET['csrf_token']);
         $columns = array(
             array( 'db' => 'id', 'dt' => 0 ),
             array( 'db' => 'name', 'dt' => 1 ),
             array( 'db' => 'description', 'dt' => 2 ),
-            array( 'db' => 'required', 'dt' => 3 ),
-            array( 'db' => 'default_role', 'dt' => 4 ),
-            array( 'db' => 'users', 'dt' => 4 )
+            array( 'db' => 'category', 'dt' => 3 ),
+            array( 'db' => 'roles', 'dt' => 4 ),
+            array( 'db' => 'edit', 'dt' => 5 )
         );
 
-        $data = AdminFunctions::getAllRoles($_GET, $columns);
+        $data = PHPLogin\AdminFunctions::getAllPermissions($_GET, $columns);
 
         echo json_encode($data);
     } else {

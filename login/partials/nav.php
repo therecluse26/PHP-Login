@@ -42,12 +42,12 @@ if (is_array($barmenu)) {
             echo "<ul class=\"dropdown-menu\">";
 
             foreach ($url as $sub_btn => $sub_url) {
-                echo "<li><a href=\"" . (MiscFunctions::isAbsUrl($sub_url) ? $sub_url : $this->base_url . '/' . $sub_url) . "\">$sub_btn</a></li>";
+                echo "<li><a href=\"" . (PHPLogin\MiscFunctions::isAbsUrl($sub_url) ? $sub_url : $this->base_url . '/' . $sub_url) . "\">$sub_btn</a></li>";
             }
 
             echo "</ul>";
         } else {
-            echo "<li><a href=\"" . (MiscFunctions::isAbsUrl($url) ? $url : $this->base_url . '/' . $url) . "\">$btn</a></li>";
+            echo "<li><a href=\"" . (PHPLogin\MiscFunctions::isAbsUrl($url) ? $url : $this->base_url . '/' . $url) . "\">$btn</a></li>";
         }
     }
 
@@ -58,10 +58,10 @@ if (is_array($barmenu)) {
 
 <?php
 // SIGN IN / USER SETTINGS BUTTON
-$auth = new AuthorizationHandler;
+$auth = new PHPLogin\AuthorizationHandler;
 
 if ($auth->isLoggedIn()) {
-    $usr = profileData::pullUserFields($_SESSION['uid'], array('firstname', 'lastname'));
+    $usr = PHPLogin\ProfileData::pullUserFields($_SESSION['uid'], array('firstname', 'lastname'));
 
     if (is_array($usr) && trim($usr['firstname']) != '' && trim($usr['lastname']) != '') {
         $user = $usr['firstname']. ' ' .$usr['lastname'];
@@ -82,12 +82,13 @@ if ($auth->isLoggedIn()) {
                 <!-- Superadmin Controls -->
                 <?php if ($auth->isSuperAdmin()): ?>
                   <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
-                  <li><a href="<?php echo $this->base_url; ?>/admin/rolemanagement.php">Manage Roles</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/permissionmanagement.php">Manage Permissions</a></li>
                   <li role="separator" class="divider"></li>
                 <?php endif; ?>
                 <!-- Admin Controls -->
                 <?php if ($auth->isAdmin()): ?>
                   <li><a href="<?php echo $this->base_url; ?>/admin/usermanagement.php">Manage Users</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/rolemanagement.php">Manage Roles</a></li>
                   <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
                   <li role="separator" class="divider"></li>
                 <?php endif; ?>

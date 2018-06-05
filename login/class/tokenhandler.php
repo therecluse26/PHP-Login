@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Handles token storage in database
 */
@@ -19,12 +21,12 @@ class TokenHandler
             $stmt->bindParam(':expire', $expire);
             $stmt->bindParam(':valid', $valid);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             unset($db);
 
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
             return $result;
         }

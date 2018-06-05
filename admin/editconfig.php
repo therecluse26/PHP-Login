@@ -7,7 +7,7 @@
 $userrole = 'Superadmin';
 $title = 'Edit Site Configuration';
 require '../login/misc/pagehead.php';
-$settingsArr = $conf->pullAllSettings(new AuthorizationHandler);
+$settingsArr = $conf->pullAllSettings(new PHPLogin\AuthorizationHandler);
 //Gets categories from settings array
 foreach ($settingsArr as $key => $value) {
     $groupedArr[$value[4]][] = $value;
@@ -18,7 +18,7 @@ foreach ($settingsArr as $key => $value) {
 
 </head>
 <body>
-<?php require 'login/misc/pullnav.php'; ?>
+<?php require '../login/misc/pullnav.php'; ?>
 <div class="container">
 <form id="settingsForm" action="#" enctype="multipart/form-data">
 <div class="form-group" id="configForm">

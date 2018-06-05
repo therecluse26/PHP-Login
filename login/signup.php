@@ -37,7 +37,7 @@ require 'misc/pagehead.php';
         </div>
         <div class="col-sm-4"></div>
     </div>
-    <?php $conf = new AppConfig; ?>
+    <?php $conf = new PHPLogin\AppConfig; ?>
         <script>
             $("#usersignup").validate({
                 rules: {

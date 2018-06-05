@@ -3,7 +3,7 @@ $userrole = 'Standard User';
 $title = 'Edit Profile';
 require '../login/misc/pagehead.php';
 $uid = $_SESSION['uid'];
-$usr = ProfileData::pullAllUserInfo($uid);
+$usr = PHPLogin\ProfileData::pullAllUserInfo($uid);
 //Outputs empty user image if no image exists
 if (@get_headers($usr['UserImage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['UserImage'] == '') {
     $imgpath = "no_user.jpg";
@@ -18,7 +18,7 @@ if (@get_headers($usr['UserImage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['User
 
 </head>
 <body>
-  <?php require 'login/misc/pullnav.php'; ?>
+  <?php require '../login/misc/pullnav.php'; ?>
     <div class="container">
         <div class="col-sm-2"></div>
         <div class="col-sm-8">

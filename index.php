@@ -1,5 +1,6 @@
 <?php
 $title = 'Home';
+
 include "login/misc/pagehead.php";
 ?>
 </head>

@@ -12,7 +12,7 @@ require '../login/misc/pagehead.php';
 <script type="text/javascript" src="../login/js/DataTables/datatables.min.js"></script>
 </head>
 <body>
-  <?php require 'login/misc/pullnav.php'; ?>
+  <?php require '../login/misc/pullnav.php'; ?>
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-12">

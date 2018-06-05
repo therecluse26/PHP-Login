@@ -1,21 +1,21 @@
 <?php
 
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
     if ($request->valid_token() && $auth->isLoggedIn()) {
         unset($_POST['csrf_token']);
 
-        $conf = AppConfig::pullMultiSettings(array("password_policy_enforce", "password_min_length"));
+        $conf = PHPLogin\AppConfig::pullMultiSettings(array("password_policy_enforce", "password_min_length"));
 
         $uid = $_SESSION['uid'];
         $resp = array();
-        $oldpw = UserData::pullUserPassword($uid);
+        $oldpw = PHPLogin\UserData::pullUserPassword($uid);
 
         try {
             if (!empty($_POST)) {
@@ -25,11 +25,11 @@ try {
                 }
 
                 if (array_key_exists('password1', $_POST) && array_key_exists('password2', $_POST)) {
-                    $pwvalid = PasswordHandler::validatePolicy($_POST['password1'], $_POST['password2'], $conf["password_policy_enforce"], $conf["password_min_length"]);
+                    $pwvalid = PHPLogin\PasswordHandler::validatePolicy($_POST['password1'], $_POST['password2'], $conf["password_policy_enforce"], $conf["password_min_length"]);
 
 
                     if ($pwvalid['status'] == true) {
-                        $_POST['password'] = PasswordHandler::encryptPw($_POST['password1']);
+                        $_POST['password'] = PHPLogin\PasswordHandler::encryptPw($_POST['password1']);
 
                         unset($_POST['password1']);
                         unset($_POST['password2']);
@@ -47,7 +47,7 @@ try {
                         throw new Exception("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Must provide a valid email address</div><div id=\"returnVal\" style=\"display:none;\">false</div>");
                     } else {
                         //CHECK DATABASE FOR EXISTING EMAIL
-                        $emailtaken = UserHandler::pullUserByEmail($tryemail);
+                        $emailtaken = PHPLogin\UserHandler::pullUserByEmail($tryemail);
 
                         if ($emailtaken['email'] == $tryemail) {
                             //EMAIL EXISTS
@@ -55,16 +55,16 @@ try {
                         } else {
 
                         //INSERT WITH EMAIL
-                            $upsert = UserData::upsertAccountInfo($uid, $_POST);
+                            $upsert = PHPLogin\UserData::upsertAccountInfo($uid, $_POST);
                         }
                     }
                 } elseif (array_key_exists('password', $_POST)) {
 
                 //INSERT WITHOUT EMAIL
-                    $upsert = UserData::upsertAccountInfo($uid, $_POST);
+                    $upsert = PHPLogin\UserData::upsertAccountInfo($uid, $_POST);
                 }
 
-                $upsert = UserData::upsertAccountInfo($uid, $_POST);
+                $upsert = PHPLogin\UserData::upsertAccountInfo($uid, $_POST);
 
                 if ($upsert == 1) {
 

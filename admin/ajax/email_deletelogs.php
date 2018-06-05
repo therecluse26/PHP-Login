@@ -2,19 +2,19 @@
 /**
 * AJAX page for user deletion in userverification.php
 **/
-require '../../login/autoload.php';
+require '../../vendor/autoload.php';
 try {
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
     if ($request->valid_token() && $auth->isAdmin()) {
         try {
             $singleId = $_POST['logid'];
 
             //Deletes log
-            $response = MailHandler::deleteLog($singleId, false);
+            $response = PHPLogin\MailHandler::deleteLog($singleId, false);
 
             //Success
             if ($response == 1) {

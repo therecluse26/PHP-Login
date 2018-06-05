@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Contains all methods used in login form
 **/
@@ -24,7 +26,7 @@ class LoginHandler extends AppConfig
 
         try {
             $err = '';
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = "Error: " . $e->getMessage();
         }
 
@@ -34,7 +36,7 @@ class LoginHandler extends AppConfig
         $stmt->execute();
 
         // Gets query result
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
 
         if ($curr_attempts >= $max_attempts && $timeDiff < $login_timeout) {
@@ -62,7 +64,7 @@ class LoginHandler extends AppConfig
                 $bstmt = $this->conn->prepare("SELECT hours_remaining FROM `vw_banned_users` WHERE user_id = :uid;");
                 $bstmt->bindParam(':uid', $uid);
                 $bstmt->execute();
-                $bresult = $bstmt->fetch(PDO::FETCH_ASSOC);
+                $bresult = $bstmt->fetch(\PDO::FETCH_ASSOC);
 
                 if ($bresult['hours_remaining'] <= 0) {
                     $uid = $result['id'];
@@ -87,9 +89,6 @@ class LoginHandler extends AppConfig
                                   Your account is currently suspended
                                 </div>";
                 }
-
-
-                //error_log($ban_complete);
             } elseif (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
 
                 //Account not yet verified
@@ -127,13 +126,13 @@ class LoginHandler extends AppConfig
             $stmt->bindParam(':ip', $ip_address);
             $stmt->bindParam(':username', $username);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
             return $result;
 
             $oldTime = strtotime($result['lastlogin']);
             $newTime = strtotime($datetimeNow);
             $timeDiff = $newTime - $oldTime;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = "Error: " . $e->getMessage();
         }
 
@@ -161,7 +160,7 @@ class LoginHandler extends AppConfig
             $stmt->execute();
             $curr_attempts++;
             $err = '';
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = "Error: " . $e->getMessage();
         }
 
@@ -210,7 +209,7 @@ class LoginHandler extends AppConfig
                 $stmt2->bindParam(':username', $username);
                 $stmt2->execute();
             }
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = "Error: " . $e->getMessage();
         }
 

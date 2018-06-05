@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Contains all cookie handling methods
 **/
@@ -68,7 +70,7 @@ class CookieHandler
             $stmt->bindParam(':userid', $userid);
             $stmt->bindParam(':tokenid', $tokenid);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             return $result;
         } catch (Exception $e) {
@@ -82,7 +84,7 @@ class CookieHandler
     public static function initializeCookie()
     {
         $conf = new AppConfig;
-        require $conf->base_dir."/login/vendor/autoload.php";
+        require $conf->base_dir."/vendor/autoload.php";
 
         $uid = $_SESSION['uid'];
 

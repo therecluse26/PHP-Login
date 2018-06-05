@@ -1,11 +1,11 @@
 <?php
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
     if ($request->valid_token() && $auth->isAdmin()) {
         unset($_GET['csrf_token']);
@@ -18,7 +18,7 @@ try {
             array( 'db' => 'timestamp', 'dt' => 5 )
         );
 
-        $data = MailHandler::getUnreadLogs($_GET, $columns);
+        $data = PHPLogin\MailHandler::getUnreadLogs($_GET, $columns);
 
         echo json_encode($data);
     } else {

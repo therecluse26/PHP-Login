@@ -3,16 +3,16 @@
 * AJAX page for testing email settings in editconfig.php
 **/
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
     if ($request->valid_token() && $auth->isSuperAdmin()) {
         if ($_GET['t'] == '1') {
-            $test = new MailHandler;
+            $test = new PHPLogin\MailHandler;
 
             $resp = $test->testMailSettings();
 
@@ -26,6 +26,7 @@ try {
             echo $jsonresp;
         }
     } else {
+        http_response_code(401);
         throw new Exception("Unauthorized");
     }
 } catch (Exception $e) {

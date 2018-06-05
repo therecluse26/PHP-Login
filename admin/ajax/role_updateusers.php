@@ -1,25 +1,20 @@
 <?php
-require '../../login/autoload.php';
+require '../../vendor/autoload.php';
 
 try {
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
-    $rolehandler = new RoleHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
+    $rolehandler = new PHPLogin\RoleHandler;
 
-    if ($request->valid_token() && $auth->isAdmin()) {
+    if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('Assign Users to Roles'))) {
         try {
             $users = json_decode($_POST['formData'], true);
-            //error_log(print_r($users, true));
+
             $role_id = $_POST['roleId'];
 
-            if (array_key_exists('0', $users[0])) {
-                $rolehandler->updateRoleUsers($users, $role_id);
-            } else {
-                echo 'false';
-                return;
-            }
+            $rolehandler->updateRoleUsers($users, $role_id);
 
             http_response_code(200);
             echo "true";

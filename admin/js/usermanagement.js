@@ -3,7 +3,7 @@
 function userInfoPull(id, elem) {
   $.ajax({
     type: "POST",
-    url: "ajax/getuserinfo.php",
+    url: "ajax/user_getinfo.php",
     data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     async: false,
     success: function(user_info){
@@ -19,6 +19,9 @@ function userInfoPull(id, elem) {
         }
       }
       $(elem).attr('data-content', user_info_html).popover('show', {"html": true});
+    },
+    error: function (xhr, error, thrown) {
+      console.log( error );
     }
   });
 };
@@ -58,7 +61,7 @@ function userRolesList(id) {
 
   $.ajax({
     type: "POST",
-    url: "ajax/getuserroles.php",
+    url: "ajax/user_getroles.php",
     data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     async: false,
     beforeSend: function(){
@@ -74,6 +77,9 @@ function userRolesList(id) {
     },
     success: function(role_array){
       return_arr = role_array;
+    },
+    error: function (xhr, error, thrown) {
+      console.log( error );
     }
   });
   return return_arr;
@@ -101,7 +107,7 @@ $('#saveRoles').click(function(){
 
     $.ajax({
       type: "POST",
-      url: "ajax/updateuserroles.php",
+      url: "ajax/user_updateroles.php",
       processData: false,
       contentType: false,
       data: sendData,
@@ -134,6 +140,9 @@ $('#saveRoles').click(function(){
         } else {
           alert('User must have at least one role!');
         }
+      },
+      error: function (xhr, error, thrown) {
+        console.log( error );
       }
     });
   });
@@ -152,29 +161,34 @@ function banUser(id, btn_id, ban_hours, ban_reason){
 
   var uidJSON = "[" + JSON.stringify(id) + "]";
 
-  $.ajax({
-    type: "POST",
-    url: "ajax/banuserajax.php",
-    data: { "uid": uidJSON, "ban_hours": ban_hours, "ban_reason": ban_reason,
-            "csrf_token": $('meta[name="csrf_token"]').attr("value")},
-    async: false,
-    beforeSend: function(){
-      $.LoadingOverlay('show', {
-        image: '../login/images/Spin-0.8s-200px.svg',
-        imageAnimation: false,
-        imageColor: '#428bca',
-        fade: [200, 100]
-      });
-    },
-    complete: function(){
-      $.LoadingOverlay("hide");
-    },
-    success: function(resp){
+  if (ban_hours !== 0){
+    $.ajax({
+      type: "POST",
+      url: "ajax/users_ban.php",
+      data: { "uid": uidJSON, "ban_hours": ban_hours, "ban_reason": ban_reason,
+              "csrf_token": $('meta[name="csrf_token"]').attr("value")},
+      async: false,
+      beforeSend: function(){
+        $.LoadingOverlay('show', {
+          image: '../login/images/Spin-0.8s-200px.svg',
+          imageAnimation: false,
+          imageColor: '#428bca',
+          fade: [200, 100]
+        });
+      },
+      complete: function(){
+        $.LoadingOverlay("hide");
+      },
+      success: function(resp){
 
-      usertable.row( $('#'+btn_id).parents('tr') ).remove().draw();
+        usertable.row( $('#'+btn_id).parents('tr') ).remove().draw();
 
-    }
-  });
+      },
+      error: function (error) {
+        alert( error.responseText );
+      }
+    });
+  }
 
 }
 
@@ -223,7 +237,12 @@ $(document).ready(function() {
     processing: true,
     paging: true,
     serverSide: true,
-    ajax: "ajax/usermanagementajax.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
+    ajax: {
+      url:"ajax/users_getallactive.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
+      error: function (xhr, error, thrown) {
+        alert( xhr.responseJSON.Error );
+      }
+    },
     scrollY: "600px",
     scrollCollapse: true,
     lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
@@ -238,14 +257,35 @@ $(document).ready(function() {
           action: function ( e, dt, node, config ) {
             var selected_array = dt.rows( { selected: true } ).data();
             if (selected_array.length > 0) {
+
               var ban_hours = Number(window.prompt("How long (in hours) for this ban?"));
               var ban_reason = window.prompt("What is the reason for this ban?");
-              for (var i = 0, len = selected_array.length; i < len; i++) {
-                banUser(selected_array[i][0], 'banbtn_'+selected_array[i][0], ban_hours, ban_reason);
+              if (ban_hours !== 0){
+                for (var i = 0, len = selected_array.length; i < len; i++) {
+                  banUser(selected_array[i][0], 'banbtn_'+selected_array[i][0], ban_hours, ban_reason);
+                }
               }
+
             }
           },
           className: "btn-warning"
+        },
+        { text: 'Delete Selected',
+          action: function ( e, dt, node, config ) {
+
+            var selected_array = dt.rows( { selected: true } ).data();
+
+            if( confirm("Are you sure you want to delete the selected user(s)?") ){
+
+              for (var i = 0, len = selected_array.length; i < len; i++) {
+
+                deleteUser(selected_array[i][0], 'info_'+selected_array[i][0]);
+
+              }
+
+            }
+          },
+          className: "btn-danger"
         }
     ]
   }).on("select", function(){
@@ -255,6 +295,23 @@ $(document).ready(function() {
 
 });
 /****************************/
+
+
+function deleteUser(id, btn_id){
+  var idJSON = "[" + JSON.stringify(id) + "]";
+  $.ajax({
+    type: "POST",
+    url: "ajax/users_delete.php",
+    data: {"ids": idJSON, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
+    async: false,
+    success: function(resp){
+      usertable.row( $('#'+btn_id).parents('tr') ).remove().draw();
+    },
+    error: function(err){
+      alert(err.responseText);
+    }
+  });
+}
 
 
 //Role assignment box button logic

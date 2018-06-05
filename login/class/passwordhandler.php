@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Password-related methods
 */
@@ -21,7 +23,7 @@ class PasswordHandler extends DbConn
         try {
             $resp = array();
 
-            $password = PasswordHandler::encryptPw($password_raw);
+            $password = self::encryptPw($password_raw);
 
             $expire = 1;
             $db = new DbConn;
@@ -38,7 +40,7 @@ class PasswordHandler extends DbConn
             $resp['status'] = true;
 
             return $resp;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $resp['message'] = 'Error: ' . $e->getMessage();
             $resp['status'] = false;
 

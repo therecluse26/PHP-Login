@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Miscellaneous utility functions
 */
@@ -7,11 +9,10 @@ class MiscFunctions
     public static function mySqlErrors($response)
     {
         //Returns custom error messages instead of MySQL errors
-
         switch (substr($response, 0, 22)) {
 
             case 'Error: SQLSTATE[23000]':
-                echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Username or email already exists</div>";
+                echo "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>".$response."</div>";
                 break;
 
             default:
@@ -49,12 +50,14 @@ class MiscFunctions
         return false;
     }
 
-    public static function placeholders($users, $separator= ",", $role_id)
+    public static function placeholders($record, $separator= ",", $bind_id)
     {
         $string = '';
-        foreach ($users as $u) {
-            $string .= '(\''.$u['user_id'] .'\', '. $role_id.'),';
+
+        foreach ($record as $key => $val) {
+            $string .= '(\''.$val .'\''. $separator . $bind_id.'),';
         }
+        
         return substr($string, 0, -1);
     }
 
@@ -107,7 +110,7 @@ class MiscFunctions
                 $columnIdx = array_search($requestColumn['data'], $dtColumns);
                 $column = $columns[ $columnIdx ];
                 if ($requestColumn['searchable'] == 'true') {
-                    $binding = self::bind($bindings, '%'.$str.'%', PDO::PARAM_STR);
+                    $binding = self::bind($bindings, '%'.$str.'%', \PDO::PARAM_STR);
                     $globalSearch[] = "`".$column['db']."` LIKE ".$binding;
                 }
             }
@@ -121,7 +124,7 @@ class MiscFunctions
                 $str = $requestColumn['search']['value'];
                 if ($requestColumn['searchable'] == 'true' &&
        $str != '') {
-                    $binding = self::bind($bindings, '%'.$str.'%', PDO::PARAM_STR);
+                    $binding = self::bind($bindings, '%'.$str.'%', \PDO::PARAM_STR);
                     $columnSearch[] = "`".$column['db']."` LIKE ".$binding;
                 }
             }

@@ -12,15 +12,15 @@ Technologies used:
 	- Minimum version: `5.5`
 	- `pdo_mysql` extension required
 	- Recommended to enable `shell_exec`
-	
+
 - `MySQL` *_required_
 	- Version `5.6+` recommended
- 
+
 - `Composer` _recommended_
 	- Version `1.2.1+` recommended
-	 
+
 	 <small>*If Composer is not installed on the system or accessible through `shell_exec`, a self-contained `composer.phar` file located in the `install` directory is used*</small>
-	 
+
 - `cURL` _recommended_
 	- Version `7+` recommended
 
@@ -41,9 +41,9 @@ Installation
 ### Clone the Repository
     $ git clone https://github.com/fethica/PHP-Login.git
 
-### Run through web-based installer 
+### Run through web-based installer
 Open this link in your web browser (replacing [yoursite.com] with your site address)
-    
+
     http://[yoursite.com]/install/index.php
 
 Select an installation option from the pop-up modal that appears: `Automated` or `Manual`
@@ -53,7 +53,7 @@ Select an installation option from the pop-up modal that appears: `Automated` or
 <hr>
 </div>
 
-Enter all relevant information into the form, submit, and wait for install to complete. 
+Enter all relevant information into the form, submit, and wait for install to complete.
 
 <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_form.png" alt="Automated Installer Form" style="display:block;margin:auto;" />
 
@@ -65,7 +65,7 @@ This will generate necessary database connection and configuration files, pull r
 
  <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/auto_install_success.png" alt="Automated Installer Complete" style="width:500px;display:block;margin:auto;" />
 
-Continue to [Post Installation Instructions](#postinstall) 
+Continue to [Post Installation Instructions](#postinstall)
 
 
 <div id="maninstall">
@@ -83,15 +83,15 @@ Configuration and SQL scripts will be generated. Several manual steps will now b
 
 - Copy/Paste and run the SQL script on the desired database server as a user with admin privileges. This script will generate the database/tables as well as all required triggers, indexes, etc.
 
-- Copy/paste the configuration output into the `/login/dbconf.php` file. 
+- Copy/paste the configuration output into the `/login/dbconf.php` file.
 
-- Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies. 
+- Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies.
 
  <img src="https://raw.githubusercontent.com/fethica/PHP-Login/dev/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" />
 
-Installation is now complete, however, a few steps are still necessary before your site is functional. Proceed to [Post Installation Instructions](#postinstall) 
+Installation is now complete, however, a few steps are still necessary before your site is functional. Proceed to [Post Installation Instructions](#postinstall)
 
-	
+
 <div id="postinstall"></div>
 
 Post Installation
@@ -118,7 +118,7 @@ Verify that everything is working properly. Once this is done **remember to dele
 
 #### Congratulations, you've successfully set up PHP-Login! Now get to building your website!
 
-To learn about additional features, open the corner dropdown menu and explore the options contained. 
+To learn about additional features, open the corner dropdown menu and explore the options contained.
 
 **Note:** The available options will be different if a user is an admin vs a standard user. Standard users will only see the `Edit Profile`, `Account Settings` and `Logout` menu options.
 
@@ -137,7 +137,7 @@ Configuration Settings
 <head>
 <meta charset='utf-8'>
 <meta name='viewport' content-width='device-width', initial-scale='1', shrink-to-fit='no'>``
-	
+
 - `mainlogo` - URL of the main site logo that will appear in the top left corner of your navbar by default
 - `avatar_dir` - Filesystem directory under your PHP-Login base directory to which user avatars will be stored
 - `curl_enabled` - Tells PHP-Login if `curl` is enabled on your system for sending emails in batches
@@ -153,7 +153,7 @@ Configuration Settings
 -  `mail_port` - Port of email server
 -  `from_email` - Email address to send system emails from
 -  `from_name` - Name for system to send emails as
-	
+
 ### `Security` tab
 - `password_policy_enforce` - If you want to require the password policy that you set, select `true`
 - `password_min_length` - Minimum password length if `password_policy_enforce` is set to `true`
@@ -162,7 +162,7 @@ Configuration Settings
 -  `cookie_expire_seconds` - Number of seconds before cookies expire
 -  `jwt_secret` - Secret for JSON Web Tokens. Used to generate token hashes, can be any value
 -  `admin_verify` - If set to `true` admin must verify users. If set to false, users can self-verify via email
-	
+
 ### `Messages` tab
 - `signup_thanks` - Message to display after user signs up and can self verify. Should notify user that a verification email will be sent
 - `signup_requires_admin` - Message to display after user signs up but needs admin approval

@@ -26,12 +26,12 @@
 - passwordform.php
   - resetPw
 
-- profiledata.php
+- ProfileData.php
   - pullUserFields
   - pullAllUserInfo
   - upsertUserInfo
 
-- rolehandler.php
+- RoleHandler.php
   - checkRole
   - getDefaultRole
   - listAllRoles
@@ -41,16 +41,16 @@
   - unassignRole
   - unassignAllRoles
 
-- tokenhandler.php
+- TokenHandler.php
   - selectToken
   - replaceToken
 
-- userdata.php
+- UserData.php
   - userDataPull
   - pullUserPassword
   - upsertAccountInfo
 
-- userhandler.php
+- UserHandler.php
   - pullUserByEmail
   - pullUserById
   - getUserVerifyList

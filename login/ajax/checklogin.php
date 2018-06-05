@@ -1,7 +1,7 @@
 <?php
 //'true' triggers login success
 ob_start();
-require '../autoload.php';
+require '../../vendor/autoload.php';
 
 // Define $myusername and $mypassword
 $username = $_POST['myusername'];
@@ -12,9 +12,9 @@ $username = stripslashes($username);
 $password = stripslashes($password);
 
 $response = '';
-$loginCtl = new LoginHandler;
+$loginCtl = new PHPLogin\LoginHandler;
 $lastAttempt = $loginCtl->checkAttempts($username);
-$max_attempts = AppConfig::pullSetting("max_attempts", "unsigned");
+$max_attempts = PHPLogin\AppConfig::pullSetting("max_attempts", "unsigned");
 
 //First Attempt
 if ($lastAttempt['lastlogin'] == '') {
@@ -32,11 +32,11 @@ if ($lastAttempt['lastlogin'] == '') {
 
 if ($lastAttempt['attempts'] < $max_attempts && $response != 'true') {
     $loginCtl->updateAttempts($username);
-    $resp = new RespObj($username, $response);
+    $resp = new PHPLogin\RespObj($username, $response);
     $jsonResp = json_encode($resp);
     echo $jsonResp;
 } else {
-    $resp = new RespObj($username, $response);
+    $resp = new PHPLogin\RespObj($username, $response);
     $jsonResp = json_encode($resp);
     echo $jsonResp;
 }

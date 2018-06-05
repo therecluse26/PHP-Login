@@ -1,16 +1,16 @@
 <?php
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
     if ($request->valid_token() && $auth->isLoggedIn()) {
         unset($_POST['csrf_token']);
 
-        $conf = AppConfig::pullMultiSettings(array("base_dir","base_url","avatar_dir"));
+        $conf = PHPLogin\AppConfig::pullMultiSettings(array("base_dir","base_url","avatar_dir"));
         $uid = $_SESSION['uid'];
         $form = $_POST;
 
@@ -21,10 +21,10 @@ try {
             $form['userimage'] = $imgurl;
 
             try {
-                $upsert = profileData::upsertUserInfo($uid, $form);
+                $upsert = PHPLogin\ProfileData::upsertUserInfo($uid, $form);
 
                 if ($upsert == 1 && array_key_exists('userimage', $form)) {
-                    $imgresp = ImgHandler::putImage($imgtarget, $_POST['userimage']);
+                    $imgresp = PHPLogin\ImgHandler::putImage($imgtarget, $_POST['userimage']);
 
                     echo $imgresp;
                 } else {
@@ -36,7 +36,7 @@ try {
             }
         } else {
             try {
-                $upsert = profileData::upsertUserInfo($uid, $form);
+                $upsert = PHPLogin\ProfileData::upsertUserInfo($uid, $form);
 
                 if ($upsert == 1) {
                     echo $upsert;

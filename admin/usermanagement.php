@@ -20,7 +20,7 @@ if (isset($_GET['f'])) {
 
 </head>
 <body>
-  <?php require 'login/misc/pullnav.php'; ?>
+  <?php require '../login/misc/pullnav.php'; ?>
   <div class="container-fluid">
 
 

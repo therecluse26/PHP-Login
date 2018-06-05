@@ -1,13 +1,13 @@
 <?php
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
-    if ($request->valid_token() && $auth->isAdmin()) {
+    if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('View Users'))) {
         unset($_GET['csrf_token']);
         $columns = array(
             array( 'db' => 'id', 'dt' => 0 ),
@@ -16,7 +16,7 @@ try {
             array( 'db' => 'timestamp', 'dt' => 3 )
         );
 
-        $data = AdminFunctions::getUnverifiedUsers($_GET, $columns);
+        $data = PHPLogin\AdminFunctions::getUnverifiedUsers($_GET, $columns);
 
         echo json_encode($data);
     } else {

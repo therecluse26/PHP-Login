@@ -1,14 +1,14 @@
 <?php
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
 
     if ($request->valid_token() && $auth->isLoggedIn()) {
-        $img = profileData::pullUserFields($_SESSION["uid"], array("userimage"));
+        $img = PHPLogin\ProfileData::pullUserFields($_SESSION["uid"], array("userimage"));
 
         echo $img["userimage"];
     } else {

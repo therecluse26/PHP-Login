@@ -1,5 +1,5 @@
 <?php
-require '../autoload.php';
+require '../../vendor/autoload.php';
 try {
     //Pull username, generate new ID and hash password
     $newid = uniqid(rand(), false);
@@ -14,25 +14,25 @@ try {
     $pw2 = $_POST['password2'];
     $userarr = array(array('id'=>$newid, 'username'=>$newuser, 'email'=>$newemail, 'pw'=>$pw1));
 
-    $conf = AppConfig::pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url" ));
+    $config = PHPLogin\AppConfig::pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url" ));
 
-    $pwresp = PasswordHandler::validatePolicy($pw1, $pw2, (bool) $conf["password_policy_enforce"], (int) $conf["password_min_length"]);
+    $pwresp = PHPLogin\PasswordHandler::validatePolicy($pw1, $pw2, (bool) $config["password_policy_enforce"], (int) $config["password_min_length"]);
 
     if (!filter_var($newemail, FILTER_VALIDATE_EMAIL) == true) {
         echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Must provide a valid email address</div><div id="returnVal" style="display:none;">false</div>';
     } else {
         //Validation passed
         if (isset($_POST['newuser']) && !empty(str_replace(' ', '', $_POST['newuser'])) && $pwresp['status'] == 1) {
-            $a = new UserHandler;
+            $a = new PHPLogin\UserHandler;
 
             $response = $a->createUser($userarr);
 
             //Success
             if ($response == 1) {
-                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'. $conf['signup_thanks'] .'</div><div id="returnVal" style="display:none;">true</div><form action="'.$conf['base_url'].'/login/index.php"><button class="btn btn-success">Login</button></form><div id="returnVal" style="display:none;">true</div>';
+                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'. $config['signup_thanks'] .'</div><div id="returnVal" style="display:none;">true</div><form action="'.$config['base_url'].'/login/index.php"><button class="btn btn-success">Login</button></form><div id="returnVal" style="display:none;">true</div>';
 
                 try { //Send verification email
-                    $m = new MailHandler;
+                    $m = new PHPLogin\MailHandler;
 
                     $m->sendMail($userarr, 'Verify');
                 } catch (Exception $e) {
@@ -40,7 +40,7 @@ try {
                 }
             } else {
                 //DB Failure
-                MiscFunctions::mySqlErrors($response);
+                PHPLogin\MiscFunctions::mySqlErrors($response);
             }
         } else {
             //Password Failure

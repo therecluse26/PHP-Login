@@ -29,7 +29,7 @@ $(document).ready(function() {
           searchable: false,
           render: function(data, type, row){
             return data + "<button id='delbtn_"+row[0]+
-                          "' onClick='deleteUser(&apos;"+row[0]+"&apos;, &apos;delbtn_"+row[0]+
+                          "' onClick='deleteUnverifiedUser(&apos;"+row[0]+"&apos;, &apos;delbtn_"+row[0]+
                           "&apos;)' class='btn btn-danger pull-right'>Delete</button>\
                           <button id='verbtn_"+row[0]+
                           "' onClick='verifyUser(&apos;"+row[0]+"&apos;, &apos;verbtn_"+row[0]+
@@ -45,7 +45,7 @@ $(document).ready(function() {
     processing: true,
     paging: true,
     serverSide: true,
-    ajax: "ajax/userverificationajax.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
+    ajax: "ajax/users_getunverified.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
     scrollY: "600px",
     scrollCollapse: true,
     lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
@@ -67,9 +67,13 @@ $(document).ready(function() {
         },
         { text: 'Delete Selected',
           action: function ( e, dt, node, config ) {
+            
             var selected_array = dt.rows( { selected: true } ).data();
+
             for (var i = 0, len = selected_array.length; i < len; i++) {
-              deleteUser(selected_array[i][0], 'delbtn_'+selected_array[i][0]);
+
+              deleteUnverifiedUser(selected_array[i][0], 'delbtn_'+selected_array[i][0]);
+
             }
           },
           className: "btn-danger"
@@ -86,7 +90,7 @@ function verifyUser(id, btn_id){
   var uidJSON = "[" + JSON.stringify(id) + "]";
   $.ajax({
     type: "POST",
-    url: "ajax/verajax.php",
+    url: "ajax/user_verify.php",
     data: {"uid": uidJSON, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
     async: false,
     success: function(resp){
@@ -94,15 +98,18 @@ function verifyUser(id, btn_id){
     }
   });
 }
-function deleteUser(id, btn_id){
-  var uidJSON = "[" + JSON.stringify(id) + "]";
+function deleteUnverifiedUser(id, btn_id){
+  var idJSON = "[" + JSON.stringify(id) + "]";
   $.ajax({
     type: "POST",
-    url: "ajax/deluserajax.php",
-    data: {"uid": uidJSON, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
+    url: "ajax/users_delete.php",
+    data: {"ids": idJSON, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
     async: false,
     success: function(resp){
       usertable.row( $('#'+btn_id).parents('tr') ).remove().draw();
+    },
+    error: function(err){
+      console.log(err);
     }
   });
 }

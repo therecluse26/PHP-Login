@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 class ImgHandler
 {
     public static function base64ToImage($base64_string, $output_file)

@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Handles user profile data in member_info table
 */
@@ -18,10 +20,10 @@ class ProfileData extends DbConn
                                         WHERE userid = :userid");
             $stmt->bindParam(':userid', $uid);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
         }
     }
@@ -38,7 +40,7 @@ class ProfileData extends DbConn
                                     from $tbl_memberinfo WHERE userid = :userid");
         $stmt->bindParam(':userid', $uid);
         $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         return $result;
     }

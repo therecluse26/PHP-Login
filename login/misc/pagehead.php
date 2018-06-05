@@ -5,19 +5,7 @@
 * all other controls and classes
 **/
 try {
-    /**
-    * Recursively searches for autoload.php, enabling user to include this header file in subdirectories up to 20 directories deep
-    **/
-    $n = 0;
-    do {
-        if (file_exists('login/autoload.php')) {
-            include_once('login/autoload.php');
-            break;
-        } else {
-            chdir('../');
-        }
-        $n++;
-    } while (!file_exists('/login/autoload.php') && $n < 20);
+    require dirname(dirname(__DIR__))."/vendor/autoload.php";
 
     if (!isset($userrole)) {
         $userrole = null;
@@ -28,10 +16,10 @@ try {
     }
 
     /**
-    * This object's class extends AppConfig, so AppConfig variables can be pulled from it
+    * The $conf object's class extends AppConfig, so PHPLogin\AppConfig variables can be pulled from it
     **/
-    $auth = new AuthorizationHandler;
-    $conf = new PageConstructor($auth);
+    $auth = new PHPLogin\AuthorizationHandler;
+    $conf = new PHPLogin\PageConstructor($auth);
 
     if (!isset($_SESSION)) {
         session_start();

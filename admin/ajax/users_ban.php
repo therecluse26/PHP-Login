@@ -3,14 +3,15 @@
 * AJAX page for user banning
 **/
 try {
-    require '../../login/autoload.php';
+    require '../../vendor/autoload.php';
 
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
+    $role = new PHPLogin\RoleHandler;
 
-    if ($request->valid_token() && $auth->isAdmin()) {
+    if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('Ban Users'))) {
         if (isset($_POST['uid']) && isset($_POST['ban_hours']) && isset($_POST['ban_reason'])) {
             $uid = $_POST['uid'];
             $ban_hours = $_POST['ban_hours'];
@@ -19,13 +20,19 @@ try {
             throw new Exception("Missing data");
         }
 
-        $eresult = UserData::userDataPull($uid, 0);
+        $eresult = PHPLogin\UserData::userDataPull($uid, 0);
 
         foreach ($eresult as $e) {
             $singleId = $e['id'];
 
-            //Deletes user
-            $dresponse = UserHandler::banUser($singleId, $ban_hours, $ban_reason);
+            //Bans user
+            //B//Deletes user (unless superadmin)
+            if ($role->checkRole($singleId, 'Superadmin')) {
+                header('HTTP/1.1 400 Bad Request');
+                throw new Exception("Cannot ban Superadmin");
+            } else {
+                $dresponse = PHPLogin\UserHandler::banUser($singleId, $ban_hours, $ban_reason);
+            }
 
             //Success
             if ($dresponse == 1) {
@@ -37,6 +44,7 @@ try {
             }
         }
     } else {
+        http_response_code(401);
         throw new Exception("Unauthorized");
     }
 } catch (Exception $ex) {

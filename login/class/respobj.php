@@ -1,4 +1,5 @@
 <?php
+namespace PHPLogin;
 
 class RespObj
 {

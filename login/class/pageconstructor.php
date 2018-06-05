@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Builds the site skeleton, handles redirects and security
 **/

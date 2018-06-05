@@ -3,7 +3,7 @@
 function userInfoPull(id, elem) {
   $.ajax({
     type: "POST",
-    url: "ajax/getuserinfo.php",
+    url: "ajax/user_getinfo.php",
     data: { "user_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     async: false,
     beforeSend: function(){
@@ -30,9 +30,13 @@ function userInfoPull(id, elem) {
         }
       }
       $(elem).attr('data-content', user_info_html).popover('show', {"html": true});
+    },
+    error: function (xhr, error, thrown) {
+      console.log( error );
     }
   });
 };
+
 $('body').on('mouseover', "a[id^='info_']", function(){
   if( $(this).attr('data-content') ){
     $(this).popover('show', {"html": true});
@@ -47,10 +51,6 @@ $('body').on('mouseleave', "a[id^='info_']", function(){
 /****************************/
 
 
-
-
-
-
 /* HANDLES MODAL FOR ROLE USERS */
 $('body').on('click', "button[id^='usersbtn_']", function(){
   var id = this.id.split('_')[1];
@@ -61,7 +61,7 @@ function roleUsersList(id) {
 
   $.ajax({
     type: "POST",
-    url: "ajax/getroleusers.php",
+    url: "ajax/role_getusers.php",
     data: { "role_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
     beforeSend: function(){
       $.LoadingOverlay('show', {
@@ -98,8 +98,8 @@ function roleUsersList(id) {
           }
       });
     },
-    error: function(req, status, err){
-      console.log(err);
+    error: function (xhr, error, thrown) {
+      console.log( error );
     }
   });
 };
@@ -113,19 +113,17 @@ $('#saveUsers').click(function(){
     var id = $('#role_id').val();
     $('#users-selected > option').each(function(){
       var value = $(this).val();
-      var name = $(this).text()
-      new_users.push({"user_id": value, "user_name": name});
+      new_users.push($(this).val());
     });
 
-    formData.push(toObject(new_users));
-    formJson = JSON.stringify(formData);
+    formJson = JSON.stringify(new_users);
     sendData.append('formData', formJson);
     sendData.append('roleId', id);
     sendData.append('csrf_token', $('meta[name="csrf_token"]').attr("value"));
 
     $.ajax({
       type: "POST",
-      url: "ajax/updateroleusers.php",
+      url: "ajax/role_updateusers.php",
       processData: false,
       contentType: false,
       data: sendData,
@@ -141,16 +139,12 @@ $('#saveUsers').click(function(){
         $.LoadingOverlay("hide");
       },
       success: function(response){
-
-        if (response != 'false'){
-
-          response = JSON.parse(response);
-
-          $('#usersModal').modal('toggle');
-
-        } else {
-          alert('Role must have at least one user!');
-        }
+        response = JSON.parse(response);
+        roleTable.ajax.reload();
+        $('#usersModal').modal('toggle');
+      },
+      error: function (xhr, error, thrown) {
+        console.log( error );
       }
     });
   });
@@ -160,7 +154,7 @@ $('#saveUsers').click(function(){
 
 /* DATATABLE INITIALIZATION */
 $(document).ready(function() {
-  usertable = $('#roleList').DataTable({
+  roleTable = $('#roleList').DataTable({
     dom: "<'row'<'col-sm-3'l><'col-sm-6 text-center'B><'col-sm-3'f>>" +
           "<'row'<'col-sm-12'tr>>" +
           "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -180,28 +174,35 @@ $(document).ready(function() {
         { name: "description",
           searchable: true
         },
-        { name: "required",
-          searchable: false
-        },
-        { name: "default_role",
+        { name: "user count",
+          width: "100px",
           searchable: false
         },
         {
-          name: "users",
+          name: "assign users",
+          width: "100px",
           searchable: false,
           render: function(data, type, row){
             return "<button id='usersbtn_"+row[0]+"' class='btn btn-info'>Assign Users</button>"
           }
+        },
+        {
+          name: "edit role",
+          width: "40px",
+          searchable: false
         }
     ],
     columnDefs: [ {
         className: 'select-checkbox',
         targets: 0
     } ],
-    processing: true,
     paging: true,
-    serverSide: true,
-    ajax: "ajax/rolemanagementajax.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
+    ajax: {
+      url: "ajax/roles_getall.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
+      error: function (xhr, error, thrown) {
+        alert( xhr.responseJSON.Error );
+      }
+    },
     scrollY: "600px",
     scrollCollapse: true,
     lengthMenu: [[10, 25, -1], [10, 25, "All"]],
@@ -210,17 +211,168 @@ $(document).ready(function() {
       selector: 'td:first-child'
     },
     buttons: [
-        "selectAll",
-        "selectNone"
+        {
+          extend: 'selectAll',
+          className: 'selectall',
+          action : function(e) {
+            e.preventDefault();
+            roleTable.rows({ page: 'current'}).select();
+            roleTable.rows({ search: 'removed'}).deselect();
+          }
+        },
+        "selectNone",
+        { text: 'Add New Role',
+          action: function ( e, dt, node, config ) {
+            $('#newRole').modal('show');
+          },
+          className: "btn-success"
+        },
+        { text: 'Delete Selected',
+          action: function ( e, dt, node, config ) {
+            var selected_array = dt.rows( { selected: true } ).data();
+            if( confirm("Are you sure you want to delete the selected roles?") ){
+              for (var i = 0, len = selected_array.length; i < len; i++) {
+                if(selected_array[i][0] == 1 || selected_array[i][0] == 2 || selected_array[i][0] == 3){
+                  alert("Cannot delete Admin or Standard User roles");
+                  break;
+                } else {
+                  deleteRole(selected_array[i][0], 'usersbtn_'+selected_array[i][0]);
+                }
+              }
+            }
+          },
+          className: "btn-danger"
+        }
     ]
   }).on("select", function(){
       //console.log("selected");
   });
 
-
-
 });
 /****************************/
+
+
+function deleteRole(id, btn_id){
+  var idJSON = "[" + JSON.stringify(id) + "]";
+  $.ajax({
+    type: "POST",
+    url: "ajax/roles_delete.php",
+    data: {"ids": idJSON, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
+    async: false,
+    success: function(resp){
+      roleTable.row( $('#'+btn_id).parents('tr') ).remove().draw();
+    },
+    error: function(err){
+      alert(err.responseText);
+    }
+  });
+}
+
+
+$("#newRoleForm").submit(function(event){
+    event.preventDefault();
+
+    var roleName = $("#new_RoleName").val();
+    var roleDescription = $("#new_RoleDescription").val();
+
+    $.ajax({
+      url: "ajax/roles_add.php",
+      type: "POST",
+      data: { "roleName": roleName, "roleDescription": roleDescription, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
+      beforeSend: function(){
+        $.LoadingOverlay('show', {
+          image: '../login/images/Spin-0.8s-200px.svg',
+          imageAnimation: false,
+          imageColor: '#428bca',
+          fade: [200, 100]
+        });
+      },
+      complete: function(resp){
+        $.LoadingOverlay("hide");
+      },
+      success: function(response){
+          roleTable.ajax.reload();
+          $("#newRole").modal('hide');
+          $("#newRoleForm")[0].reset();
+      },
+      error: function(err){
+          console.log(err);
+      }
+    });
+  });
+
+  $("#editRoleForm").submit(function(event){
+      event.preventDefault();
+
+      var roleId = $("#edit_role_id").val();
+      var roleName = $("#edit_RoleName").val();
+      var roleDescription = $("#edit_RoleDescription").val();
+
+      $.ajax({
+        url: "ajax/role_update.php",
+        type: "POST",
+        data: { "roleId": roleId, "roleName": roleName, "roleDescription": roleDescription, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
+        beforeSend: function(){
+          $.LoadingOverlay('show', {
+            image: '../login/images/Spin-0.8s-200px.svg',
+            imageAnimation: false,
+            imageColor: '#428bca',
+            fade: [200, 100]
+          });
+        },
+        complete: function(resp){
+          $.LoadingOverlay("hide");
+        },
+        success: function(response){
+            roleTable.ajax.reload();
+            $("#editRole").modal('hide');
+            $("#editRoleForm")[0].reset();
+        },
+        error: function(err){
+            console.log(err);
+        }
+      });
+    });
+
+
+function editRole(id){
+
+  var id = id;
+
+  $.ajax({
+    type: "POST",
+    url: "ajax/role_getdata.php",
+    data: { "role_id": id, "csrf_token": $('meta[name="csrf_token"]').attr("value") },
+    beforeSend: function(){
+      $.LoadingOverlay('show', {
+        image: '../login/images/Spin-0.8s-200px.svg',
+        imageAnimation: false,
+        imageColor: '#428bca',
+        fade: [200, 100]
+      });
+    },
+    complete: function(){
+      $.LoadingOverlay("hide");
+    },
+    success: function(response){
+
+      var respdata = JSON.parse(response);
+
+      $("#editRoleForm").trigger("reset");
+
+      $("#edit_role_id").val(respdata.id);
+      $("#edit_RoleName").val(respdata.name);
+      $("#edit_RoleDescription").val(respdata.description);
+      $("#edit_RoleCategory").val(respdata.category);
+
+      $('#editRole').modal('show');
+
+    },
+    error: function (xhr, error, thrown) {
+      console.log( thrown );
+    }
+  });
+}
 
 //Role assignment box button logic
 (function () {

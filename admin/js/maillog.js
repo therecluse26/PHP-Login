@@ -42,7 +42,7 @@ $(document).ready(function() {
     processing: true,
     paging: true,
     serverSide: true,
-    ajax: "ajax/maillogajax.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
+    ajax: "ajax/email_getunreadlogs.php?csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
     scrollY: "600px",
     scrollCollapse: true,
     lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
@@ -73,7 +73,7 @@ function deleteLog(id, btn_id){
   //var logidJSON = "[" + JSON.stringify(id) + "]";
   $.ajax({
     type: "POST",
-    url: "ajax/deletelogajax.php",
+    url: "ajax/email_deletelogs.php",
     data: {"logid": id, "csrf_token": $('meta[name="csrf_token"]').attr("value")},
     async: false,
     success: function(resp){

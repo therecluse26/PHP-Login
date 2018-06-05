@@ -1,0 +1,34 @@
+<?php
+namespace PHPLogin\Traits;
+
+trait RoleTrait
+{
+    /*
+    * Checks if user has specified role by name
+    */
+    public function checkRole($user_id, $role_name): bool
+    {
+        try {
+            $sql = "SELECT mr.id FROM ".$this->tbl_member_roles." mr
+                    INNER JOIN ".$this->tbl_roles." r on mr.role_id = r.id
+                    WHERE mr.member_id = :member_id
+                    AND r.name = :role_name LIMIT 1";
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':member_id', $user_id);
+            $stmt->bindParam(':role_name', $role_name);
+            $stmt->execute();
+            $result = $stmt->fetchColumn();
+
+            if ($result) {
+                $return = true;
+            } else {
+                $return = false;
+            }
+        } catch (\PDOException $e) {
+            $return = false;
+        }
+
+        return $return;
+    }
+}

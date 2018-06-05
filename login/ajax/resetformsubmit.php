@@ -1,22 +1,19 @@
 <?php
 $userrole = 'loginpage';
-require '../autoload.php';
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 
 //Pull username, generate new ID and hash password
 $jwt = $_POST['t'];
 $pw1 = $_POST['password1'];
 $pw2 = $_POST['password2'];
 
-use \Firebase\JWT\JWT;
-
 try {
-    $secret = AppConfig::pullSetting("jwt_secret");
-    $decoded = JWT::decode($jwt, $secret, array('HS256'));
+    $secret = PHPLogin\AppConfig::pullSetting("jwt_secret");
+    $decoded = Firebase\JWT\JWT::decode($jwt, $secret, array('HS256'));
     $userid = $decoded->userid;
     $tokenid = $decoded->tokenid;
 
-    $validToken = TokenHandler::selectToken($tokenid, $userid, 0);
+    $validToken = PHPLogin\TokenHandler::selectToken($tokenid, $userid, 0);
 } catch (Exception $e) {
     echo "Unknown error occured [AJ14440]";
     exit();
@@ -24,18 +21,18 @@ try {
 
 try {
     if ($validToken && ($decoded->pw_reset == "true")) {
-        $conf = AppConfig::pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
+        $config = $conf->pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
 
-        $user = UserHandler::pullUserById($userid);
+        $user = PHPLogin\UserHandler::pullUserById($userid);
 
-        $pwresp = PasswordHandler::validatePolicy($pw1, $pw2, (bool) $conf['password_policy_enforce'], (int) $conf['password_min_length']);
+        $pwresp = PHPLogin\PasswordHandler::validatePolicy($pw1, $pw2, (bool) $config['password_policy_enforce'], (int) $config['password_min_length']);
 
         //Validation passed
         if ($pwresp['status'] == true) {
 
             //Tries inserting into database and add response to variable
 
-            $a = new PasswordHandler;
+            $a = new PHPLogin\PasswordHandler;
 
             $response = $a->resetPw($user['id'], $pw1);
 
@@ -44,7 +41,7 @@ try {
                 echo json_encode($response);
             } else {
                 //Failure
-                MiscFunctions::mySqlErrors($response['message']);
+                PHPLogin\MiscFunctions::mySqlErrors($response['message']);
             }
         } else {
             //Validation error from empty form variables

@@ -3,11 +3,12 @@ $(document).ready(function () {
     $("#submit").click(function () {
 
         var username = $("#myusername").val(), password = $("#mypassword").val();
+        var remember;
 
         if ($("#remember").is(":checked")){
-            var remember = 1;
+            remember = 1;
         } else {
-            var remember = 0;
+            remember = 0;
         }
 
         if ((username === "") || (password === "")) {

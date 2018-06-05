@@ -1,4 +1,6 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Handles non-profile related user data
 */
@@ -10,28 +12,61 @@ class UserData extends DbConn
 
         $db = new DbConn;
         $tbl_members = $db->tbl_members;
+        $tbl_member_roles = $db->tbl_member_roles;
+        $tbl_roles = $db->tbl_roles;
         $result = array();
 
         try {
             $in = str_repeat('?,', count($idset) - 1) . '?';
 
-            if ($admin == 0) {
-                $sql = "SELECT m.id, m.email, m.username FROM ".$tbl_members." m
-                        INNER JOIN member_roles mr on mr.member_id = m.id
-                        INNER JOIN roles r on mr.role_id = r.id
-                        WHERE r.name NOT IN ('Admin', 'Superadmin') and m.id IN ($in)";
-            } elseif ($admin == 1) {
-                $sql = "SELECT m.id, m.email, m.username FROM ".$tbl_members." m
-                        INNER JOIN member_roles mr on mr.member_id = m.id
-                        INNER JOIN roles r on mr.role_id = r.id
-                        WHERE r.name IN ('Admin', 'Superadmin') and m.id IN ($in)";
-            }
+            $resp = array(['id'=>null, 'email'=>null, 'username'=>null]);
+
+            $sql = "SELECT DISTINCT m.id, m.email, m.username, r.name as role FROM ".$tbl_members." m
+                    LEFT JOIN ".$tbl_member_roles." mr on mr.member_id = m.id
+                    LEFT JOIN ".$tbl_roles." r on mr.role_id = r.id
+                    WHERE m.id IN ($in)";
 
             $stmt = $db->conn->prepare($sql);
             $stmt->execute($idset);
 
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            $is_admin = (array_search('Admin', $result) || array_search('Superadmin', $result));
+            if ($admin == 0) {
+                if (!$is_admin) {
+                    $resp = array([ 'id'=>$result[0]['id'], 'email'=>$result[0]['email'], 'username'=>$result[0]['id'] ]);
+                }
+            } elseif ($admin == 1) {
+                if ($is_admin) {
+                    $resp = array([ 'id'=>$result[0]['id'], 'email'=>$result[0]['email'], 'username'=>$result[0]['id'] ]);
+                }
+            }
+        } catch (\PDOException $e) {
+            $resp = "Error: " . $e->getMessage();
+        }
+
+        return $resp;
+    }
+
+    public function listSelectedUsers($ids)
+    {
+        $idset = json_decode($ids);
+        $result = array();
+
+        try {
+            $in = str_repeat('?,', count($idset) - 1) . '?';
+
+            $sql = "SELECT DISTINCT m.id FROM ".$this->tbl_members." m
+                INNER JOIN ".$this->tbl_member_roles." mr on mr.member_id = m.id
+                INNER JOIN ".$this->tbl_roles." r on mr.role_id = r.id AND r.name != 'Superadmin'
+                WHERE m.id IN ($in)";
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute($idset);
+
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
         }
 
@@ -50,8 +85,8 @@ class UserData extends DbConn
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
         }
 

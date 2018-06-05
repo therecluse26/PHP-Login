@@ -10,7 +10,7 @@ $(document).ready(function (e) {
     $("#testemail").click(function () {
 
         $.ajax({
-            url: "ajax/testemailajax.php",
+            url: "ajax/email_testsettings.php",
             type: "GET",
             data: "t=1&csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
             dataType: "json",
@@ -68,7 +68,7 @@ $(document).ready(function (e) {
     e.preventDefault();
 
         $.ajax({
-            url: "ajax/editconfigajax.php",
+            url: "ajax/config_updatesettings.php",
             type: "POST",
             data: formData,
             dataType: "json",

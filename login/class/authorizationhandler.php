@@ -1,9 +1,14 @@
 <?php
+namespace PHPLogin;
+
 /**
 * Verifies a user's authorization
 */
-class AuthorizationHandler extends RoleHandler
+class AuthorizationHandler extends DbConn
 {
+    use Traits\RoleTrait;
+    use Traits\PermissionTrait;
+
     protected $adminroles = ['Admin', 'Superadmin'];
     //Checks session keys
     private function checkSessionKey($key)
@@ -38,6 +43,11 @@ class AuthorizationHandler extends RoleHandler
           default:
             return ($this->checkRole($this->checkSessionKey("uid"), $rolename) != false || $this->isAdmin()) && $this->sessionValid();
         }
+    }
+
+    public function hasPermission($permissionName)
+    {
+        return ($this->checkPermission($this->checkSessionKey("uid"), $permissionName) != false || $this->isSuperAdmin()) && $this->sessionValid();
     }
 
     public function isSuperAdmin()

@@ -8,6 +8,6 @@
   </transformer>
   <files>
     <directory>.</directory>
-    <ignore>login/vendor/*</ignore>  
+    <ignore>vendor/*</ignore>  
   </files>
 </phpdoc>

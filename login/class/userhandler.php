@@ -1,4 +1,5 @@
 <?php
+namespace PHPLogin;
 
 class UserHandler extends DbConn
 {
@@ -29,7 +30,7 @@ class UserHandler extends DbConn
                 $stmt->execute();
                 unset($stmt);
             }
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = "Error: " . $e->getMessage();
         }
         //Determines returned value ('true' or error code)
@@ -55,7 +56,7 @@ class UserHandler extends DbConn
             $dstmt = $ddb->conn->prepare('delete from '.$tbl_members.' WHERE id = :uid');
             $dstmt->bindParam(':uid', $userid);
             $dstmt->execute();
-        } catch (PDOException $d) {
+        } catch (\PDOException $d) {
             $derr = 'Error: ' . $d->getMessage();
         }
 
@@ -92,7 +93,7 @@ class UserHandler extends DbConn
                 $vresp['status'] = false;
                 $vresp['message'] = 'User(s) not found';
             }
-        } catch (PDOException $v) {
+        } catch (\PDOException $v) {
             $vresp['status'] = false;
             $vresp['message'] = 'Error: ' . $v->getMessage();
         }
@@ -120,7 +121,7 @@ class UserHandler extends DbConn
             $stmt->bindParam(':reason', $reason);
             //$stmt->bindParam(':timestamp', $curr_timestamp);
             $stmt->execute();
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $err = 'Error: ' . $e->getMessage();
         }
 
@@ -141,8 +142,8 @@ class UserHandler extends DbConn
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
         }
 
@@ -161,8 +162,8 @@ class UserHandler extends DbConn
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
         }
 

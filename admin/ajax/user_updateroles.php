@@ -1,14 +1,14 @@
 <?php
-require '../../login/autoload.php';
+require '../../vendor/autoload.php';
 
 try {
     session_start();
 
-    $request = new CSRFHandler;
-    $auth = new AuthorizationHandler;
-    $rolehandler = new RoleHandler;
+    $request = new PHPLogin\CSRFHandler;
+    $auth = new PHPLogin\AuthorizationHandler;
+    $rolehandler = new PHPLogin\RoleHandler;
 
-    if ($request->valid_token() && $auth->isAdmin()) {
+    if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('Assign Roles to Users'))) {
         try {
             $roles = json_decode($_POST['formData']);
             $user_id = $_POST['userId'];
