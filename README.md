@@ -48,24 +48,27 @@ Technologies used:
 - Enable SSL on your site! [Get a free cert at LetsEncrypt](https://letsencrypt.org)
 	 - Their free tool called `Certbot` makes this process virtually painless
 
-- Linux server running Apache or Nginx is preferred
+- Linux server running [Apache](https://www.apache.org) or [Nginx](https://nginx.org) is preferred
 
-- Shell access is recommended. While it is likely possible (but unsupported) to install this library without shell access (such as on a shared web hosting provider), but it's highly recommended that you instead opt for a VPS solution or some other provider that allows you root shell access
+- Shell access is recommended. While it is likely possible (but unsupported) to install this library without shell access (such as on a shared web hosting provider), but it's highly recommended that you instead opt for a VPS provider such as [DigitalOcean](https://m.do.co/c/da6f17522df3) that allows you root shell access
 
 - Run `mysql_secure_installation` on server prior to app installation
 
 - Host your database on an encrypted filesystem
 
-- File/directory permissions should be locked down to an appropriate level [Useful information](https://www.digitalocean.com/community/tutorials/linux-permissions-basics-and-how-to-use-umask-on-a-vps#types-of-permissions)
-
+- File/directory permissions should be locked down to an appropriate level
+	- [Useful information](https://www.digitalocean.com/community/tutorials/linux-permissions-basics-and-how-to-use-umask-on-a-vps#types-of-permissions)
 
 Installation
 ------------
 [Automated Installation Instructions](install_automated.md)
+
 [Manual Installation Instructions](install_manual.md)
 
 Documentation
 -------------
 [Site Config Settings](site_config.md)
+
 [API Methods](methods.md)
+
 [Change Log](changelog.md)
