@@ -61,14 +61,14 @@ Technologies used:
 
 Installation
 ------------
-[Automated Installation Instructions](docs/install_automated.md)
+[Automated Installation Instructions](install_automated.md)
 
-[Manual Installation Instructions](docs/install_manual.md)
+[Manual Installation Instructions](install_manual.md)
 
 Documentation
 -------------
-[Site Config Settings](docs/site_config.md)
+[Site Config Settings](site_config.md)
 
-[API Methods](docs/methods.md)
+[API Methods](methods.md)
 
-[Change Log](docs/changelog.md)
+[Change Log](changelog.md)
