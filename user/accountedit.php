@@ -1,12 +1,17 @@
 <?php
-$pagetype = 'userpage';
+$userrole = 'Standard User';
 $title = 'Account Settings';
 require '../login/misc/pagehead.php';
 $uid = $_SESSION['uid'];
-$usr = UserData::pullUserById($uid);
+$usr = PHPLogin\UserHandler::pullUserById($uid);
 ?>
+<script src="js/accountupdate.js"></script>
+<script src="../login/js/jquery.validate.min.js"></script>
+<script src="../login/js/additional-methods.min.js"></script>
+
 </head>
 <body>
+  <?php require '../login/misc/pullnav.php'; ?>
     <div class="container">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
@@ -46,7 +51,9 @@ $usr = UserData::pullUserById($uid);
         $("#profileForm").validate({
             rules: {
                 password1: {
-                    <?php if ((bool) $conf->password_policy_enforce == true) {echo "minlength: ". $conf->password_min_length;};?>
+                    <?php if ((bool) $conf->password_policy_enforce == true) {
+    echo "minlength: ". $conf->password_min_length;
+};?>
                 }
                 , password2: {
                      equalTo: "#password1"

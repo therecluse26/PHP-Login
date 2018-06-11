@@ -1,12 +1,19 @@
 <?php
-    $pagetype = 'loginpage';
-    $title = 'Reset Password';
-    require 'misc/pagehead.php';
-    require 'vendor/autoload.php';
+$userrole = 'loginpage';
+$title = 'Reset Password';
+require 'misc/pagehead.php';
+require '../vendor/autoload.php';
 ?>
-</head>
 
+<script src="js/resetpw.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/additional-methods.min.js"></script>
+
+</head>
 <body>
+
+  <?php require 'misc/pullnav.php'; ?>
+
     <div class="container logindiv">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
@@ -14,20 +21,18 @@
 
 $jwt = $_GET['t'];
 
-use \Firebase\JWT\JWT;
-
 try {
-    $decoded = JWT::decode($jwt, $conf->jwt_secret, array('HS256'));
+    $decoded = Firebase\JWT\JWT::decode($jwt, $conf->jwt_secret, array('HS256'));
 
     $email = $decoded->email;
     $tokenid = $decoded->tokenid;
     $userid = $decoded->userid;
     $pw_reset = $decoded->pw_reset;
 
-    $validToken = TokenHandler::selectToken($tokenid, $userid, 0);
+    $validToken = PHPLogin\TokenHandler::selectToken($tokenid, $userid, 0);
 
     if ($validToken && ($decoded->pw_reset == "true")) {
-        require "misc/resetform.php";
+        require "partials/resetform.php";
     } else {
         echo "<br><br><div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>Invalid or expired token, please resubmit <a href='".$conf->base_url."/login/forgotpassword.php'>forgot password form</a></div><div id='returnVal' style='display:none;'>false</div>";
     };

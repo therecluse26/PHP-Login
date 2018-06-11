@@ -1,5 +1,5 @@
 <?php
-require "autoload.php";
-LoginHandler::logout();
+require "../vendor/autoload.php";
+PHPLogin\LoginHandler::logout();
 
 header("location:../index.php");

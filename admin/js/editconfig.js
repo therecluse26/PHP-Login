@@ -10,9 +10,9 @@ $(document).ready(function (e) {
     $("#testemail").click(function () {
 
         $.ajax({
-            url: "ajax/testemailajax.php",
+            url: "ajax/email_testsettings.php",
             type: "GET",
-            data: "t=1",
+            data: "t=1&csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
             dataType: "json",
             contentType: false,
             processData: false,
@@ -26,7 +26,11 @@ $(document).ready(function (e) {
                         var alertType = "danger";
                     }
 
-                    $(this).html("<div class=\"alert alert-"+alertType+" alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>"+json.message+"</div>").fadeIn();
+                    $(this).html("<div class=\"alert alert-"+alertType+" alert-dismissable\">\
+                                  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">\
+                                    &times;\
+                                  </button>"+json.message+"</div>"
+                                ).fadeIn();
                 });
             },
             beforeSend: function () {
@@ -59,10 +63,12 @@ $(document).ready(function (e) {
     //Ajax form submit
     $("#savebtn").click(function (e) {
 
+      formData.append("csrf_token", $('meta[name="csrf_token"]').attr("value"));
+
     e.preventDefault();
 
         $.ajax({
-            url: "ajax/editconfigajax.php",
+            url: "ajax/config_updatesettings.php",
             type: "POST",
             data: formData,
             dataType: "json",

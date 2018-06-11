@@ -1,17 +1,14 @@
 <?php
-require "../autoload.php";
-$conf = new AppConfig;
-require $conf->base_dir."/login/vendor/autoload.php";
+require $conf->base_dir."/vendor/autoload.php";
 
 use \Firebase\JWT\JWT;
 
 $uid = $_SESSION['uid'];
 
 try {
-    $user = UserData::pullUserById($uid);
+    $user = PHPLogin\UserHandler::pullUserById($uid);
 
     if (!$user) {
-
         throw new Exception("No user found!");
     }
 
@@ -29,9 +26,7 @@ try {
 
     $token = JWT::encode($payload, $secret);
 
-    $cookie = CookieHandler::generateCookie($cookieid, $userid, $tokenid, $token, (int)$conf->cookie_expire_seconds);
-
-
+    $cookie = PHPLogin\CookieHandler::generateCookie($cookieid, $userid, $tokenid, $token, (int)$conf->cookie_expire_seconds);
 } catch (Exception $e) {
     echo $e->getMessage();
 }

@@ -2,12 +2,20 @@
 if ((isset($_SESSION)) && array_key_exists('username', $_SESSION)) {
     session_destroy();
 }
-$pagetype = 'loginpage';
+$userrole = 'loginpage';
 $title = 'Sign Up';
 require 'misc/pagehead.php';
 ?>
+
+<script src="js/signup.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/additional-methods.min.js"></script>
+
 </head>
 <body>
+
+  <?php require 'misc/pullnav.php'; ?>
+
     <div class="container logindiv">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
@@ -29,7 +37,7 @@ require 'misc/pagehead.php';
         </div>
         <div class="col-sm-4"></div>
     </div>
-    <?php $conf = new AppConfig; ?>
+    <?php $conf = new PHPLogin\AppConfig; ?>
         <script>
             $("#usersignup").validate({
                 rules: {
@@ -39,7 +47,9 @@ require 'misc/pagehead.php';
                     }
                     , password1: {
                         required: true
-                        <?php if ($conf->password_policy_enforce == true) { echo ", minlength: ". $conf->password_min_length;}; ?>
+                        <?php if ($conf->password_policy_enforce == true) {
+    echo ", minlength: ". $conf->password_min_length;
+}; ?>
                     }
                     , password2: {
                         equalTo: "#password1"

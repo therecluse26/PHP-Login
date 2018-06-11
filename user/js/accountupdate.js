@@ -11,6 +11,8 @@ $(document).ready(function (e) {
 
         var formData = new FormData(this);
 
+        formData.append("csrf_token", $('meta[name="csrf_token"]').attr("value"));
+
         $.ajax({
             url: "ajax/accountupdate.php",
             type: "POST",

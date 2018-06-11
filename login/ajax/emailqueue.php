@@ -1,40 +1,29 @@
-<?
+<?php
 /**
-Called via shell_exec; sends mass emails in the background
+* Called via shell_exec; sends mass emails in the background
 */
-if(isset($_GET["usr"])){
-
-require "../autoload.php";
+if (isset($_GET["usr"])) {
+    require "../../vendor/autoload.php";
 
     $userarr = unserialize(base64_decode(urldecode($_GET["usr"])));
 
-    try{
-
-        $m = new MailSender;
+    try {
+        $m = new PHPLogin\MailHandler;
         $m->sendMail($userarr, "Active");
-
     } catch (Exception $e) {
-
         trigger_error($e->getMessage());
         die();
-
     }
 
-exit;
-
+    exit;
 } else {
-
     $userarr = unserialize(base64_decode($userurlparm));
 
-    try{
-
-        $m = new MailSender;
+    try {
+        $m = new PHPLogin\MailHandler;
         $m->sendMail($userarr, "Active");
-
     } catch (Exception $e) {
-
         trigger_error($e->getMessage());
         die();
-
     }
 }

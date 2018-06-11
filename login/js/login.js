@@ -20,7 +20,7 @@ $(document).ready(function () {
             $.ajax({
                 type: "POST",
                 url: "ajax/checklogin.php",
-                data: "myusername=" + username + "&mypassword=" + password + "&remember=" + remember,
+                data: {"myusername": username, "mypassword": password, "remember": remember },
                 dataType: 'JSON',
                 success: function (html) {
 

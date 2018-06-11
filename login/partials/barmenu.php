@@ -2,9 +2,11 @@
 
 // Define the buttons in the menu bar
 $barmenu = array(
-    "Page" => "index.php",
+    "Homepage" => "index.php",
+    "Private Page" => "page_2.php",
+    "Public Page" => "page_3.php",
     "Other Pages" => array(
-        "Page 2" => "page_2.php",
-        "Google.com" => "//google.com",
+        "PHP-Login Github" => "https://github.com/therecluse26/PHP-Login",
         "Site Root" => "/"),
-    "Page 3" => "page_3.php");
+    "Admin Page" => "page_4.php",
+);

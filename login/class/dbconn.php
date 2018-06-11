@@ -1,6 +1,14 @@
 <?php
 /**
-* Database connection class. This base class is extended or utilized by numerous other classes.
+ * PHPLogin\DbConn
+ */
+namespace PHPLogin;
+
+/**
+* Database connection handler
+*
+* Establishes foundational database connection and property assignment pulled from `dbconf.php` config file.
+* This base class is extended or utilized by numerous other classes.
 */
 class DbConn
 {
@@ -45,10 +53,25 @@ class DbConn
     */
     public $tbl_memberinfo;
     /**
-    * Admin table
+    * Table where role data is stored
     * @var string
     */
-    public $tbl_admins;
+    public $tbl_roles;
+    /**
+    * Table where user role associations are stored
+    * @var string
+    */
+    public $tbl_member_roles;
+    /**
+    * Table where permission data is stored
+    * @var string
+    */
+    public $tbl_permissions;
+    /**
+    * Table where role permission associations are stored
+    * @var string
+    */
+    public $tbl_role_permissions;
     /**
     * Table where login attempts are logged
     * @var string
@@ -73,25 +96,26 @@ class DbConn
     * Table where main application configuration is stored
     * @var string
     */
-    public $tbl_appConfig;
+    public $tbl_app_config;
     /**
     * Table where mail send logs are stored
     * @var string
     */
-    public $tbl_mailLog;
+    public $tbl_mail_log;
     /**
-    * Makes this a singleton class
-    * @var Singleton
+    * Table where banned users are stored
+    * @var string
     */
-    protected static $instance;
+    public $tbl_member_jail;
 
+    /**
+     * Class constructor
+     * Initializes PDO connection and sets object properties
+     */
     public function __construct()
     {
-    /**
-    * Pulls tables from
-    **/
+        // Pulls tables from dbconf.php file
         $up_dir = realpath(__DIR__ . '/..');
-
         if (file_exists('dbconf.php')) {
             require 'dbconf.php';
         } else {
@@ -100,34 +124,37 @@ class DbConn
         $this->tbl_prefix = $tbl_prefix;
         $this->tbl_members = $tbl_members;
         $this->tbl_memberinfo = $tbl_memberinfo;
-        $this->tbl_admins = $tbl_admins;
+        $this->tbl_roles = $tbl_roles;
+        $this->tbl_member_roles = $tbl_member_roles;
         $this->tbl_attempts = $tbl_attempts;
         $this->tbl_deleted = $tbl_deleted;
         $this->tbl_tokens = $tbl_tokens;
         $this->tbl_cookies = $tbl_cookies;
-        $this->tbl_appConfig = $tbl_appConfig;
-        $this->tbl_mailLog = $tbl_mailLog;
+        $this->tbl_app_config = $tbl_app_config;
+        $this->tbl_mail_log = $tbl_mail_log;
+        $this->tbl_member_jail = $tbl_member_jail;
+        $this->tbl_permissions = $tbl_permissions;
+        $this->tbl_role_permissions = $tbl_role_permissions;
 
         // Connect to server and select database
         try {
-            $this->conn = new PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        } catch (PDOException $e) {
-
+            $this->conn = new \PDO('mysql:host='.$host.';dbname='.$db_name.';charset=utf8', $username, $password);
+            $this->conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        } catch (\PDOException $e) {
             die($e->getMessage());
-
         }
     }
-    public static function getInstance()
+
+    /**
+     * Class destructor
+     * Disconnects and unsets PDO object
+     * @return void
+     */
+    public function __destruct()
     {
-        if (null === static::$instance) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-
+        $this->conn = null;
     }
+
     /**
     * Prevents cloning
     * @return void

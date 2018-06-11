@@ -1,10 +1,18 @@
 <?php
-$pagetype = 'loginpage';
+$userrole = 'loginpage';
 $title = 'Forgot Password';
 require 'misc/pagehead.php';
 ?>
+
+<script src="js/forgotpassword.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/additional-methods.min.js"></script>
+
 </head>
 <body>
+
+  <?php require 'misc/pullnav.php'; ?>
+
     <div class="container logindiv">
         <div class="col-sm-4"></div>
         <div class="col-sm-4">

@@ -1,10 +1,42 @@
 <?php
+/**
+* PHPLogin\AuthorizationHandler extends DbConn
+*/
+namespace PHPLogin;
 
-// Verifies a users authorization
-class AuthorizationHandler
+/**
+* Handles authorization functions
+*
+* Includes methods for checking session keys, user roles and permissions
+*/
+class AuthorizationHandler extends DbConn
 {
+    /**
+     * Imports Role Trait
+     * Includes `checkRole` function
+     * @var RoleTrait
+     */
+    use Traits\RoleTrait;
+    /**
+     * Imports Permission Trait
+     * Includes `checkPermission` function
+     * @var PermissionTrait
+     */
+    use Traits\PermissionTrait;
 
-    //Checks session keys
+    /**
+     * Administrative roles
+     * @var array
+     */
+    protected $adminroles = ['Admin', 'Superadmin'];
+
+    /**
+     * Checks if key exists in $_SESSION superglobal
+     *
+     * @param  string $key Name of key to check
+     *
+     * @return mixed Returns session value of given key if found, or false if not
+     */
     private function checkSessionKey($key)
     {
         if (session_status() == PHP_SESSION_NONE) {
@@ -17,53 +49,78 @@ class AuthorizationHandler
         return $_SESSION[$key];
     }
 
-    //Check if pagetype is a known value
-    private function checkPageType($pagetype)
-    {
-        $allowed_types = array('superadminpage', 'adminpage', 'userpage', 'loginpage', 'page');
-        if (!in_array($pagetype, $allowed_types, true)) {
-            throw new Exception("Server Error: Please contact site administrator and relay this error - xER41400 [".$pagetype."]");
-            exit;
-        }
-    }
-
-    private function sessionValid()
+    /**
+     * Checks if session IP address equals $_SERVER["REMOTE_ADDR"]
+     *
+     * @return boolean
+     */
+    private function sessionValid(): bool
     {
         return $_SERVER["REMOTE_ADDR"] == $this->checkSessionKey("ip_address");
     }
 
-    public function isSuperAdmin()
+    /**
+     * Checks if current user has given role
+     *
+     * @param  string $roleName Role name
+     *
+     * @return boolean
+     */
+    public function hasRole($roleName): bool
     {
-        return $this->checkSessionKey("superadmin") == 1 && $this->sessionValid();
+        switch ($roleName) {
+          case null:
+            return true;
+          case 'loginpage':
+            return true;
+          case 'Admin':
+            return $this->isAdmin();
+          case 'Superadmin':
+            return $this->isSuperAdmin();
+          default:
+            return ($this->checkRole($this->checkSessionKey("uid"), $roleName) != false || $this->isAdmin()) && $this->sessionValid();
+        }
     }
 
-    public function isAdmin()
+    /**
+     * Checks if current user has given permission
+     *
+     * @param  string  $permissionName Permission name
+     *
+     * @return boolean
+     */
+    public function hasPermission($permissionName): bool
     {
-        return $this->checkSessionKey("admin") != false && $this->sessionValid();
+        return ($this->checkPermission($this->checkSessionKey("uid"), $permissionName) != false || $this->isSuperAdmin()) && $this->sessionValid();
     }
 
-    public function isLoggedIn()
+    /**
+     * Checks if current user belongs to the Superadmin role
+     *
+     * @return boolean
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->checkRole($this->checkSessionKey("uid"), "Superadmin") != false && $this->sessionValid();
+    }
+
+    /**
+     * Checks if current user belongs to the Admin role
+     *
+     * @return boolean
+     */
+    public function isAdmin(): bool
+    {
+        return ($this->checkRole($this->checkSessionKey("uid"), "Admin") != false || $this->isSuperAdmin()) && $this->sessionValid();
+    }
+
+    /**
+     * Checks if session has registered username and if session IP address is valid
+     *
+     * @return bool
+     */
+    public function isLoggedIn(): bool
     {
         return $this->checkSessionKey("username") != false && $this->sessionValid();
-    }
-
-    //Check if user is OK for $pagetype
-    public function pageOk($pagetype)
-    {
-        $this->checkPageType($pagetype);
-
-        if (!$this->isSuperAdmin() && $pagetype == "superadminpage") {
-            return false;
-        }
-
-        if (!$this->isAdmin() && $pagetype == "adminpage") {
-            return false;
-        }
-        
-        if (!$this->isLoggedIn() && $pagetype == "userpage") {
-            return false;
-        }
-
-        return true;
     }
 }

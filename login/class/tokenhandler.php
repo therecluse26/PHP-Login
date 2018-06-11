@@ -1,7 +1,26 @@
 <?php
-class TokenHandler extends DbConn
+/**
+ * PHPLogin\TokenHandler
+ */
+namespace PHPLogin;
+
+/**
+* Token handling class
+*
+* Handles token storage and retrieval in database
+*/
+class TokenHandler
 {
-    public static function selectToken($tokenid, $userid, $expire)
+    /**
+     * Pulls token from database
+     *
+     * @param  string $tokenid Token ID
+     * @param  string $userid  User ID
+     * @param  bool   $expire  Token expired
+     *
+     * @return array
+     */
+    public static function selectToken(string $tokenid, string $userid, bool $expire)
     {
         $hrsvalid="-".AppConfig::pullSetting('token_validity')." hours";
 
@@ -16,16 +35,27 @@ class TokenHandler extends DbConn
             $stmt->bindParam(':expire', $expire);
             $stmt->bindParam(':valid', $valid);
             $stmt->execute();
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            unset($db);
 
             return $result;
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $result = "Error: " . $e->getMessage();
             return $result;
         }
     }
 
-    public static function replaceToken($userid, $tokenid, $expire)
+    /**
+     * Inserts or updates token in database
+     *
+     * @param  string $userid  User ID
+     * @param  string $tokenid Token ID
+     * @param  bool   $expire  Token expired
+     *
+     * @return bool
+     */
+    public static function replaceToken(string $userid, string $tokenid, bool $expire)
     {
         try {
             $db = new DbConn;
@@ -34,6 +64,7 @@ class TokenHandler extends DbConn
             $stmt->bindParam(':userid', $userid);
             $stmt->bindParam(':tokenid', $tokenid);
             $stmt->execute();
+
 
             return true;
         } catch (Exception $e) {

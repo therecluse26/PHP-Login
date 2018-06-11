@@ -1,0 +1,52 @@
+<?php
+/**
+ * PHPLogin\CSRFHandler
+ */
+namespace PHPLogin;
+
+/**
+* CSRF token generator/validator
+*
+* Handles Cross-Site Request Forgery protection for ajax and other requests
+*/
+class CSRFHandler
+{
+    /**
+     * CSRF Token
+     * @var string
+     */
+    public $token;
+
+    /**
+     * Class constructor
+     */
+    public function __construct()
+    {
+        if (isset($_SESSION['csrf_token'])) {
+            $this->token = $_SESSION['csrf_token'];
+        } else {
+            $this->token = $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
+    }
+
+    /**
+     * Generates <meta> tag with csrf_token
+     *
+     * @return string HTML <meta> tag
+     */
+    public function generate_meta_tag(): string
+    {
+        return "<meta name='csrf_token' value='{$this->token}'>";
+    }
+
+    /**
+     * Checks validity of csrf_token
+     *
+     * @return bool
+     */
+    public function valid_token(): bool
+    {
+        return (isset($_POST['csrf_token']) && ($_POST['csrf_token'] == $this->token)) ||
+               (isset($_GET['csrf_token']) && ($_GET['csrf_token'] == $this->token));
+    }
+}
