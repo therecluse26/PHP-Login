@@ -12,3 +12,4 @@ Version 3.1 Change Log
 - Restructured external asset loading
 - Restructured classes into more logical units
 - Various bugfixes
+- Legacy migration tool
