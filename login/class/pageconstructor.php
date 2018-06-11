@@ -1,9 +1,14 @@
 <?php
+/**
+ * PHPLogin\PageConstructor extends AppConfig
+ */
 namespace PHPLogin;
 
 /**
+* Page-building functions.
+*
 * Builds the site skeleton, handles redirects and security
-**/
+*/
 class PageConstructor extends AppConfig
 {
     /**
@@ -11,18 +16,38 @@ class PageConstructor extends AppConfig
     * @var string
     */
     public static $ip;
+
+    /**
+     * Auth object
+     * @var AuthorizationHandler
+     */
     public $auth;
 
+    /**
+    * Class constructor
+    *
+    * Constructs parent class and sets $auth property with injected `AuthorizationHandler` dependency
+    *
+    * @param AuthorizationHandler $auth [description]
+    */
     public function __construct(AuthorizationHandler $auth)
     {
         parent::__construct();
         $this->auth = $auth;
     }
+
     /**
+    * Builds page header
+    *
     * `$this->htmlhead` pulls begging part of `<head>` section of page from `app_config` table.
     * `secureheader.php` handles redirects and security.
     * `globalincludes.php` handles required js and css libraries for login script
-    **/
+    *
+    * @param string $userrole User role
+    * @param string $title    Page title
+    *
+    * @return CSRFHandler Returns $csrf object
+    */
     public function buildHead($userrole = null, $title = 'Page')
     {
         $ip = $_SERVER["REMOTE_ADDR"];
@@ -44,7 +69,12 @@ class PageConstructor extends AppConfig
     }
     /**
     * Builds page navbar
-    **/
+    *
+    * @param string $username Username
+    * @param string $barmenu
+    *
+    * @return void
+    */
     public function pullNav($username = null, $barmenu = null)
     {
         $url = $this->base_url;
@@ -55,6 +85,10 @@ class PageConstructor extends AppConfig
 
     /**
     * Checks page security and handles auth redirects
+    *
+    * @param string @userrole User role
+    *
+    * @return void
     */
     public function secureHeader($userrole = null)
     {

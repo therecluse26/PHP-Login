@@ -1,14 +1,27 @@
 <?php
+/**
+ * PHPLogin\PermissionHandler
+ */
 namespace PHPLogin;
 
 /**
-* Handles permission functionality
-**/
+* Permission handling functions
+*
+* Various methods related permissions and their related roles
+*/
 class PermissionHandler extends DbConn
 {
+    /**
+     * Imports Permission Trait
+     * Includes `checkPermission` function
+     * @var PermissionTrait
+     */
     use Traits\PermissionTrait;
-    /*
+
+    /**
     * Returns all permissions
+    *
+    * @return array
     */
     public function listAllPermissions(): array
     {
@@ -20,18 +33,23 @@ class PermissionHandler extends DbConn
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-            return $result;
+            $return['status'] = $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-    /*
+    /**
     * Returns data of given permission
+    *
+    * @param string $permission_id Permission ID
+    *
+    * @return array
     */
-    public function getPermissionData($permission_id): array
+    public function getPermissionData(string $permission_id): array
     {
         try {
             $sql = "SELECT DISTINCT id, name, description, category, required
@@ -44,16 +62,21 @@ class PermissionHandler extends DbConn
 
             return $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-    /*
+    /**
     * Returns all roles of a given $permission_id
+    *
+    * @param string $permission_id Permission ID
+    *
+    * @return array
     */
-    public function listPermissionRoles($permission_id): array
+    public function listPermissionRoles(string $permission_id): array
     {
         try {
             $sql = "SELECT r.id, r.name FROM ".$this->tbl_role_permissions." rp
@@ -69,13 +92,16 @@ class PermissionHandler extends DbConn
             return $result;
         } catch (\PDOException $e) {
             http_response_code(500);
-            $return = ["Error" => $e->getMessage()];
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
             return $return;
         }
     }
 
-    /*
+    /**
     * Returns all roles
+    *
+    * @return array
     */
     public function listAllRoles(): array
     {
@@ -89,16 +115,22 @@ class PermissionHandler extends DbConn
 
             return $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-    /*
+    /**
     * Updates all roles of a given $permission_id
+    *
+    * @param array $roles Array of roles to bind to permission
+    * @param string $permission_id Permission ID
+    *
+    * @return array
     */
-    public function updatePermissionRoles($roles, $permission_id): bool
+    public function updatePermissionRoles(array $roles, string $permission_id): array
     {
         try {
             $this->conn->beginTransaction();
@@ -123,19 +155,26 @@ class PermissionHandler extends DbConn
 
             $this->conn->commit();
 
-            return true;
+            $return['status'] = true;
         } catch (\PDOException $e) {
             $this->conn->rollback();
-            error_log($e->getMessage());
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-
-
-    public function createPermission($permission_name, $permission_desc, $permission_cat = 'General'): bool
+    /**
+     * Creates new permission
+     *
+     * @param  string $permission_name Permission name
+     * @param  string $permission_desc Permission description
+     * @param  string $permission_cat  Permission category
+     *
+     * @return bool
+     */
+    public function createPermission(string $permission_name, string $permission_desc, string $permission_cat = 'General'): array
     {
         try {
             $sql = "INSERT INTO ".$this->tbl_permissions."
@@ -146,16 +185,26 @@ class PermissionHandler extends DbConn
             $stmt->bindParam(':permission_cat', $permission_cat);
             $stmt->execute();
 
-            $return = true;
+            $return['status'] = true;
         } catch (\PDOException $e) {
-            error_log($e->getMessage());
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-    public function updatePermission($permission_id, $permission_name = null, $permission_desc = null, $permission_cat = null): bool
+    /**
+     * Updates permission by ID
+     *
+     * @param  string $permission_id   Permission ID
+     * @param  string $permission_name Permission name
+     * @param  string $permission_desc Permission description
+     * @param  string $permission_cat  Permission category
+     *
+     * @return bool
+     */
+    public function updatePermission(string $permission_id, string $permission_name, string $permission_desc, $permission_cat): array
     {
         try {
             $sql = "UPDATE ".$this->tbl_permissions." SET
@@ -172,16 +221,23 @@ class PermissionHandler extends DbConn
             $stmt->bindParam(':permission_cat', $permission_cat);
             $stmt->execute();
 
-            $return = true;
+            $return['status'] = true;
         } catch (\PDOException $e) {
-            error_log($e->getMessage());
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-    public function deletePermission($permission_id): bool
+    /**
+     * Deletes permission by ID
+     *
+     * @param  string $permission_id Permission ID
+     *
+     * @return bool
+     */
+    public function deletePermission(string $permission_id): array
     {
         try {
             $sql = "DELETE FROM ".$this->tbl_permissions." where id = :permission_id";
@@ -189,16 +245,24 @@ class PermissionHandler extends DbConn
             $stmt->bindParam(':permission_id', $permission_id);
             $stmt->execute();
 
-            $return = true;
+            $return['status'] = true;
         } catch (\PDOException $e) {
-            error_log($e->getMessage());
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-    public function assignPermissionToRole($permission_id, $role_id): bool
+    /**
+     * Assigns permission to role
+     *
+     * @param  string $permission_id Permission ID
+     * @param  string $role_id       Role ID
+     *
+     * @return bool
+     */
+    public function assignPermissionToRole(string $permission_id, string $role_id): bool
     {
         try {
             $sql = "REPLACE INTO ".$this->tbl_role_permissions."
@@ -208,28 +272,37 @@ class PermissionHandler extends DbConn
             $stmt->bindParam(':role_id', $role_id);
             $stmt->execute();
 
-            $return = true;
+            $return['status'] = true;
         } catch (\PDOException $e) {
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;
     }
 
-    public function checkPermissionRequired($id)
+    /**
+     * Check if permission is required (to prevent editing or deletion)
+     *
+     * @param  string $permission_id Permission ID
+     *
+     * @return bool
+     */
+    public function checkPermissionRequired(string $permission_id): array
     {
         try {
             $sql = "SELECT DISTINCT required
                   FROM ".$this->tbl_permissions." where id = :id";
 
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':permission_id', $permission_id);
             $stmt->execute();
             $result = $stmt->fetchColumn();
 
-            return $result;
+            $return['status'] = $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $return['status'] = false;
+            $return['message'] = MiscFunctions::FormatPDOError($e);
         }
 
         return $return;

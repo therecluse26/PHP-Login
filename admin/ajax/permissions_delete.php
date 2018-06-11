@@ -19,7 +19,7 @@ try {
                 //Deletes role
                 $permission_required = $permission->checkPermissionRequired($id);
 
-                if ($permission_required) {
+                if ($permission_required['status']) {
                     header('HTTP/1.1 400 Bad Request');
                     throw new Exception("Cannot delete required permission");
                 } else {
@@ -27,12 +27,12 @@ try {
                 }
 
                 //Success
-                if ($dresponse == 1) {
-                    echo $dresponse;
+                if ($dresponse['status'] == 1) {
+                    echo $dresponse['status'];
                 } else {
                     //Validation error from empty form variables
                     header('HTTP/1.1 400 Bad Request');
-                    throw new Exception("Failure");
+                    throw new Exception($dresponse['message']);
                 }
             } catch (Exception $ex) {
                 echo $ex->getMessage();

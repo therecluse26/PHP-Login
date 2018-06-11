@@ -1,12 +1,25 @@
 <?php
+/**
+ * PHPLogin\UserData extends DbConn
+ */
 namespace PHPLogin;
 
 /**
-* Handles non-profile related user data
+* User data handler
+*
+* Manages non-profile related user data such as email, username, password, etc
 */
 class UserData extends DbConn
 {
-    public static function userDataPull($ids, $admin)
+    /**
+     * Pulls user id, email, username and role(s)
+     *
+     * @param  string $ids    JSON string of user IDs
+     * @param  bool   $admin  Is Admin
+     *
+     * @return array
+     */
+    public static function userDataPull(string $ids, bool $admin)
     {
         $idset = json_decode($ids);
 
@@ -29,7 +42,6 @@ class UserData extends DbConn
             $stmt = $db->conn->prepare($sql);
             $stmt->execute($idset);
 
-
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
             $is_admin = (array_search('Admin', $result) || array_search('Superadmin', $result));
@@ -49,7 +61,14 @@ class UserData extends DbConn
         return $resp;
     }
 
-    public function listSelectedUsers($ids)
+    /**
+     * Returns array of users from list of IDs
+     *
+     * @param  string $ids JSON list of User IDs
+     *
+     * @return array
+     */
+    public function listSelectedUsers(string $ids)
     {
         $idset = json_decode($ids);
         $result = array();
@@ -73,7 +92,14 @@ class UserData extends DbConn
         return $result;
     }
 
-    public static function pullUserPassword($id)
+    /**
+     * Returns hashed user password
+     *
+     * @param  string $id User ID
+     *
+     * @return array
+     */
+    public static function pullUserPassword(string $id)
     {
         $db = new DbConn;
         $tbl_members = $db->tbl_members;
@@ -93,7 +119,15 @@ class UserData extends DbConn
         return $result;
     }
 
-    public static function upsertAccountInfo($uid, $dataarray)
+    /**
+     * Update or insert user account data
+     *
+     * @param  string $uid       User ID
+     * @param  array  $dataarray Array of data to update/insert
+     *
+     * @return mixed
+     */
+    public static function upsertAccountInfo(string $uid, array $dataarray)
     {
         unset($dataarray['id']);
 

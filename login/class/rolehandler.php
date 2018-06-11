@@ -1,17 +1,31 @@
 <?php
+/**
+* PHPLogin\RoleHandler extends DbConn
+*/
 namespace PHPLogin;
 
 /**
 * Handles role functionality
-**/
+*
+* Various methods related roles and their related users
+*/
 class RoleHandler extends DbConn
 {
+    /**
+     * Imports Role Trait
+     * Includes `checkRole` function
+     * @var RoleTrait
+     */
     use Traits\RoleTrait;
 
-    /*
+    /**
     * Returns role name by id
+    *
+    * @param string $role_id Role ID
+    *
+    * @return bool
     */
-    public function getRoleName($role_id): bool
+    public function getRoleName(string $role_id): bool
     {
         try {
             $sql = "SELECT mr.name FROM ".$this->tbl_roles." r
@@ -34,8 +48,10 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    /*
+    /**
     * Returns the default role for new user creation
+    *
+    * @return int
     */
     public static function getDefaultRole(): int
     {
@@ -59,8 +75,10 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    /*
+    /**
     * Returns all roles
+    *
+    * @return array
     */
     public function listAllRoles(): array
     {
@@ -80,10 +98,14 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    /*
+    /**
     * Returns data of given role
+    *
+    * @param string $role_id Role ID
+    *
+    * @return array
     */
-    public function getRoleData($role_id): array
+    public function getRoleData(string $role_id): array
     {
         try {
             $sql = "SELECT DISTINCT id, name, description, required
@@ -102,8 +124,10 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    /*
+    /**
     * Returns all active users
+    *
+    * @return array
     */
     public function listAllActiveUsers(): array
     {
@@ -123,7 +147,14 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    public function listSelectedRoles($ids, $admin)
+    /**
+     * Returns roles by list of IDs
+     *
+     * @param  string $ids JSON string of role IDs
+     *
+     * @return array
+     */
+    public function listSelectedRoles(string $ids)
     {
         $idset = json_decode($ids);
         $result = array();
@@ -145,10 +176,14 @@ class RoleHandler extends DbConn
         return $result;
     }
 
-    /*
+    /**
     * Returns all users of a given $role_id
+    *
+    * @param string $role_id Role ID
+    *
+    * @return array
     */
-    public function listRoleUsers($role_id): array
+    public function listRoleUsers(string $role_id): array
     {
         try {
             $sql = "SELECT m.id, m.username FROM ".$this->tbl_member_roles." mr
@@ -170,10 +205,15 @@ class RoleHandler extends DbConn
         }
     }
 
-    /*
+    /**
     * Returns all users of a given $role_id
+    *
+    * @param array $users     Array of user IDs
+    * @param string $role_id  Role ID
+    *
+    * @return bool
     */
-    public function updateRoleUsers($users, $role_id): bool
+    public function updateRoleUsers(array $users, string $role_id): bool
     {
         try {
             $this->conn->beginTransaction();
@@ -208,10 +248,14 @@ class RoleHandler extends DbConn
     }
 
 
-    /*
+    /**
     * Returns all roles of a given $user_id
+    *
+    * @param string $user_id User ID
+    *
+    * @return array
     */
-    public function listUserRoles($user_id): array
+    public function listUserRoles(string $user_id): array
     {
         try {
             $sql = "SELECT r.id, r.name FROM ".$this->tbl_member_roles." mr
@@ -232,9 +276,16 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-
-
-    public function createRole($role_name, $role_desc, $default = false): bool
+    /**
+     * Creates new role
+     *
+     * @param  string  $role_name Role name
+     * @param  string  $role_desc Role description
+     * @param  boolean $default   Default role
+     *
+     * @return bool
+     */
+    public function createRole(string $role_name, string $role_desc, $default = false): bool
     {
         try {
             $sql = "INSERT INTO ".$this->tbl_roles."
@@ -253,7 +304,17 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    public function updateRole($role_id, $role_name = null, $role_desc = null, $default = null): bool
+    /**
+     * Updates role
+     *
+     * @param  string $role_id   Role ID
+     * @param  string $role_name Role Name
+     * @param  string $role_desc Role Description
+     * @param  boolean $default  Default role
+     *
+     * @return bool
+     */
+    public function updateRole(string $role_id, string $role_name, string $role_desc, $default = null): bool
     {
         try {
             $sql = "UPDATE ".$this->tbl_roles." SET
@@ -277,7 +338,15 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    public function deleteRole($role_id): bool
+
+    /**
+     * Deletes role
+     *
+     * @param  string $role_id Role ID
+     *
+     * @return bool
+     */
+    public function deleteRole(string $role_id): bool
     {
         try {
             $sql = "DELETE FROM ".$this->tbl_roles." where id = :role_id";
@@ -294,7 +363,15 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    public function assignRole($role_id, $user_id): bool
+    /**
+     * Assigns role to a user
+     *
+     * @param  string $role_id Role ID
+     * @param  string $user_id User ID
+     *
+     * @return bool
+     */
+    public function assignRole(string $role_id, string $user_id): bool
     {
         try {
             $sql = "REPLACE INTO ".$this->tbl_member_roles."
@@ -312,7 +389,14 @@ class RoleHandler extends DbConn
         return $return;
     }
 
-    public function unassignAllRoles($user_id): bool
+    /**
+     * Unassigns all roles from a user
+     *
+     * @param  string $user_id User ID
+     *
+     * @return bool
+     */
+    public function unassignAllRoles(string $user_id): bool
     {
         try {
             $sql = "DELETE FROM ".$this->tbl_member_roles."

@@ -1,12 +1,26 @@
 <?php
+/**
+ * PHPLogin\TokenHandler
+ */
 namespace PHPLogin;
 
 /**
-* Handles token storage in database
+* Token handling class
+*
+* Handles token storage and retrieval in database
 */
 class TokenHandler
 {
-    public static function selectToken($tokenid, $userid, $expire)
+    /**
+     * Pulls token from database
+     *
+     * @param  string $tokenid Token ID
+     * @param  string $userid  User ID
+     * @param  bool   $expire  Token expired
+     *
+     * @return array
+     */
+    public static function selectToken(string $tokenid, string $userid, bool $expire)
     {
         $hrsvalid="-".AppConfig::pullSetting('token_validity')." hours";
 
@@ -32,7 +46,16 @@ class TokenHandler
         }
     }
 
-    public static function replaceToken($userid, $tokenid, $expire)
+    /**
+     * Inserts or updates token in database
+     *
+     * @param  string $userid  User ID
+     * @param  string $tokenid Token ID
+     * @param  bool   $expire  Token expired
+     *
+     * @return bool
+     */
+    public static function replaceToken(string $userid, string $tokenid, bool $expire)
     {
         try {
             $db = new DbConn;

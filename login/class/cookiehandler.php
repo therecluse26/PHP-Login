@@ -1,19 +1,27 @@
 <?php
+/**
+ * PHPLogin\CookieHandler
+ */
 namespace PHPLogin;
 
 /**
-* Contains all cookie handling methods
-**/
+* Cookie handling class
+*
+* Methods to manage, generate, decode and validate cookies
+*/
 class CookieHandler
 {
     /**
     * Generates a cookie
-    * `$cookieid` = ID of cookie in `cookies` table.
-    * `$userid` = ID of user generating the cookie.
-    * `$tokenid` = ID of the JWT token.
-    * `$token` = JWT token itself.
-    * `$exptime` = Expiration time of cookie (in seconds)
-    **/
+    *
+    * @param string $cookieid ID of cookie in `cookies` table
+    * @param string $userid ID of user generating the cookie
+    * @param string $tokenid ID of the JWT token
+    * @param string $token JWT token itself
+    * @param int $exptime Expiration time of cookie (in seconds)
+    *
+    * @return mixed Returns either `true` or error
+    */
     public static function generateCookie($cookieid, $userid, $tokenid, $token, $exptime)
     {
         try {
@@ -28,15 +36,20 @@ class CookieHandler
             $stmt->execute();
 
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            http_response_code(500);
             return $e->getMessage();
         }
     }
 
     /**
-    * Checks if cookie is set
-    **/
-    public static function decodeCookie($usertoken)
+     * Checks if cookie is set
+     *
+     * @param  string $usertoken User token
+     *
+     * @return array Decoded cookie
+     */
+    public static function decodeCookie($usertoken): array
     {
         $cookie = array();
 
@@ -49,17 +62,21 @@ class CookieHandler
                 $cookie['value'] = $_COOKIE[$usertoken];
                 return $cookie;
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
+
     /**
     * Validates cookie against `cookies` table.
-    * `$userid` = ID of user that generated the cookie.
-    * `$cookieid` = Cookie ID in both database and cookie data.
-    * `$tokenid` = Token ID in both database and cookie data.
-    **/
-    public static function validateCookie($userid, $cookieid, $tokenid)
+    *
+    * @param string $userid ID of user that generated the cookie.
+    * @param string $cookieid Cookie ID in both database and cookie data.
+    * @param string $tokenid Token ID in both database and cookie data.
+    *
+    * @return array
+    */
+    public static function validateCookie($userid, $cookieid, $tokenid): array
     {
         try {
             $db = new DbConn;
@@ -73,14 +90,16 @@ class CookieHandler
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             return $result;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }
 
     /**
-    * Initializes cookie file
-    */
+     * Initializes cookie file
+     *
+     * @return void
+     */
     public static function initializeCookie()
     {
         $conf = new AppConfig;
@@ -92,7 +111,7 @@ class CookieHandler
             $user = UserHandler::pullUserById($uid);
 
             if (!$user) {
-                throw new Exception("No user found!");
+                throw new \Exception("No user found!");
             }
 
             $secret = $conf->jwt_secret;
@@ -110,7 +129,7 @@ class CookieHandler
             $token = \Firebase\JWT\JWT::encode($payload, $secret);
 
             $cookie = self::generateCookie($cookieid, $userid, $tokenid, $token, (int)$conf->cookie_expire_seconds);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo $e->getMessage();
         }
     }

@@ -1,10 +1,21 @@
 <?php
+/**
+* PHPLogin\Traits\PermissionTrait
+*/
 namespace PHPLogin\Traits;
 
+/**
+ * Re-usable permission functionality
+ */
 trait PermissionTrait
 {
-    /*
+    /**
     * Checks if user has specified permission by name
+    *
+    * @param string $user_id User ID
+    * @param string $permission_name Permission Name
+    *
+    * @return boolean
     */
     public function checkPermission($user_id, $permission_name): bool
     {

@@ -6,6 +6,7 @@ try {
 
     $request = new PHPLogin\CSRFHandler;
     $auth = new PHPLogin\AuthorizationHandler;
+    $admin = new PHPLogin\AdminFunctions;
 
     if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('View Permissions'))) {
         unset($_GET['csrf_token']);
@@ -18,7 +19,7 @@ try {
             array( 'db' => 'edit', 'dt' => 5 )
         );
 
-        $data = PHPLogin\AdminFunctions::getAllPermissions($_GET, $columns);
+        $data = $admin->getAllPermissions($_GET, $columns);
 
         echo json_encode($data);
     } else {

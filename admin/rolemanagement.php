@@ -6,7 +6,6 @@ $userrole = 'Admin';
 $title = 'Manage Roles';
 require '../login/misc/pagehead.php';
 $x = 0;
-
 ?>
 
 <script type="text/javascript" src="../login/js/DataTables/datatables.min.js"></script>

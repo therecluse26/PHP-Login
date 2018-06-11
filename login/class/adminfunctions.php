@@ -1,18 +1,27 @@
 <?php
+/**
+ * PHPLogin\AdminFunctions extends AppConfig
+ */
 namespace PHPLogin;
 
-class AdminFunctions
+/**
+ * Admin-specific functions
+ *
+ * Various methods specifically related to pages within the /admin subdirectory
+ */
+class AdminFunctions extends AppConfig
 {
     /**
     *  Pulls user list for verification or deletion
+    *
+    * @return array Array of unverified users
     */
-    public static function getUserVerifyList()
+    public function getUserVerifyList(): array
     {
         try {
-            $db = new DbConn;
-            $tbl_members = $db->tbl_members;
+            $tbl_members = $this->tbl_members;
 
-            $stmt = $db->conn->prepare("SELECT id, email, username, mod_timestamp as timestamp FROM ".$tbl_members."
+            $stmt = $this->conn->prepare("SELECT id, email, username, mod_timestamp as timestamp FROM ".$tbl_members."
                                       WHERE verified = 0 ORDER BY timestamp desc");
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -25,17 +34,17 @@ class AdminFunctions
 
     /**
     * Returns list of all active users for DataTables consumption
+    *
+    * @param array $request $_GET request from ajax call made by DataTables
+    * @param array $columns Array of columns to return
+    *
+    * @return array Array of active, verified users
     */
-    public static function getActiveUsers($request, $columns): array
+    public function getActiveUsers($request, $columns): array
     {
         $bindings = array();
 
         try {
-            $db = new DbConn;
-            $tbl_members = $db->tbl_members;
-            $tbl_member_roles = $db->tbl_member_roles;
-            $tbl_roles = $db->tbl_roles;
-
             $where_sql = MiscFunctions::dt_filter($request, $columns, $bindings);
             $order_sql = MiscFunctions::dt_order($request, $columns);
             $limit_sql = MiscFunctions::dt_limit($request, $columns);
@@ -46,10 +55,10 @@ class AdminFunctions
                 $where_sql .= " AND";
             }
 
-            $stmt = $db->conn->prepare("SELECT m.mod_timestamp as timestamp, m.id, m.email, m.username, GROUP_CONCAT(r.name) roles
-                                        FROM ".$tbl_members." m
-                                        INNER JOIN ".$tbl_member_roles." mr on mr.member_id = m.id
-                                        INNER JOIN ".$tbl_roles." r on mr.role_id = r.id
+            $stmt = $this->conn->prepare("SELECT m.mod_timestamp as timestamp, m.id, m.email, m.username, GROUP_CONCAT(r.name) roles
+                                        FROM ".$this->tbl_members." m
+                                        INNER JOIN ".$this->tbl_member_roles." mr on mr.member_id = m.id
+                                        INNER JOIN ".$this->tbl_roles." r on mr.role_id = r.id
                                         $where_sql
                                         m.verified = 1
                                         AND m.banned = 0
@@ -57,11 +66,11 @@ class AdminFunctions
                                         $order_sql
                                         $limit_sql");
 
-            $records_total = $db->conn->prepare("SELECT count(m.id) as users FROM ".$tbl_members." m
+            $records_total = $this->conn->prepare("SELECT count(m.id) as users FROM ".$this->tbl_members." m
                                       WHERE m.verified = 1
                                       AND m.banned = 0");
 
-            $records_filtered = $db->conn->prepare("SELECT count(m.id) as users FROM ".$tbl_members." m
+            $records_filtered = $this->conn->prepare("SELECT count(m.id) as users FROM ".$this->tbl_members." m
                                       $where_sql
                                       m.verified = 1
                                       AND m.banned = 0");
@@ -100,25 +109,28 @@ class AdminFunctions
 
     /**
     * Returns list of all active users for DataTables consumption
+    *
+    * @param array $request $_GET request from ajax call made by DataTables
+    * @param array $columns Array of columns to return
+    *
+    * @return array Array of all roles
     */
-    public static function getAllRoles($request, $columns): array
+    public function getAllRoles($request, $columns): array
     {
         $bindings = array();
 
         try {
-            $db = new DbConn;
-
             $sql = "SELECT r.id, r.name, r.description, ifnull(count(mr.id), 0) as user_count, NULL as users,
                     CASE WHEN
                       r.required = 0 THEN concat('<button id=\'editrole_', r.id, '\' onclick=\'editRole(',r.id,')\' class=\'btn btn-warning\'>Edit</button>')
                       ELSE null END
                     AS edit
-                    FROM ".$db->tbl_roles." r
-                  	LEFT JOIN ".$db->tbl_member_roles." mr on r.id = mr.role_id
+                    FROM ".$this->tbl_roles." r
+                  	LEFT JOIN ".$this->tbl_member_roles." mr on r.id = mr.role_id
                     WHERE r.name != 'Superadmin'
                     GROUP BY r.id, r.name, r.description";
 
-            $stmt = $db->conn->prepare($sql);
+            $stmt = $this->conn->prepare($sql);
 
             $stmt->execute();
             $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -137,22 +149,25 @@ class AdminFunctions
 
     /**
     * Returns list of all active users for DataTables consumption
+    *
+    * @param array $request $_GET request from ajax call made by DataTables
+    * @param array $columns Array of columns to return
+    *
+    * @return array Array of all permissions
     */
-    public static function getAllPermissions($request, $columns): array
+    public function getAllPermissions($request, $columns): array
     {
         $bindings = array();
 
         try {
-            $db = new DbConn;
-
             $sql = "SELECT p.id, p.name, p.description, p.category, NULL AS roles,
                     CASE WHEN
                       p.required = 0 THEN concat('<button id=\'editpermission_', p.id, '\' onclick=\'editPermission(',p.id,')\' class=\'btn btn-warning\'>Edit</button>')
                       ELSE null END
                     AS edit
-                    FROM ".$db->tbl_permissions." p";
+                    FROM ".$this->tbl_permissions." p";
 
-            $stmt = $db->conn->prepare($sql);
+            $stmt = $this->conn->prepare($sql);
 
             $stmt->execute();
             $data = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -171,14 +186,18 @@ class AdminFunctions
 
     /**
     * Returns list of all unverified users for DataTables consumption
+    *
+    * @param array $request $_GET request from ajax call made by DataTables
+    * @param array $columns Array of columns to return
+    *
+    * @return array Array of unverified users
     */
-    public static function getUnverifiedUsers($request, $columns)
+    public function getUnverifiedUsers($request, $columns): array
     {
         $bindings = array();
 
         try {
-            $db = new DbConn;
-            $tbl_members = $db->tbl_members;
+            $tbl_members = $this->tbl_members;
 
             $where_sql = MiscFunctions::dt_filter($request, $columns, $bindings);
             $order_sql = MiscFunctions::dt_order($request, $columns);
@@ -190,18 +209,18 @@ class AdminFunctions
                 $where_sql .= " AND";
             }
 
-            $stmt = $db->conn->prepare("SELECT m.mod_timestamp as timestamp, m.id, m.email, m.username FROM ".$tbl_members." m
+            $stmt = $this->conn->prepare("SELECT m.mod_timestamp as timestamp, m.id, m.email, m.username FROM ".$tbl_members." m
                                       $where_sql m.verified = 0
                                       AND m.banned = 0
                                       GROUP BY m.id
                                       $order_sql
                                       $limit_sql");
 
-            $records_total = $db->conn->prepare("SELECT count(m.id) as users FROM ".$tbl_members." m
+            $records_total = $this->conn->prepare("SELECT count(m.id) as users FROM ".$tbl_members." m
                                       WHERE m.verified = 0
                                       AND m.banned = 0");
 
-            $records_filtered = $db->conn->prepare("SELECT count(m.id) as users FROM ".$tbl_members." m
+            $records_filtered = $this->conn->prepare("SELECT count(m.id) as users FROM ".$tbl_members." m
                                       $where_sql m.verified = 0
                                       AND m.banned = 0");
 
@@ -241,15 +260,16 @@ class AdminFunctions
 
     /**
     * Notifies admins of new user signup
+    *
+    * @return array Reruns all email addresses of all admins
     */
-    public static function adminEmailList()
+    public function adminEmailList(): array
     {
         try {
-            $db = new DbConn;
-            $stmt = $db->conn->prepare("SELECT email FROM ".$db->tbl_members." m
-                                      INNER JOIN member_roles mr on mr.member_id = m.id
-                                      INNER JOIN roles r on mr.role_id = r.id
-                                      WHERE r.name in ('Admin', 'Superadmin')");
+            $stmt = $this->conn->prepare("SELECT email FROM ".$this->tbl_members." m
+                                        INNER JOIN member_roles mr on mr.member_id = m.id
+                                        INNER JOIN roles r on mr.role_id = r.id
+                                        WHERE r.name in ('Admin', 'Superadmin')");
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {

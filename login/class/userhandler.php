@@ -1,12 +1,24 @@
 <?php
+/**
+ * PHPLogin\UserHandler extends DbConn
+ */
 namespace PHPLogin;
 
+/**
+ * User handling functions
+ *
+ *  Various methods related to user management
+ */
 class UserHandler extends DbConn
 {
     /**
     * Creates new user
+    *
+    * @param array $userarr Array of users
+    *
+    * @return mixed
     */
-    public static function createUser($userarr)
+    public static function createUser(array $userarr)
     {
         try {
             $db = new DbConn;
@@ -45,8 +57,12 @@ class UserHandler extends DbConn
 
     /**
     * Deletes user by `$userid`
-    **/
-    public static function deleteUser($userid)
+    *
+    * @param string $userid User ID
+    *
+    * @return mixed
+    */
+    public static function deleteUser(string $userid)
     {
         try {
             $ddb = new DbConn;
@@ -67,8 +83,13 @@ class UserHandler extends DbConn
 
     /**
     * Verifies user
+    *
+    * @param array $userarr Array of User IDs
+    * @param bool $verify   If user is verified
+    *
+    * @return array
     */
-    public static function verifyUser($userarr, $verify)
+    public static function verifyUser(array $userarr, bool $verify)
     {
         try {
             $idset = [];
@@ -102,9 +123,15 @@ class UserHandler extends DbConn
     }
 
     /**
-    * Bans user by `$userid`
-    **/
-    public static function banUser($user_id, $ban_hours = 0, $reason = null)
+     * Bans user by `$user_id` for number of `$ban_hours`
+     *
+     * @param  string  $user_id   User ID
+     * @param  integer $ban_hours Hours to ban user for
+     * @param  [type]  $reason    Reason for banning user
+     *
+     * @return mixed
+     */
+    public static function banUser(string $user_id, float $ban_hours = 0, string $reason = null)
     {
         try {
             $db = new DbConn;
@@ -130,7 +157,14 @@ class UserHandler extends DbConn
         return $resp;
     }
 
-    public static function pullUserByEmail($email)
+    /**
+     * Pulls user by email address
+     *
+     * @param  string $email Email address
+     *
+     * @return array
+     */
+    public static function pullUserByEmail(string $email)
     {
         $db = new DbConn;
         $tbl_members = $db->tbl_members;
@@ -150,6 +184,13 @@ class UserHandler extends DbConn
         return $result;
     }
 
+    /**
+     * Pulls user by ID
+     *
+     * @param  string $id User ID
+     *
+     * @return array
+     */
     public static function pullUserById($id)
     {
         $db = new DbConn;

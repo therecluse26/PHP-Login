@@ -1,20 +1,32 @@
 <?php
+/**
+* PHPLogin\LoginHandler extends AppConfig
+*/
 namespace PHPLogin;
 
 /**
-* Contains all methods used in login form
-**/
+* Login handling functions
+*
+* Contains all methods used in login form as well as session initialization and logout
+*/
 class LoginHandler extends AppConfig
 {
+
     /**
-    * Checks user login
-    **/
-    public function checkLogin($myusername, $mypassword, $cookie = 0)
+     * Checks user login
+     *
+     * @param  string  $username   Username
+     * @param  string  $password   Password
+     * @param  boolean $cookie     User is creating cookie on login
+     *
+     * @return string
+     */
+    public function checkLogin($username, $password, bool $cookie = false)
     {
         $ip_address = $_SERVER["REMOTE_ADDR"];
         $login_timeout = (int)$this->login_timeout;
         $max_attempts = (int)$this->max_attempts;
-        $attcheck = $this->checkAttempts($myusername);
+        $attcheck = $this->checkAttempts($username);
         $curr_attempts = $attcheck['attempts'];
 
         $datetimeNow = date("Y-m-d H:i:s");
@@ -26,94 +38,101 @@ class LoginHandler extends AppConfig
 
         try {
             $err = '';
-        } catch (\PDOException $e) {
-            $err = "Error: " . $e->getMessage();
-        }
 
-        $stmt = $this->conn->prepare("SELECT id, username, email, password, verified, banned
+            $stmt = $this->conn->prepare("SELECT id, username, email, password, verified, banned
                                       FROM ".$this->tbl_members." WHERE username = :myusername");
-        $stmt->bindParam(':myusername', $myusername);
-        $stmt->execute();
+            $stmt->bindParam(':myusername', $username);
+            $stmt->execute();
 
-        // Gets query result
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            // Gets query result
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
 
-        if ($curr_attempts >= $max_attempts && $timeDiff < $login_timeout) {
+            if ($curr_attempts >= $max_attempts && $timeDiff < $login_timeout) {
 
             //Too many failed attempts
-            $success = "<div class=\"alert alert-danger alert-dismissable\">
+                $success = "<div class=\"alert alert-danger alert-dismissable\">
                           <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
                             &times;
                           </button>
                           Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again
                         </div>";
-        } else {
+            } else {
 
              //If max attempts not exceeded, continue
-            // Checks password entered against db password hash
-            if (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '0') {
-                //Success! Register $myusername, $mypassword and return "true"
-                $success = 'true';
-
-                $this->init_session($result, $cookie);
-            } elseif (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '1' && $result['banned'] == '1') {
-                //Account banned
-                $uid = $result['id'];
-
-                $bstmt = $this->conn->prepare("SELECT hours_remaining FROM `vw_banned_users` WHERE user_id = :uid;");
-                $bstmt->bindParam(':uid', $uid);
-                $bstmt->execute();
-                $bresult = $bstmt->fetch(\PDO::FETCH_ASSOC);
-
-                if ($bresult['hours_remaining'] <= 0) {
-                    $uid = $result['id'];
-
-                    // Delete from member_jail, update banned record in members table and allow login
-                    $bstmt = $this->conn->prepare("DELETE FROM ".$this->tbl_member_jail." WHERE user_id = :uid;");
-                    $bstmt->bindParam(':uid', $uid);
-                    $bstmt->execute();
-
-                    $bstmt = $this->conn->prepare("UPDATE ".$this->tbl_members." SET banned = 0 WHERE id = :uid;");
-                    $bstmt->bindParam(':uid', $uid);
-                    $bstmt->execute();
-
+                // Checks password entered against db password hash
+                if (PasswordHandler::checkPw($password, $result['password']) && $result['verified'] == '1' && $result['banned'] == '0') {
+                    //Success! Register $username, $password and return "true"
                     $success = 'true';
 
                     $this->init_session($result, $cookie);
-                } else {
-                    $success = "<div class=\"alert alert-danger alert-dismissable\">
+                } elseif (PasswordHandler::checkPw($password, $result['password']) && $result['verified'] == '1' && $result['banned'] == '1') {
+                    //Account banned
+                    $uid = $result['id'];
+
+                    $bstmt = $this->conn->prepare("SELECT hours_remaining FROM `vw_banned_users` WHERE user_id = :uid;");
+                    $bstmt->bindParam(':uid', $uid);
+                    $bstmt->execute();
+                    $bresult = $bstmt->fetch(\PDO::FETCH_ASSOC);
+
+                    if ($bresult['hours_remaining'] <= 0) {
+                        $uid = $result['id'];
+
+                        // Delete from member_jail, update banned record in members table and allow login
+                        $bstmt = $this->conn->prepare("DELETE FROM ".$this->tbl_member_jail." WHERE user_id = :uid;");
+                        $bstmt->bindParam(':uid', $uid);
+                        $bstmt->execute();
+
+                        $bstmt = $this->conn->prepare("UPDATE ".$this->tbl_members." SET banned = 0 WHERE id = :uid;");
+                        $bstmt->bindParam(':uid', $uid);
+                        $bstmt->execute();
+
+                        $success = 'true';
+
+                        $this->init_session($result, $cookie);
+                    } else {
+                        $success = "<div class=\"alert alert-danger alert-dismissable\">
                                   <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
                                     &times;
                                   </button>
                                   Your account is currently suspended
                                 </div>";
-                }
-            } elseif (PasswordHandler::checkPw($mypassword, $result['password']) && $result['verified'] == '0') {
+                    }
+                } elseif (PasswordHandler::checkPw($password, $result['password']) && $result['verified'] == '0') {
 
                 //Account not yet verified
-                $success = "<div class=\"alert alert-danger alert-dismissable\">
+                    $success = "<div class=\"alert alert-danger alert-dismissable\">
                               <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
                                 &times;
                               </button>
                               Your account has been created, but you cannot log in until it has been verified
                             </div>";
-            } else {
+                } else {
 
                 //Wrong username or password
-                $success = "<div class=\"alert alert-danger alert-dismissable\">
+                    $success = "<div class=\"alert alert-danger alert-dismissable\">
                               <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
                                 &times;
                               </button>
                               Wrong Username or Password
                             </div>";
+                }
             }
+
+            return $success;
+        } catch (\PDOException $e) {
+            $err = "Error: " . $e->getMessage();
+            return $err;
         }
-        return $success;
     }
+
     /**
-    * Checks `attempts` table when a login is attempted
-    **/
+     * Checks `attempts` table when a login is attempted
+     *
+     * @param  string $username Username
+     *
+     * @return void
+     */
     public function checkAttempts($username)
     {
         try {
@@ -142,6 +161,13 @@ class LoginHandler extends AppConfig
         //return $resp;
     }
 
+    /**
+     * Inserts login attempt into the `login_attempts` table
+     *
+     * @param  string $username Username
+     *
+     * @return string
+     */
     public function insertAttempt($username)
     {
         try {
@@ -170,6 +196,13 @@ class LoginHandler extends AppConfig
         return $resp;
     }
 
+    /**
+     * Updates login attempt row in the `login_attempts` table
+     *
+     * @param  string $username Username
+     *
+     * @return string
+     */
     public function updateAttempts($username)
     {
         try {
@@ -221,8 +254,13 @@ class LoginHandler extends AppConfig
 
     /**
     * Initializes session
+    *
+    * @param array $result  Array of session values to set
+    * @param boolean  $cookie  If session includes a cookie or not
+    *
+    * @return void
     */
-    public function init_session($result, $cookie)
+    public function init_session($result, bool $cookie)
     {
         session_start();
 
@@ -231,7 +269,7 @@ class LoginHandler extends AppConfig
         $_SESSION['ip_address'] = getenv('REMOTE_ADDR');
         $_SESSION['verified'] = $result['verified'];
 
-        if ($cookie == 1) {
+        if ($cookie == true) {
             //Creates cookie
             CookieHandler::initializeCookie();
         }

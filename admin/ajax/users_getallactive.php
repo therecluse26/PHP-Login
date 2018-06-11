@@ -6,6 +6,7 @@ try {
 
     $request = new PHPLogin\CSRFHandler;
     $auth = new PHPLogin\AuthorizationHandler;
+    $admin = new PHPLogin\AdminFunctions;
 
     if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('View Users'))) {
         unset($_GET['csrf_token']);
@@ -17,7 +18,7 @@ try {
             array( 'db' => 'timestamp', 'dt' => 4 )
         );
 
-        $data = PHPLogin\AdminFunctions::getActiveUsers($_GET, $columns);
+        $data = $admin->getActiveUsers($_GET, $columns);
 
         echo json_encode($data);
     } else {

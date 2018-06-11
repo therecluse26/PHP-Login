@@ -1,8 +1,24 @@
 <?php
+/**
+ * PHPLogin\ImgHandler
+ */
 namespace PHPLogin;
 
+/**
+ * Image handling functions
+ *
+ * Handles user image uploads and storage
+ */
 class ImgHandler
 {
+    /**
+     * Converts base64 string to binary image
+     *
+     * @param  string $base64_string Base64 encoded string of image
+     * @param  string $output_file   File path to store image to
+     *
+     * @return string Output file path
+     */
     public static function base64ToImage($base64_string, $output_file)
     {
         $ifp = fopen($output_file, "wb");
@@ -15,6 +31,14 @@ class ImgHandler
         return $output_file;
     }
 
+    /**
+     * Stores image to path
+     *
+     * @param  string $imgpath       File path to store image to
+     * @param  string $base64_string Base64 encoded string of image
+     *
+     * @return string
+     */
     public static function putImage($imgpath, $base64_string)
     {
         try {
@@ -29,15 +53,15 @@ class ImgHandler
                 }
 
                 if (!self::base64ToImage($base64_string, $imgpath)) {
-                    throw new Exception("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Image upload failed</div>");
+                    throw new \Exception("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Image upload failed</div>");
                 } else {
                     //success
                     return "<div class=\"alert alert-success alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Changes saved!</div>";
                 }
             } else {
-                throw new Exception("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Image directory not writable</div>");
+                throw new \Exception("<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Image directory not writable</div>");
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $e->getMessage();
         }
     }

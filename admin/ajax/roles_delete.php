@@ -13,7 +13,7 @@ try {
     if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('Delete Roles'))) {
         $ids = $_POST['ids'];
 
-        $eresult = $role->listSelectedRoles($ids, 0);
+        $eresult = $role->listSelectedRoles($ids);
 
         foreach ($eresult as $e) {
             try {

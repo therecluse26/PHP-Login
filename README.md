@@ -1,14 +1,17 @@
-PHP-Login 3.1
-=============
+PHP-Login
+=========
+**Version 3.1**
 
-PHP-Login is a simple login and signup system built with PHP, MySQL (with PDO), jQuery and Bootstrap 3. It is meant to be a starting point for PHP developers to build sites from and includes basic user management classes and methods.
+`PHP-Login` is a simple login and signup system built with PHP, MySQL (with PDO), jQuery and Bootstrap 3. It is meant to be a starting point for PHP developers to build sites from and includes basic user management classes and methods.
+
+\* *If you want to aid future development, please consider helping out by supporting the project on* [Patreon](https://www.patreon.com/therecluse26)
 
 Technologies used:
 ------------------
 ##### Prerequisites
 
 - `PHP` *_required_*
-	- Version `7.0+` recommended
+	- Version `7+` recommended
 	- Minimum version: `5.6`
 	- `pdo_mysql` extension required
 	- Recommended to enable `shell_exec`
@@ -46,11 +49,11 @@ Technologies used:
 ##### General Recommendations
 
 - Enable SSL on your site! [Get a free cert at LetsEncrypt](https://letsencrypt.org)
-	 - Their free tool called `Certbot` makes this process virtually painless
+	 - Their free tool [Certbot](https://certbot.eff.org) makes this process virtually painless
 
 - Linux server running [Apache](https://www.apache.org) or [Nginx](https://nginx.org) is preferred
 
-- Shell access is recommended. While it is likely possible (but unsupported) to install this library without shell access (such as on a shared web hosting provider), but it's highly recommended that you instead opt for a VPS provider such as [DigitalOcean](https://m.do.co/c/da6f17522df3) that allows you root shell access
+- Shell access is recommended. While it is likely possible to install this library without shell access (such as on a shared web hosting provider), this is unsupported. It's highly recommended that you instead opt for a VPS provider such as [DigitalOcean](https://m.do.co/c/da6f17522df3) that allows you root shell access
 
 - Run `mysql_secure_installation` on server prior to app installation
 
@@ -61,6 +64,19 @@ Technologies used:
 
 Installation
 ------------
+
+#### Clone the Repository
+    $ git clone https://github.com/therecluse26/PHP-Login.git
+
+#### Run through web-based installer
+Open this link in your web browser (replacing [yoursite.com] with your site address)
+
+    http://{yoursite.com}/install/index.php
+
+Select an installation option from the pop-up modal that appears: `Automated` or `Manual`
+
+***NOTE*** ** If you are upgrading from a prior version of PHP-Login (>3.1), you should install this version as new and then navigate to the `/install/legacymigration/index.php` page to migrate your existing data to the new application version (to reflect schema updates) **
+
 [Automated Installation Instructions](docs/install_automated.md)
 
 [Manual Installation Instructions](docs/install_manual.md)
@@ -70,5 +86,7 @@ Documentation
 [Site Config Settings](docs/site_config.md)
 
 [API Methods](docs/methods.md)
+
+[Full API Documentation](docs/api/namespaces/PHPLogin.html)
 
 [Change Log](docs/changelog.md)

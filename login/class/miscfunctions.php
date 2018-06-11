@@ -1,4 +1,7 @@
 <?php
+/**
+* PHPLogin\MiscFunctions
+*/
 namespace PHPLogin;
 
 /**
@@ -6,6 +9,13 @@ namespace PHPLogin;
 */
 class MiscFunctions
 {
+    /**
+     * Formats MySQL errors for human-readability
+     *
+     * @param  string $response MySQL error response
+     *
+     * @return string Echoed response string
+     */
     public static function mySqlErrors($response)
     {
         //Returns custom error messages instead of MySQL errors
@@ -21,22 +31,53 @@ class MiscFunctions
         }
     }
 
-    public static function assembleUids($uid_string)
+    /**
+     * Formats PDO errors for human-readability
+     *
+     * @param  string $error MySQL error response
+     *
+     * @return string Echoed response string
+     */
+    public static function FormatPDOError($error)
     {
-        $uid_array = json_decode($uid_string);
-
-        foreach ($uid_array as $id) {
-            if (isset($uids)) {
-                $uids = $uids.", '".$id."'";
-            } else {
-                $uids = "'".$id."'";
-            };
-        };
-
-        return $uids;
+        if (strstr($error->getMessage(), 'SQLSTATE[')) {
+            $format = preg_replace('/SQLSTATE\[.+\]:/', '', $error->getMessage());
+            $format = preg_replace('/<+.+>+:.[0-9]+[ ]/', '', $format);
+            $format = trim($format);
+            return $format;
+        } else {
+            return $e->getMessage();
+        }
     }
 
-    // Check if url is relative or absolute
+    /**
+     * Concatenates array to string for prepared statements
+     *
+     * @param  array $record     Array of records to generate placeholders for
+     * @param  string $separator Separator value. Defaults to ","
+     * @param  [type] $bind_id   [description]
+     *
+     * @return [type]            [description]
+     */
+    public static function placeholders($record, $separator= ",", $bind_id)
+    {
+        $string = '';
+
+        foreach ($record as $key => $val) {
+            $string .= '(\''.$val .'\''. $separator . $bind_id.'),';
+        }
+
+        return substr($string, 0, -1);
+    }
+
+
+    /**
+     * Checks if url is absolute
+     *
+     * @param  string  $url URL to check
+     *
+     * @return boolean Returns if URL is absolute or not
+     */
     public static function isAbsUrl($url)
     {
         if ($url[0] == '/') {
@@ -50,20 +91,18 @@ class MiscFunctions
         return false;
     }
 
-    public static function placeholders($record, $separator= ",", $bind_id)
-    {
-        $string = '';
-
-        foreach ($record as $key => $val) {
-            $string .= '(\''.$val .'\''. $separator . $bind_id.'),';
-        }
-        
-        return substr($string, 0, -1);
-    }
-
 
     /**
      * DATATABLES FUNCTIONS
+     */
+
+    /**
+     * DataTables number of records to display
+     *
+     * @param array $request DataTables request
+     * @param array $columns DataTables columns
+     *
+     * @return string Query string returned
      */
     public static function dt_limit($request, $columns)
     {
@@ -74,6 +113,14 @@ class MiscFunctions
         return $limit;
     }
 
+    /**
+     * DataTables order of records
+     *
+     * @param array $request DataTables request
+     * @param array $columns DataTables columns
+     *
+     * @return string Query string returned
+     */
     public static function dt_order($request, $columns)
     {
         $order = '';
@@ -98,6 +145,15 @@ class MiscFunctions
         return $order;
     }
 
+    /**
+     * DataTables filtering
+     *
+     * @param array $request DataTables request
+     * @param array $columns DataTables columns
+     * @param array $bindings DataTables bindings
+     *
+     * @return string Query string returned
+     */
     public static function dt_filter($request, $columns, &$bindings)
     {
         $globalSearch = array();
@@ -145,6 +201,14 @@ class MiscFunctions
         return $where;
     }
 
+    /**
+     * DataTables pluck function (used by `dt_order` and `dt_filter`)
+     *
+     * @param array $a
+     * @param string $prop
+     *
+     * @return array
+     */
     public static function pluck($a, $prop)
     {
         $out = array();
@@ -154,6 +218,15 @@ class MiscFunctions
         return $out;
     }
 
+    /**
+     * DataTables bind function (used by `dt_filter`)
+     *
+     * @param array $a
+     * @param string $val
+     * @param string $type
+     *
+     * @return array
+     */
     public static function bind(&$a, $val, $type)
     {
         $key = ':binding_'.count($a);
@@ -164,6 +237,15 @@ class MiscFunctions
         );
         return $key;
     }
+
+    /**
+     * DataTables data output
+     *
+     * @param array $columns DataTables columns
+     * @param array $data DataTables data
+     *
+     * @return array
+     */
     public static function data_output($columns, $data)
     {
         $out = array();

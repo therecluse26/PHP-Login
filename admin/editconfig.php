@@ -8,11 +8,7 @@ $userrole = 'Superadmin';
 $title = 'Edit Site Configuration';
 require '../login/misc/pagehead.php';
 $settingsArr = $conf->pullAllSettings(new PHPLogin\AuthorizationHandler);
-//Gets categories from settings array
-foreach ($settingsArr as $key => $value) {
-    $groupedArr[$value[4]][] = $value;
-}
-?>
+ ?>
 
 <script src="js/editconfig.js"></script>
 
@@ -29,38 +25,43 @@ foreach ($settingsArr as $key => $value) {
 <ul class='nav nav-tabs'>
 <?php
 
-$i = 1;
-//Builds tabs
-foreach ($groupedArr as $category => $catval) {
-    if ($i === 1) {
-        echo "<ul class='nav nav-tabs'><li class='active'><a href='#{$category}' data-toggle='tab'>{$category}</a></li>";
-    } else {
-        echo "<li><a href='#{$category}' data-toggle='tab'>{$category}</a></li>";
+//Gets categories from settings array
+if ($settingsArr['status'] === true) {
+    foreach ($settingsArr['settings'] as $key => $value) {
+        $groupedArr[$value[4]][] = $value;
     }
-    $i++;
-}
-?>
+
+    $i = 1;
+    //Builds tabs
+    foreach ($groupedArr as $category => $catval) {
+        if ($i === 1) {
+            echo "<ul class='nav nav-tabs'><li class='active'><a href='#{$category}' data-toggle='tab'>{$category}</a></li>";
+        } else {
+            echo "<li><a href='#{$category}' data-toggle='tab'>{$category}</a></li>";
+        }
+        $i++;
+    } ?>
 </ul>
 <br>
 
 <?php
     echo "<div class='tab-content'>";
 
-$x = 1;
-//Builds content within tabs
-foreach ($groupedArr as $category => $catval) {
-    if ($x === 1) {
-        echo "<div class='tab-pane active' id='{$category}'>";
-    } else {
-        echo "<div class='tab-pane' id='{$category}'>";
-    }
+    $x = 1;
+    //Builds content within tabs
+    foreach ($groupedArr as $category => $catval) {
+        if ($x === 1) {
+            echo "<div class='tab-pane active' id='{$category}'>";
+        } else {
+            echo "<div class='tab-pane' id='{$category}'>";
+        }
 
-    foreach ($catval as $setting) {
-        $setting[1] = htmlspecialchars($setting[1], ENT_QUOTES);
-        $setting[2] = htmlspecialchars($setting[2], ENT_QUOTES);
+        foreach ($catval as $setting) {
+            $setting[1] = htmlspecialchars($setting[1], ENT_QUOTES);
+            $setting[2] = htmlspecialchars($setting[2], ENT_QUOTES);
 
-        //Input Type
-        switch ($setting[3]) {
+            //Input Type
+            switch ($setting[3]) {
 
             case "textarea":
                 echo "<div class='col-sm-6'>
@@ -138,13 +139,12 @@ foreach ($groupedArr as $category => $catval) {
                       <input class='form-control' name='{$setting[0]}' value='{$setting[1]}'></input><br>
                       </div>";
         }
-    }
-    echo '</div>';
+        }
+        echo '</div>';
 
-    $x++;
-}
-    echo '</div>';
-?>
+        $x++;
+    }
+    echo '</div>'; ?>
 </div>
 </div>
 </div>
@@ -171,3 +171,8 @@ $(function () {
 })
 </script>
 </body>
+
+<?php
+} else {
+        echo $settingsArr['message'];
+    } ?>

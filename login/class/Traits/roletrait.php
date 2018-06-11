@@ -1,10 +1,21 @@
 <?php
+/**
+* PHPLogin\Traits\RoleTrait
+*/
 namespace PHPLogin\Traits;
 
+/**
+ * Re-usable role functionality
+ */
 trait RoleTrait
 {
-    /*
+    /**
     * Checks if user has specified role by name
+    *
+    * @param string $user_id User ID
+    * @param string $role_name Role Name
+    *
+    * @return boolean
     */
     public function checkRole($user_id, $role_name): bool
     {

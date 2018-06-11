@@ -5,7 +5,7 @@ The manual installation process is, well, more manual than the automated install
 
 Fill out all requested information on this page and click the `Generate Configuration` button on the bottom.
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_empty.png" alt="Manual Install Form" style="display:block;margin:auto;" height="500px" />
+ <img src="/docs/images/maninstall_empty.png" alt="Manual Install Form" style="display:block;margin:auto;" height="500px" />
 
 Configuration and SQL scripts will be generated. Several manual steps will now be necessary.
 
@@ -15,6 +15,6 @@ Configuration and SQL scripts will be generated. Several manual steps will now b
 
 - Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies.
 
- <img src="https://raw.githubusercontent.com/therecluse26/PHP-Login/master/doc/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" height="500px" />
+ <img src="/docs/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" height="500px" />
 
 Installation is now complete, however, a few steps are still necessary before your site is functional. Proceed to [Post Installation Instructions](post_installation.md)

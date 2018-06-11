@@ -294,6 +294,7 @@ function deletePermission(id, btn_id){
       permissionTable.row( $('#'+btn_id).parents('tr') ).remove().draw();
     },
     error: function(err){
+      console.log(err);
       alert(err.responseText);
     }
   });

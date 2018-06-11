@@ -1,4 +1,7 @@
 <?php
+/**
+* PHPLogin\MailHandler extends AppConfig
+*/
 namespace PHPLogin;
 
 /**
@@ -6,10 +9,14 @@ namespace PHPLogin;
 */
 class MailHandler extends AppConfig
 {
-    public function configure()
-    {
-    }
-
+    /**
+     * Sends email to given users
+     *
+     * @param  array $userarr Array of users to send email to
+     * @param  string $type    Type of email to send
+     *
+     * @return array
+     */
     public function sendMail($userarr, $type)
     {
         $resp = array();
@@ -109,6 +116,15 @@ class MailHandler extends AppConfig
         }
     }
 
+    /**
+     * Sends password reset email
+     *
+     * @param string $reset_url Url for user to click on to reset password
+     * @param string $to_email  Email address to send to
+     * @param string $username  Username
+     *
+     * @return array
+     */
     public function sendResetMail($reset_url, $to_email, $username)
     {
         $resp = array();
@@ -184,6 +200,11 @@ class MailHandler extends AppConfig
 
     /**
     * Returns list of all unread logs
+    *
+    * @param array $request $_GET request from ajax call made by DataTables
+    * @param array $columns Array of columns to return
+    *
+    * @return array Array of email logs
     */
     public static function getUnreadLogs($request, $columns)
     {
@@ -248,6 +269,14 @@ class MailHandler extends AppConfig
         }
     }
 
+    /**
+     * Delete email log
+     *
+     * @param  string  $logid       Log ID
+     * @param  boolean $hard_delete Permanent delete
+     *
+     * @return boolean
+     */
     public static function deleteLog($logid, $hard_delete = false)
     {
         try {
@@ -272,7 +301,17 @@ class MailHandler extends AppConfig
         return $resp;
     }
 
-    public static function logResponse($emailresp, $recipient, $type, $mailstatus)
+    /**
+     * Logs email response to `mail_log` database table
+     *
+     * @param  string $emailresp  Email response message
+     * @param  string $recipient  Email recipient
+     * @param  string $type       Type of email sent
+     * @param  $mailstatus        Mail status
+     *
+     * @return mixed
+     */
+    public static function logResponse(string $emailresp, string $recipient, string $type, $mailstatus)
     {
         try {
             $toString = '';
@@ -322,6 +361,11 @@ class MailHandler extends AppConfig
         return $resp;
     }
 
+    /**
+     * Tests email settings in config panel
+     *
+     * @return string
+     */
     public function testMailSettings()
     {
         if ($this->mail_server == '') {
@@ -333,7 +377,8 @@ class MailHandler extends AppConfig
             return $resp;
         } else {
             $resp = array();
-            /**
+
+            /*
              * This uses the SMTP class alone to check that a connection can be made to an SMTP server,
              * authenticate, then disconnect
              */

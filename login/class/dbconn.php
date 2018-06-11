@@ -1,8 +1,14 @@
 <?php
+/**
+ * PHPLogin\DbConn
+ */
 namespace PHPLogin;
 
 /**
-* Database connection class. This base class is extended or utilized by numerous other classes.
+* Database connection handler
+*
+* Establishes foundational database connection and property assignment pulled from `dbconf.php` config file.
+* This base class is extended or utilized by numerous other classes.
 */
 class DbConn
 {
@@ -102,7 +108,10 @@ class DbConn
     */
     public $tbl_member_jail;
 
-
+    /**
+     * Class constructor
+     * Initializes PDO connection and sets object properties
+     */
     public function __construct()
     {
         // Pulls tables from dbconf.php file
@@ -136,6 +145,11 @@ class DbConn
         }
     }
 
+    /**
+     * Class destructor
+     * Disconnects and unsets PDO object
+     * @return void
+     */
     public function __destruct()
     {
         $this->conn = null;

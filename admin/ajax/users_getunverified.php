@@ -6,6 +6,7 @@ try {
 
     $request = new PHPLogin\CSRFHandler;
     $auth = new PHPLogin\AuthorizationHandler;
+    $admin = new PHPLogin\AdminFunctions;
 
     if ($request->valid_token() && ($auth->isSuperAdmin() || $auth->hasPermission('View Users'))) {
         unset($_GET['csrf_token']);
@@ -16,7 +17,7 @@ try {
             array( 'db' => 'timestamp', 'dt' => 3 )
         );
 
-        $data = PHPLogin\AdminFunctions::getUnverifiedUsers($_GET, $columns);
+        $data = $admin->getUnverifiedUsers($_GET, $columns);
 
         echo json_encode($data);
     } else {

@@ -60,14 +60,15 @@ if (is_array($barmenu)) {
 // SIGN IN / USER SETTINGS BUTTON
 $auth = new PHPLogin\AuthorizationHandler;
 
+// Pulls either username or first/last name (if filled out)
 if ($auth->isLoggedIn()) {
     $usr = PHPLogin\ProfileData::pullUserFields($_SESSION['uid'], array('firstname', 'lastname'));
-
-    if (is_array($usr) && trim($usr['firstname']) != '' && trim($usr['lastname']) != '') {
+    if ((is_array($usr)) && (array_key_exists('firstname', $usr) && array_key_exists('lastname', $usr))) {
         $user = $usr['firstname']. ' ' .$usr['lastname'];
     } else {
         $user = $_SESSION['username'];
     } ?>
+
     <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

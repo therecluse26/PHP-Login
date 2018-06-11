@@ -1,15 +1,22 @@
 <?php
+/**
+ * PHPLogin\Appconfig extends DbConn
+ */
 namespace PHPLogin;
 
 /**
+ * Application configuration functions
+ *
 * Handles application configuration settings stored in database `app_config` table
-**/
+*/
 class AppConfig extends DbConn
 {
     /**
-    * Primarily instantiated in `login/misc/pagehead.php`. Meant to be instantiated once to minimize unnecessary database calls.
-    * In any page where `pagehead.php` is included, settings can be pulled as such: `$this->setting_name` where `setting_name` corresponds to "setting" entry in `app_config` database table.
-    **/
+     * Class constructor
+     *
+     * Primarily instantiated in `login/misc/pagehead.php`. Meant to be instantiated once to minimize unnecessary database calls.
+     * In any page where `pagehead.php` is included, settings can be pulled as such: `$this->setting_name` where `setting_name` corresponds to "setting" entry in `app_config` database table.
+     */
     public function __construct()
     {
         parent::__construct();
@@ -30,12 +37,16 @@ class AppConfig extends DbConn
             $this->from_email = $this->admin_email;
         }
     }
+
     /**
     * Pulls single setting statically from database without invoking new PHPLogin\AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
     * Calls can be made like so: PHPLogin\AppConfig::pullSetting('setting_name', 'db_var_type')
     *
-    * `setting_name` corresponds to "setting" entry in `app_config` table, and `db_var_type` should be desired db type such as `unsigned` for integers, `varchar`, etc.
-    **/
+    * @param string $setting Name of setting to pull (corresponds to "setting" field in `app_config` table
+    * @param string $type Specifies the database datatype of the setting pulled
+    *
+    * @return mixed Returned value
+    */
     public static function pullSetting($setting, $type = 'varchar')
     {
         $db = new DbConn;
@@ -57,13 +68,16 @@ class AppConfig extends DbConn
 
         return $result[0];
     }
+
     /**
     * Pulls multiple settings statically from database without invoking new PHPLogin\AppConfig object. Meant to be used in pages where `pagehead.php` is not included.
     * Calls can be made like so: `PHPLogin\AppConfig::pullMultiSettings(array("setting1", "setting2", "etc"))`
     *
-    * `$settingArray` = array of settings to be pulled from `app_config` table
-    **/
-    public static function pullMultiSettings($settingArray)
+    * @param array $settingArray Single-dimension array of setting names to pull. Example: self::pullMultiSettings(['setting1', 'setting2', 'setting3'])
+    *
+    * @return array Returns array of resulting setting values
+    */
+    public static function pullMultiSettings(array $settingArray): array
     {
         $db = new DbConn;
 
@@ -83,37 +97,52 @@ class AppConfig extends DbConn
 
         return $result;
     }
+
     /**
     * Pulls all settings from database with descriptions, categories, and input types.
     * Meant to be used specifically in `admin/editconfig.php` page.
     * Calls can be made like so: $obj->pullAllSettings()
-    **/
-    public function pullAllSettings(AuthorizationHandler $auth)
+    *
+    * @param AuthorizationHandler $auth Injected auth object. Checks if user is SuperAdmin or has the 'Edit Site Config' permission
+    *
+    * @return array Returns array of all non-hidden settings
+    */
+    public function pullAllSettings(AuthorizationHandler $auth): array
     {
-        if ($auth->isAdmin() || $auth->hasPermission('Edit Site Config')) {
+        if ($auth->isSuperAdmin() || $auth->hasPermission('Edit Site Config')) {
             try {
                 $sql = "SELECT setting, value, description, type, category FROM ".$this->tbl_app_config." where type != 'hidden' order by -sortorder desc";
 
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute();
-                $result = $stmt->fetchAll(\PDO::FETCH_NUM);
+                $result['settings'] = $stmt->fetchAll(\PDO::FETCH_NUM);
+                $result['status'] = true;
             } catch (\PDOException $e) {
-                $result = "Error: " . $e->getMessage();
+                http_response_code(500);
+                $result['status'] = false;
+                $result['message'] = "Error: " . $e->getMessage();
             }
         } else {
-            $result = "You must be an admin to use this method";
+            http_response_code(401);
+            $result['status'] = false;
+            $result['message'] = "You must be a superadmin to access this page";
         }
 
         return $result;
     }
+
     /**
     * Updates array of settings.
     * Calls can be made like so: $obj->updateMultiSettings(array("setting1"=>"value1", "setting2"=>"value2", "etc"=>"etc"))
-    **/
-    public function updateMultiSettings($settingArray)
+    *
+    * @param array $settingArray Array of setting names with new values to update to
+    *
+    * @return array Return status
+    */
+    public function updateMultiSettings(array $settingArray): array
     {
         try {
-            foreach ($settingArray as $setting=>$value) {
+            foreach ($settingArray as $setting => $value) {
                 try {
                     $sql = "UPDATE ".$this->tbl_app_config." SET value = :value WHERE setting = :setting";
 
@@ -130,7 +159,7 @@ class AppConfig extends DbConn
             $result['status'] = true;
             $result['message'] = "<div class=\"alert alert-success alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Changes Saved Successfully</div>";
         } catch (Exception $x) {
-            $result['status'] = "<div class=\"alert alert-danger alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Your account has been created, but you cannot log in until it has been verified</div>";
+            $result['status'] = false;
             $result['message'] = $x->getMessage();
         }
 

@@ -1,23 +1,52 @@
 <?php
+/**
+ * PHPLogin\PasswordHandler extends DbConn
+ */
 namespace PHPLogin;
 
 /**
-* Password-related methods
+* Password-related Functions
+*
+* Handles various password functions including password hashing, checking, resetting etc.
 */
 class PasswordHandler extends DbConn
 {
+
+  /**
+   * Hashes password
+   *
+   * @param string $password Plain-text password for hashing
+   *
+   * @return string Hashed password
+   */
     public static function encryptPw($password)
     {
         $pwresp = password_hash($password, PASSWORD_DEFAULT);
         return $pwresp;
     }
 
+    /**
+     * Checks password hash against database
+     *
+     * @param  string $userpassword Hashed password sent by user
+     * @param  string $dbpassword   Hashed password stored in database
+     *
+     * @return boolean              True/false match
+     */
     public static function checkPw($userpassword, $dbpassword)
     {
         $pwresp = password_verify($userpassword, $dbpassword);
         return $pwresp;
     }
 
+    /**
+     * Resets password
+     *
+     * @param string $uid          User ID
+     * @param string $password_raw Plain-text password to be hashed
+     *
+     * @return array Response array
+     */
     public function resetPw($uid, $password_raw)
     {
         try {
@@ -48,6 +77,16 @@ class PasswordHandler extends DbConn
         }
     }
 
+    /**
+     * Validate new password before storing
+     *
+     * @param string $pw1             Password field 1
+     * @param string $pw2             Password field 2 (Confirmation)
+     * @param boolean $policy_enforce Enforce password policy
+     * @param int $minlength          Minimum password length
+     *
+     * @return array                  Response array
+     */
     public static function validatePolicy($pw1, $pw2, $policy_enforce, $minlength)
     {
         try {
@@ -63,11 +102,11 @@ class PasswordHandler extends DbConn
                         return $resp;
                     } else {
                         $resp['status'] = false;
-                        throw new Exception("<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>Password must include at least one upper and lower case letter and be at least {$minlength} characters long</div><div id='returnVal' style='display:none;'>false</div>");
+                        throw new \Exception("<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>Password must include at least one upper and lower case letter and be at least {$minlength} characters long</div><div id='returnVal' style='display:none;'>false</div>");
                     }
                 } else {
                     $resp['status'] = false;
-                    throw new Exception("<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>Password fields must match</div><div id='returnVal' style='display:none;'>false</div>");
+                    throw new \Exception("<div class='alert alert-danger alert-dismissable'><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>Password fields must match</div><div id='returnVal' style='display:none;'>false</div>");
                 }
             } else {
                 if ($pw1 == $pw2) {
@@ -77,7 +116,7 @@ class PasswordHandler extends DbConn
                     return $resp;
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             //Password validation failed
             $resp['status'] = false;
             $resp['message'] = $e->getMessage();
