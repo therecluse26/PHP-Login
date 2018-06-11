@@ -87,6 +87,6 @@ Documentation
 
 [API Methods](docs/methods.md)
 
-[Full API Documentation](docs/api/namespaces/PHPLogin.html)
+\* *Full API documentation can be found by nagivating to:* `{yoursite.com}/docs/api/index.html`
 
 [Change Log](docs/changelog.md)
