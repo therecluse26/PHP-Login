@@ -25,6 +25,7 @@
     },
     "config": {
         "vendor-dir": "vendor",
+        "optimize-autoloader": true,
         "disable-tls": true,
         "secure-http": false
     },

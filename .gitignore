@@ -13,5 +13,5 @@ login/dbconf.php
 composer.lock
 install/cache
 install/db
-phinx.yml
 test/
+phinx.yml
