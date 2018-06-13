@@ -11,8 +11,7 @@ Technologies used:
 ##### Prerequisites
 
 - `PHP` *_required_*
-	- Version `7+` recommended
-	- Minimum version: `5.6`
+	- Minimum version: `7.0`
 	- `pdo_mysql` extension required
 	- Recommended to enable `shell_exec`
 
