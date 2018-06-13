@@ -13,7 +13,7 @@ Configuration and SQL scripts will be generated. Several manual steps will now b
 
 - Copy/paste the configuration output into the `/login/dbconf.php` file.
 
-- Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install` to pull in required depenencies.
+- Open a terminal and navigate to the site root directory that includes PHP-Login and run `composer install --no-dev` to pull in required depenencies.
 
  <img src="/docs/images/maninstall_filled.png" alt="Manual Install Generated Code" style="display:block;margin:auto;" height="500px" />
 

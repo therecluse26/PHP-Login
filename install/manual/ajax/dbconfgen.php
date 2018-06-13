@@ -23,7 +23,7 @@ try {
           3) Pull required depenencies by opening a terminal to the { site_root } directory (the base directory of where this is installed. For example /var/www/html/PHP-Login)
             and running the following command:
 
-            <br><br><em> <strong>composer install </strong>
+            <br><br><em> <strong>composer install --no-dev</strong>
 
             <br><br>
             <small>* If issues arise, go to <a href="https://getcomposer.org/">https://getcomposer.org/</a> for more comprehensive documentation on this tool.</small>

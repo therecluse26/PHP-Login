@@ -15,3 +15,4 @@ install/cache
 install/db
 test/
 phinx.yml
+migrations.yml
