@@ -54,6 +54,10 @@ class ProfileData extends DbConn
     public static function pullAllUserInfo(string $user_id): array
     {
         //Pull user info into edit form
+        $result = ['FirstName' => null, 'LastName' => null, 'Phone' => null,
+                    'Address1' => null, 'Address2' => null, 'City' => null,
+                    'State' => null, 'Country' => null, 'Bio' => null, 'UserImage' => null];
+
         $db = new DbConn;
         $tbl_memberinfo = $db->tbl_memberinfo;
 
@@ -63,7 +67,12 @@ class ProfileData extends DbConn
                                     from $tbl_memberinfo WHERE userid = :userid");
         $stmt->bindParam(':userid', $user_id);
         $stmt->execute();
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($res) {
+            $result = $res;
+        }
 
         return $result;
     }
