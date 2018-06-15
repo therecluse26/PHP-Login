@@ -26,7 +26,8 @@ class AdminFunctions extends AppConfig
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            $result = "Error: " . $e->getMessage();
+            $result['status'] = false;
+            $result['message'] = "Error: " . $e->getMessage();
         }
 
         return $result;
