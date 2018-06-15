@@ -50,7 +50,8 @@ class MailHandler extends AppConfig
         }
 
         if ($type == 'Verify') {
-            $admins = AdminFunctions::adminEmailList();
+            $af = new AdminFunctions;
+            $admins = $af->adminEmailList();
 
             foreach ($userarr as $usr) {
                 $uid_64 = base64_encode($usr['id']);
