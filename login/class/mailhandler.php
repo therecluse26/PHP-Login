@@ -312,7 +312,7 @@ class MailHandler extends AppConfig
      *
      * @return mixed
      */
-    public static function logResponse(string $emailresp, string $recipient, string $type, $mailstatus)
+    public static function logResponse(string $emailresp, array $recipient, string $type, $mailstatus)
     {
         try {
             $toString = '';
