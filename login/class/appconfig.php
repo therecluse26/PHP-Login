@@ -47,7 +47,7 @@ class AppConfig extends DbConn
     *
     * @return mixed Returned value
     */
-    public static function pullSetting($setting, $type = 'varchar')
+    public static function pullSetting($setting, $type = 'varchar'): string
     {
         $db = new DbConn;
         try {
@@ -63,8 +63,6 @@ class AppConfig extends DbConn
         } catch (\PDOException $e) {
             $result[0] = "Error: " . $e->getMessage();
         }
-
-        unset($db);
 
         return $result[0];
     }
@@ -90,17 +88,17 @@ class AppConfig extends DbConn
             $stmt->execute($settingArray);
             $result = $stmt->fetchAll(\PDO::FETCH_KEY_PAIR);
         } catch (\PDOException $e) {
-            $result = "Error: " . $e->getMessage();
+            http_response_code(500);
+            $result['status'] = false;
+            $result['message'] = "Error: " . $e->getMessage();
         }
-
-        unset($db);
 
         return $result;
     }
 
     /**
     * Pulls all settings from database with descriptions, categories, and input types.
-    * Meant to be used specifically in `admin/editconfig.php` page.
+    * Meant to be used specifically in `admin/config.php` page.
     * Calls can be made like so: $obj->pullAllSettings()
     *
     * @param AuthorizationHandler $auth Injected auth object. Checks if user is SuperAdmin or has the 'Edit Site Config' permission
@@ -115,6 +113,7 @@ class AppConfig extends DbConn
 
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute();
+
                 $result['settings'] = $stmt->fetchAll(\PDO::FETCH_NUM);
                 $result['status'] = true;
             } catch (\PDOException $e) {
@@ -125,7 +124,7 @@ class AppConfig extends DbConn
         } else {
             http_response_code(401);
             $result['status'] = false;
-            $result['message'] = "You must be a superadmin to access this page";
+            $result['message'] = "You must be a superadmin to access all settings";
         }
 
         return $result;
@@ -156,7 +155,7 @@ class AppConfig extends DbConn
                 }
             }
 
-            $result['status'] = true;
+
             $result['message'] = "<div class=\"alert alert-success alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Changes Saved Successfully</div>";
         } catch (Exception $x) {
             $result['status'] = false;

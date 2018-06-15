@@ -100,7 +100,7 @@ class AppConfig extends DbConn
 
     /**
     * Pulls all settings from database with descriptions, categories, and input types.
-    * Meant to be used specifically in `admin/editconfig.php` page.
+    * Meant to be used specifically in `admin/config.php` page.
     * Calls can be made like so: $obj->pullAllSettings()
     *
     * @param AuthorizationHandler $auth Injected auth object. Checks if user is SuperAdmin or has the 'Edit Site Config' permission
@@ -116,7 +116,7 @@ class AppConfig extends DbConn
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute();
                 $result['settings'] = $stmt->fetchAll(\PDO::FETCH_NUM);
-                $result['status'] = true;
+                
             } catch (\PDOException $e) {
                 http_response_code(500);
                 $result['status'] = false;
@@ -156,7 +156,7 @@ class AppConfig extends DbConn
                 }
             }
 
-            $result['status'] = true;
+            
             $result['message'] = "<div class=\"alert alert-success alert-dismissable\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>Changes Saved Successfully</div>";
         } catch (Exception $x) {
             $result['status'] = false;

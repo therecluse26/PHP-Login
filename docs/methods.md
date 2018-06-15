@@ -12,13 +12,13 @@ API Methods
     - Allows checking a role against the current logged-in user.
       - Returns boolean `true` or `false` value.
     - Method called like: `$auth->hasRole('Moderator')`
-    - Roles and user/role bindings can be handled in the `/admin/rolemanagement.php` page by a `Superadmin` or by another role with the relevant permissions
+    - Roles and user/role bindings can be handled in the `/admin/roles.php` page by a `Superadmin` or by another role with the relevant permissions
 
   - **`hasPermission($permissionName)`**
     - Allows checking a permission against the current logged-in user.
       - Returns boolean `true` or `false` value.
     - Method called like: `$auth->hasPermission('Edit Posts')`
-    - Permissions and role/permission bindings can be handled in the `/admin/permissionmanagement.php` page by a `Superadmin` or by another role with the relevant permissions
+    - Permissions and role/permission bindings can be handled in the `/admin/permissions.php` page by a `Superadmin` or by another role with the relevant permissions
 
   - **`isAdmin()`**
     - Simple helper function to check if current user has the `Admin` role assigned to them.

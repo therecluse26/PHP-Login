@@ -1,6 +1,6 @@
 <?php
 /**
-* AJAX page for testing email settings in editconfig.php
+* AJAX page for testing email settings in config.php
 **/
 try {
     require '../../vendor/autoload.php';

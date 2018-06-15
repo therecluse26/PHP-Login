@@ -35,7 +35,6 @@ class ProfileData extends DbConn
             $stmt->execute();
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
             $result['status'] = true;
-
             return $result;
         } catch (\PDOException $e) {
             http_response_code(500);
@@ -53,28 +52,32 @@ class ProfileData extends DbConn
      */
     public static function pullAllUserInfo(string $user_id): array
     {
-        //Pull user info into edit form
-        $result = ['FirstName' => null, 'LastName' => null, 'Phone' => null,
-                    'Address1' => null, 'Address2' => null, 'City' => null,
-                    'State' => null, 'Country' => null, 'Bio' => null, 'UserImage' => null];
+        try {
+            //Pull user info into edit form
+            $db = new DbConn;
+            $tbl_memberinfo = $db->tbl_memberinfo;
 
-        $db = new DbConn;
-        $tbl_memberinfo = $db->tbl_memberinfo;
-
-        // prepare sql and bind parameters
-        $stmt = $db->conn->prepare("SELECT FirstName, LastName, Phone, Address1,
+            // prepare sql and bind parameters
+            $stmt = $db->conn->prepare("SELECT FirstName, LastName, Phone, Address1,
                                     Address2, City, State, Country, Bio, UserImage
                                     from $tbl_memberinfo WHERE userid = :userid");
-        $stmt->bindParam(':userid', $user_id);
-        $stmt->execute();
+            $stmt->bindParam(':userid', $user_id);
+            $stmt->execute();
 
-        $res = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if ($res) {
-            $result = $res;
+            if ($stmt->rowCount() == 0) {
+                $result = array('FirstName' => null, 'LastName' => null, 'Phone' => null,
+                      'Address1' => null, 'Address2' => null, 'City' => null,
+                      'State' => null, 'Country' => null, 'Bio' => null, 'UserImage' => null);
+            }
+            $result['status'] = true;
+            return $result;
+        } catch (\Exception $e) {
+            $result['status'] = false;
+            $result['message'] = $e->getMessage();
+            return $result;
         }
-
-        return $result;
     }
 
     /**

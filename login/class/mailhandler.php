@@ -9,6 +9,21 @@ namespace PHPLogin;
 */
 class MailHandler extends AppConfig
 {
+    /*protected $mail_config;
+
+    public function __construct()
+    {
+        $this->mail_config = [
+                              'type'=> $this->mail_server_type,
+                              'server' => $this->mail_server
+
+                            ];
+    }*/
+
+    public function configure(array $mail_config)
+    {
+    }
+
     /**
      * Sends email to given users
      *

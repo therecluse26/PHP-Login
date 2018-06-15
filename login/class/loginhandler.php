@@ -52,11 +52,11 @@ class LoginHandler extends AppConfig
 
             //Too many failed attempts
                 $success = "<div class=\"alert alert-danger alert-dismissable\">
-                          <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
-                            &times;
-                          </button>
-                          Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again
-                        </div>";
+                        <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">
+                          &times;
+                        </button>
+                        Maximum number of login attempts exceeded... please wait ".$timeout_minutes." minutes before logging in again
+                      </div>";
             } else {
 
              //If max attempts not exceeded, continue

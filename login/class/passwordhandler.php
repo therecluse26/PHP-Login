@@ -19,7 +19,7 @@ class PasswordHandler extends DbConn
    *
    * @return string Hashed password
    */
-    public static function encryptPw($password)
+    public static function encryptPw($password): string
     {
         $pwresp = password_hash($password, PASSWORD_DEFAULT);
         return $pwresp;
@@ -33,7 +33,7 @@ class PasswordHandler extends DbConn
      *
      * @return boolean              True/false match
      */
-    public static function checkPw($userpassword, $dbpassword)
+    public static function checkPw($userpassword, $dbpassword): bool
     {
         $pwresp = password_verify($userpassword, $dbpassword);
         return $pwresp;
@@ -47,7 +47,7 @@ class PasswordHandler extends DbConn
      *
      * @return array Response array
      */
-    public function resetPw($uid, $password_raw)
+    public function resetPw($uid, $password_raw): array
     {
         try {
             $resp = array();
@@ -87,7 +87,7 @@ class PasswordHandler extends DbConn
      *
      * @return array                  Response array
      */
-    public static function validatePolicy($pw1, $pw2, $policy_enforce, $minlength)
+    public static function validatePolicy($pw1, $pw2, $policy_enforce, $minlength): array
     {
         try {
             $resp = array();

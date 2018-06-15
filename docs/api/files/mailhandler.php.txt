@@ -9,6 +9,21 @@ namespace PHPLogin;
 */
 class MailHandler extends AppConfig
 {
+    /*protected $mail_config;
+
+    public function __construct()
+    {
+        $this->mail_config = [
+                              'type'=> $this->mail_server_type,
+                              'server' => $this->mail_server
+
+                            ];
+    }*/
+
+    public function configure(array $mail_config)
+    {
+    }
+
     /**
      * Sends email to given users
      *
@@ -50,7 +65,8 @@ class MailHandler extends AppConfig
         }
 
         if ($type == 'Verify') {
-            $admins = AdminFunctions::adminEmailList();
+            $af = new AdminFunctions;
+            $admins = $af->adminEmailList();
 
             foreach ($userarr as $usr) {
                 $uid_64 = base64_encode($usr['id']);
@@ -311,7 +327,7 @@ class MailHandler extends AppConfig
      *
      * @return mixed
      */
-    public static function logResponse(string $emailresp, string $recipient, string $type, $mailstatus)
+    public static function logResponse(string $emailresp, array $recipient, string $type, $mailstatus)
     {
         try {
             $toString = '';

@@ -34,7 +34,7 @@ class ProfileData extends DbConn
             $stmt->bindParam(':userid', $user_id);
             $stmt->execute();
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-            $result['status'] = true;
+            
 
             return $result;
         } catch (\PDOException $e) {

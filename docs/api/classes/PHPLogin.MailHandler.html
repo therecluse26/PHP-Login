@@ -114,7 +114,7 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="../reports/errors.html">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">2</span>
                                 </a>
                             </li>
                             <li>
@@ -144,28 +144,28 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-354225357"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2133059130"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-354225357" class="accordion-body collapse in">
+            <div id="namespace-2133059130" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-203442538"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1797374377"></a>
                                 <a href="../namespaces/PHPLogin.html" style="margin-left: 30px; padding-left: 0">PHPLogin</a>
             </div>
-            <div id="namespace-203442538" class="accordion-body collapse ">
+            <div id="namespace-1797374377" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-666185033"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-697117050"></a>
                                 <a href="../namespaces/PHPLogin.Traits.html" style="margin-left: 30px; padding-left: 0">Traits</a>
             </div>
-            <div id="namespace-666185033" class="accordion-body collapse ">
+            <div id="namespace-697117050" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -249,6 +249,7 @@
                                                                     <a href="../classes/PHPLogin.AppConfig.html#method_pullAllSettings" class="">pullAllSettings()</a><br />
                                                                     <a href="../classes/PHPLogin.AppConfig.html#method_updateMultiSettings" class="">updateMultiSettings()</a><br />
                                                                     <a href="../classes/PHPLogin.DbConn.html#method___destruct" class="">__destruct()</a><br />
+                                                                    <a href="../classes/PHPLogin.MailHandler.html#method_configure" class="">configure()</a><br />
                                                                     <a href="../classes/PHPLogin.MailHandler.html#method_sendMail" class="">sendMail()</a><br />
                                                                     <a href="../classes/PHPLogin.MailHandler.html#method_sendResetMail" class="">sendResetMail()</a><br />
                                                                     <a href="../classes/PHPLogin.MailHandler.html#method_getUnreadLogs" class="">getUnreadLogs()</a><br />
@@ -966,7 +967,7 @@ Initializes PDO connection and sets object properties</em></p>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">pullAllSettings(\PHPLogin\AuthorizationHandler  <span class="argument">$auth</span>) : array</pre>
                 <p><em>Pulls all settings from database with descriptions, categories, and input types.</em></p>
-                <p>Meant to be used specifically in <code>admin/editconfig.php</code> page.
+                <p>Meant to be used specifically in <code>admin/config.php</code> page.
 Calls can be made like so: $obj-&gt;pullAllSettings()</p>
 
                                     <h4>Parameters</h4>
@@ -1059,6 +1060,40 @@ Disconnects and unsets PDO object</em></p>
                                                     <dt>Inherited from</dt>
                     <dd><a href="../classes/PHPLogin.DbConn.html"><div class="path-wrapper">\PHPLogin\DbConn</div></a></dd>
                                                             </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_configure" name="method_configure" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">configure()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">configure(array  <span class="argument">$mail_config</span>) </pre>
+                <p><em></em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$mail_config </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
             <h2>Tags</h2>
             <table class="table table-condensed">
                                     <tr><td colspan="2"><em>None found</em></td></tr>
@@ -1424,7 +1459,7 @@ Disconnects and unsets PDO object</em></p>
                 <section class="span10 offset1">
                     <hr />
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
-                    on June 11th, 2018 at 04:37.
+                    on June 15th, 2018 at 21:17.
                 </section>
             </section>
         </section>

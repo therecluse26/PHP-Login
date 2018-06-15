@@ -42,7 +42,7 @@ try {
             } elseif ($i == 22) {
                 require "instcomposer.php";
             } else {
-                $refurl = urlencode($base_url."/admin/editconfig.php");
+                $refurl = urlencode($base_url."/admin/config.php");
 
                 $statobj['status'] = '<br><br><br><br><form action="'.$base_url.'/login/index.php?refurl='.$refurl.'">
                 <button class="btn btn-primary">Sign In And Finish Configuration</button></form>';

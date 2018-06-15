@@ -24,17 +24,17 @@
 <path fill="none" stroke="#c0c0c0" d="M375.6279,-502C375.6279,-502 482.644,-502 482.644,-502 488.644,-502 494.644,-508 494.644,-514 494.644,-514 494.644,-615 494.644,-615 494.644,-621 488.644,-627 482.644,-627 482.644,-627 375.6279,-627 375.6279,-627 369.6279,-627 363.6279,-621 363.6279,-615 363.6279,-615 363.6279,-514 363.6279,-514 363.6279,-508 369.6279,-502 375.6279,-502"/>
 <text text-anchor="middle" x="429.136" y="-614.2" font-family="Times,serif" font-size="11.00" fill="#c0c0c0">Traits</text>
 </g>
-<!-- \\PHPLogin\\Traits\\PermissionTrait -->
-<g id="node1" class="node">
-<title>\\PHPLogin\\Traits\\PermissionTrait</title>
-<polygon fill="none" stroke="#000000" points="486.6521,-600 371.6199,-600 371.6199,-564 486.6521,-564 486.6521,-600"/>
-<text text-anchor="middle" x="429.136" y="-578.7" font-family="Courier,monospace" font-size="11.00" fill="#000000">PermissionTrait</text>
-</g>
 <!-- \\PHPLogin\\Traits\\RoleTrait -->
-<g id="node2" class="node">
+<g id="node1" class="node">
 <title>\\PHPLogin\\Traits\\RoleTrait</title>
-<polygon fill="none" stroke="#000000" points="467.0468,-546 391.2252,-546 391.2252,-510 467.0468,-510 467.0468,-546"/>
-<text text-anchor="middle" x="429.136" y="-524.7" font-family="Courier,monospace" font-size="11.00" fill="#000000">RoleTrait</text>
+<polygon fill="none" stroke="#000000" points="467.0468,-600 391.2252,-600 391.2252,-564 467.0468,-564 467.0468,-600"/>
+<text text-anchor="middle" x="429.136" y="-578.7" font-family="Courier,monospace" font-size="11.00" fill="#000000">RoleTrait</text>
+</g>
+<!-- \\PHPLogin\\Traits\\PermissionTrait -->
+<g id="node2" class="node">
+<title>\\PHPLogin\\Traits\\PermissionTrait</title>
+<polygon fill="none" stroke="#000000" points="486.6521,-546 371.6199,-546 371.6199,-510 486.6521,-510 486.6521,-546"/>
+<text text-anchor="middle" x="429.136" y="-524.7" font-family="Courier,monospace" font-size="11.00" fill="#000000">PermissionTrait</text>
 </g>
 <!-- \\PHPLogin\\ProfileData -->
 <g id="node3" class="node">

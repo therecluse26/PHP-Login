@@ -103,7 +103,8 @@ class AdminFunctions extends AppConfig
 
             return $return_data;
         } catch (\PDOException $e) {
-            $result = "Error: " . $e->getMessage();
+            $result['status'] = false;
+            $result['message'] = "Error: " . $e->getMessage();
             return $result;
         }
     }
@@ -267,10 +268,12 @@ class AdminFunctions extends AppConfig
     public function adminEmailList(): array
     {
         try {
-            $stmt = $this->conn->prepare("SELECT email FROM ".$this->tbl_members." m
-                                        INNER JOIN member_roles mr on mr.member_id = m.id
-                                        INNER JOIN roles r on mr.role_id = r.id
-                                        WHERE r.name in ('Admin', 'Superadmin')");
+            $sql = "SELECT email FROM ".$this->tbl_members." m
+                      INNER JOIN ".$this->tbl_member_roles." mr on mr.member_id = m.id
+                      INNER JOIN ".$this->tbl_roles." r on mr.role_id = r.id
+                      WHERE r.name in ('Admin', 'Superadmin')";
+
+            $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {

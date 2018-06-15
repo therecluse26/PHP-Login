@@ -63,7 +63,9 @@ class CookieHandler
                 return $cookie;
             }
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $cookie['status'] = false;
+            $cookie['message'] = $e->getMessage();
+            return $result;
         }
     }
 
@@ -88,10 +90,12 @@ class CookieHandler
             $stmt->bindParam(':tokenid', $tokenid);
             $stmt->execute();
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
+            
             return $result;
         } catch (\Exception $e) {
-            return $e->getMessage();
+            $result['status'] = false;
+            $result['message'] = "Error: " . $e->getMessage();
+            return $result;
         }
     }
 

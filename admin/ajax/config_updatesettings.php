@@ -1,6 +1,6 @@
 <?php
 /**
-* AJAX page for saving configuration in editconfig.php
+* AJAX page for saving configuration in config.php
 **/
 require "../../vendor/autoload.php";
 try {

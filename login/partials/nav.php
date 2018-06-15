@@ -82,15 +82,15 @@ if ($auth->isLoggedIn()) {
 
                 <!-- Superadmin Controls -->
                 <?php if ($auth->isSuperAdmin()): ?>
-                  <li><a href="<?php echo $this->base_url; ?>/admin/editconfig.php">Edit Site Config</a></li>
-                  <li><a href="<?php echo $this->base_url; ?>/admin/permissionmanagement.php">Manage Permissions</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/config.php">Edit Site Config</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/permissions.php">Manage Permissions</a></li>
                   <li role="separator" class="divider"></li>
                 <?php endif; ?>
                 <!-- Admin Controls -->
                 <?php if ($auth->isAdmin()): ?>
-                  <li><a href="<?php echo $this->base_url; ?>/admin/usermanagement.php">Manage Users</a></li>
-                  <li><a href="<?php echo $this->base_url; ?>/admin/rolemanagement.php">Manage Roles</a></li>
-                  <li><a href="<?php echo $this->base_url; ?>/admin/maillog.php">Mail Log</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/users.php">Manage Users</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/roles.php">Manage Roles</a></li>
+                  <li><a href="<?php echo $this->base_url; ?>/admin/mail.php">Mail Log</a></li>
                   <li role="separator" class="divider"></li>
                 <?php endif; ?>
 

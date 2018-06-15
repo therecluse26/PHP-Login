@@ -33,13 +33,13 @@ class PermissionHandler extends DbConn
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-            $return['status'] = $result;
+
+            return $result;
         } catch (\PDOException $e) {
             $return['status'] = false;
             $return['message'] = MiscFunctions::FormatPDOError($e);
+            return $return;
         }
-
-        return $return;
     }
 
     /**
@@ -64,9 +64,8 @@ class PermissionHandler extends DbConn
         } catch (\PDOException $e) {
             $return['status'] = false;
             $return['message'] = MiscFunctions::FormatPDOError($e);
+            return $return;
         }
-
-        return $return;
     }
 
     /**
@@ -117,9 +116,8 @@ class PermissionHandler extends DbConn
         } catch (\PDOException $e) {
             $return['status'] = false;
             $return['message'] = MiscFunctions::FormatPDOError($e);
+            return $return;
         }
-
-        return $return;
     }
 
     /**
@@ -130,7 +128,7 @@ class PermissionHandler extends DbConn
     *
     * @return array
     */
-    public function updatePermissionRoles(array $roles, string $permission_id): array
+    public function updatePermissionRoles(array $roles, string $permission_id): bool
     {
         try {
             $this->conn->beginTransaction();
@@ -155,14 +153,13 @@ class PermissionHandler extends DbConn
 
             $this->conn->commit();
 
-            $return['status'] = true;
+            return true;
         } catch (\PDOException $e) {
             $this->conn->rollback();
-            $return['status'] = false;
-            $return['message'] = MiscFunctions::FormatPDOError($e);
+            $return = false;
+            error_log(MiscFunctions::FormatPDOError($e));
+            return $return;
         }
-
-        return $return;
     }
 
     /**
@@ -186,12 +183,12 @@ class PermissionHandler extends DbConn
             $stmt->execute();
 
             $return['status'] = true;
+            return $return;
         } catch (\PDOException $e) {
             $return['status'] = false;
             $return['message'] = MiscFunctions::FormatPDOError($e);
+            return $return;
         }
-
-        return $return;
     }
 
     /**
@@ -222,12 +219,12 @@ class PermissionHandler extends DbConn
             $stmt->execute();
 
             $return['status'] = true;
+            return $return;
         } catch (\PDOException $e) {
             $return['status'] = false;
             $return['message'] = MiscFunctions::FormatPDOError($e);
+            return $return;
         }
-
-        return $return;
     }
 
     /**
@@ -246,12 +243,12 @@ class PermissionHandler extends DbConn
             $stmt->execute();
 
             $return['status'] = true;
+            return $return;
         } catch (\PDOException $e) {
             $return['status'] = false;
             $return['message'] = MiscFunctions::FormatPDOError($e);
+            return $return;
         }
-
-        return $return;
     }
 
     /**
@@ -272,13 +269,11 @@ class PermissionHandler extends DbConn
             $stmt->bindParam(':role_id', $role_id);
             $stmt->execute();
 
-            $return['status'] = true;
+            return true;
         } catch (\PDOException $e) {
-            $return['status'] = false;
-            $return['message'] = MiscFunctions::FormatPDOError($e);
+            error_log($e->getMessage());
+            return false;
         }
-
-        return $return;
     }
 
     /**
@@ -300,12 +295,12 @@ class PermissionHandler extends DbConn
             $result = $stmt->fetchColumn();
 
             $return['status'] = $result;
+            return $return;
         } catch (\PDOException $e) {
             $return['status'] = false;
             $return['message'] = MiscFunctions::FormatPDOError($e);
+            return $return;
         }
-
-        return $return;
     }
 }
 

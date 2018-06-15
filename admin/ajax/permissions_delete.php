@@ -1,6 +1,6 @@
 <?php
 /**
-* AJAX page for role deletion in rolemanagement.php
+* AJAX page for role deletion in roles.php
 **/
 require '../../vendor/autoload.php';
 try {

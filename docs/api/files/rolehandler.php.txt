@@ -56,23 +56,14 @@ class RoleHandler extends DbConn
     public static function getDefaultRole(): int
     {
         $db = new DbConn;
-
-        try {
-            $sql = "SELECT id FROM ".$db->tbl_roles."
+        $sql = "SELECT id FROM ".$db->tbl_roles."
                     WHERE default_role = 1";
 
-            $stmt = $db->conn->prepare($sql);
-            $stmt->execute();
-            $result = $stmt->fetchColumn();
+        $stmt = $db->conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchColumn();
 
-            $return = $result;
-        } catch (\PDOException $e) {
-            $return = false;
-        }
-
-        unset($db);
-
-        return $return;
+        return $result;
     }
 
     /**
@@ -89,13 +80,12 @@ class RoleHandler extends DbConn
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
             return $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $result['status'] = false;
+            $result['message'] = $e->getMessage();
+            return $result;
         }
-
-        return $return;
     }
 
     /**
@@ -118,10 +108,10 @@ class RoleHandler extends DbConn
 
             return $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $result['status'] = false;
+            $result['message'] = $e->getMessage();
+            return $result;
         }
-
-        return $return;
     }
 
     /**
@@ -141,10 +131,10 @@ class RoleHandler extends DbConn
 
             return $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $result['status'] = false;
+            $result['message'] = $e->getMessage();
+            return $result;
         }
-
-        return $return;
     }
 
     /**
@@ -170,6 +160,7 @@ class RoleHandler extends DbConn
 
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
+            http_response_code(500);
             $result = "Error: " . $e->getMessage();
         }
 
@@ -240,6 +231,7 @@ class RoleHandler extends DbConn
             return true;
         } catch (\PDOException $e) {
             $this->conn->rollback();
+            http_response_code(500);
             error_log($e->getMessage());
             $return = false;
         }
@@ -267,10 +259,11 @@ class RoleHandler extends DbConn
             $stmt->bindParam(':member_id', $user_id);
             $stmt->execute();
             $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
             return $result;
         } catch (\PDOException $e) {
-            $return = false;
+            $result['status'] = false;
+            $result['message'] = $e->getMessage();
+            return $result;
         }
 
         return $return;
@@ -297,6 +290,7 @@ class RoleHandler extends DbConn
 
             $return = true;
         } catch (\PDOException $e) {
+            http_response_code(500);
             error_log($e->getMessage());
             $return = false;
         }
@@ -331,6 +325,7 @@ class RoleHandler extends DbConn
 
             $return = true;
         } catch (\PDOException $e) {
+            http_response_code(500);
             error_log($e->getMessage());
             $return = false;
         }
@@ -356,6 +351,7 @@ class RoleHandler extends DbConn
 
             $return = true;
         } catch (\PDOException $e) {
+            http_response_code(500);
             error_log($e->getMessage());
             $return = false;
         }
@@ -383,6 +379,8 @@ class RoleHandler extends DbConn
 
             $return = true;
         } catch (\PDOException $e) {
+            http_response_code(500);
+            error_log($e->getMessage());
             $return = false;
         }
 
@@ -407,6 +405,7 @@ class RoleHandler extends DbConn
 
             $return = true;
         } catch (\PDOException $e) {
+            http_response_code(500);
             $return = false;
         }
 
