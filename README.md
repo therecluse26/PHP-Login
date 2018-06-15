@@ -18,8 +18,9 @@ Technologies used:
 - `MySQL` *_required_*
 	- Version `5.6+` recommended
 
-- `Composer` _recommended_
+- `Composer` *_required_*
 	- Version `1.2.1+` recommended
+	- `mbstring` and `dom` php extensions required
 
 	 <small>*If Composer is not installed on the system or accessible through `shell_exec`, a self-contained `composer.phar` file located in the `install` directory is used*</small>
 
@@ -65,7 +66,10 @@ Installation
 ------------
 
 #### Clone the Repository
-    $ git clone https://github.com/therecluse26/PHP-Login.git
+	$ git clone https://github.com/therecluse26/PHP-Login.git
+
+#### Install necessary dependencies with `Composer`
+	$ composer install --no-dev
 
 #### Run through web-based installer
 Open this link in your web browser (replacing [yoursite.com] with your site address)
