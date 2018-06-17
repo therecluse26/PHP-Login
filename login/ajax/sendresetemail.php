@@ -49,7 +49,7 @@ try {
 
         $mailResult = $mail->sendResetMail($reset_url, $user['email'], $user['username']);
 
-        $resp['status'] = 1;
+        $resp['status'] = $mailResult['status'];
         $resp['response'] = $mailResult['message'];
         echo json_encode($resp);
     }

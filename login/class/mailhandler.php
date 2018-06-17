@@ -9,19 +9,75 @@ namespace PHPLogin;
 */
 class MailHandler extends AppConfig
 {
-    /*protected $mail_config;
+    private $mail_config;
+    public $mail;
 
-    public function __construct()
+    /**
+     * Class constructor, instantiates PHPMailer object and sets basic config
+     * @param array $config Array of configuration values, any values not set will revert to defaults
+     */
+    public function __construct(array $config = [])
     {
-        $this->mail_config = [
-                              'type'=> $this->mail_server_type,
-                              'server' => $this->mail_server
+        parent::__construct();
 
-                            ];
-    }*/
+        $default_config = [
+                            'isHTML'=>true,
+                            'CharSet'=>'text/html; charset=UTF-8;',
+                            'WordWrap'=>80,
+                            'fromEmail'=>$this->from_email,
+                            'fromName'=>$this->from_name,
+                            'Host'=>$this->mail_server,
+                            'sendType'=>$this->mail_sendtype,
+                            'authType'=>$this->mail_authtype,
+                            'SMTPAuth'=>true,
+                            'SMTPSecure'=>$this->mail_security,
+                            'Port'=>$this->mail_port,
+                            'Username'=>$this->mail_user,
+                            'Password'=>$this->mail_pw,
+                            'SMTPOptions'=>[
+                                              'ssl'=>[
+                                                        'verify_peer'=>false,
+                                                        'verify_peer_name'=>false,
+                                                        'allow_self_signed'=>true
+                                                      ]
+                                            ],
+                            'oauthUserEmail'=>$this->oath_user_email,
+                            'oauthClientId'=>$this->oauth_client_id,
+                            'oauthClientSecret'=>$this->oauth_client_secret,
+                            'oauthRefreshToken'=>$this->oauth_refresh_token
+                          ];
 
-    public function configure(array $mail_config)
-    {
+        $this->mail_config = array_merge($default_config, $config);
+
+        $this->mail = new \PHPMailer;
+
+        if ($this->mail_config['sendType'] == 'SMTP') {
+            $this->mail->IsSMTP();
+            $this->mail->SMTPAuth = $this->mail_config['SMTPAuth'];
+            $this->mail->Host = $this->mail_config['Host'];
+            $this->mail->SMTPSecure = $this->mail_config['SMTPSecure'];
+            $this->mail->Port = $this->mail_config['Port'];
+            $this->mail->SMTPDebug = 2; //Leave this set to 2; mail debug gets logged to mail_log db table
+            $this->mail->SMTPOptions = $this->mail_config['SMTPOptions'];
+        } elseif ($this->mail_config['sendType'] == 'mail()') {
+            $this->mail->isSendmail();
+        }
+
+        switch ($this->mail_authtype) {
+          case "Basic":
+            $this->mail->Username = $this->mail_config['Username'];
+            $this->mail->Password = CryptoHandler::decryptString($this->mail_config['Password']);
+            break;
+
+        }
+
+
+
+        $this->mail->isHTML($this->mail_config['isHTML']);
+        $this->mail->CharSet = $this->mail_config['CharSet'];
+        $this->mail->WordWrap = $this->mail_config['WordWrap'];
+        $this->mail->setFrom($this->mail_config['fromEmail'], $this->mail_config['fromName']);
+        $this->mail->AddReplyTo($this->mail_config['fromEmail'], $this->mail_config['fromName']);
     }
 
     /**
@@ -35,34 +91,6 @@ class MailHandler extends AppConfig
     public function sendMail($userarr, $type)
     {
         $resp = array();
-        require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
-
-        $mail = new \PHPMailer;
-        $mail->isHTML(true);
-        $mail->CharSet = "text/html; charset=UTF-8;";
-        $mail->WordWrap = 80;
-        $mail->setFrom($this->from_email, $this->from_name);
-        $mail->AddReplyTo($this->from_email, $this->from_name);
-
-        //SMTP Settings
-        if ($this->mail_server_type == 'smtp') {
-            $mail->IsSMTP();
-            $mail->SMTPAuth = true;
-            $mail->Host = $this->mail_server;
-            $mail->SMTPSecure = $this->mail_security;
-            $mail->Port = $this->mail_port;
-            $mail->Username = $this->mail_user;
-            $mail->Password = $this->mail_pw;
-            $mail->SMTPDebug = 2; //Leave this set to 2; mail debug gets logged to mail_log db table
-
-            $mail->SMTPOptions = array(
-              'ssl' => array(
-                  'verify_peer' => false,
-                  'verify_peer_name' => false,
-                  'allow_self_signed' => true
-              )
-          );
-        }
 
         if ($type == 'Verify') {
             $af = new AdminFunctions;
@@ -73,11 +101,11 @@ class MailHandler extends AppConfig
 
                 $verifyurl = $this->base_url . "/login/verifyuser.php?v=1&uid=" . $uid_64;
 
-                $mail->AddBCC($usr['email'], $usr['username']);
+                $this->mail->AddBCC($usr['email'], $usr['username']);
 
                 if ($this->admin_verify == 'true') {
                     foreach ($admins as $admin) {
-                        $mail->AddBCC($admin['email'], $usr['username']);
+                        $this->mail->AddBCC($admin['email'], $usr['username']);
                     }
                 }
             }
@@ -85,37 +113,36 @@ class MailHandler extends AppConfig
             include $this->base_dir."/login/partials/mailtemplates/verifyemail.php";
 
             //Set the subject line
-            $mail->Subject = $usr['username']. ' Account Verification';
+            $this->mail->Subject = $usr['username']. ' Account Verification';
 
             //Set the body of the message
-            $mail->Body = $verify_template;
+            $this->mail->Body = $verify_template;
 
             if ($this->admin_verify == true) {
-                $mail->AltBody = $this->verify_email_admin;
+                $this->mail->AltBody = $this->verify_email_admin;
             } else {
-                $mail->AltBody = $this->verify_email_noadmin . $verifyurl;
+                $this->mail->AltBody = $this->verify_email_noadmin . $verifyurl;
             }
         } elseif ($type == 'Active') {
             foreach ($userarr as $usr) {
-                $mail->AddBCC($usr['email'], $usr['username']);
+                $this->mail->AddBCC($usr['email'], $usr['username']);
             }
 
             include $this->base_dir."/login/partials/mailtemplates/activeemail.php";
 
             //Set the subject line
-            $mail->Subject = $this->site_name . ' Account Created!';
+            $this->mail->Subject = $this->site_name . ' Account Created!';
 
             //Set the body of the message
-            $mail->Body = $active_template;
-
-            $mail->AltBody  =  $this->active_email . $this->signin_url;
+            $this->mail->Body = $active_template;
+            $this->mail->AltBody  =  $this->active_email . $this->signin_url;
         };
 
         try {
 
           //Sends email and logs the response to mail_log table
             ob_start();
-            $status = $mail->Send();
+            $status = $this->mail->Send();
             $debugMsg = ob_get_contents();
             ob_get_clean();
             self::logResponse($debugMsg, $usr, $type, $status);
@@ -147,58 +174,30 @@ class MailHandler extends AppConfig
         require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
         try {
-            $mail = new \PHPMailer(true);
-            $mail->isHTML(true);
-            $mail->CharSet = "text/html; charset=UTF-8;";
-            $mail->WordWrap = 80;
-            $mail->setFrom($this->from_email, $this->from_name);
-            $mail->AddReplyTo($this->from_email, $this->from_name);
-
-            //SMTP Settings
-            if ($this->mail_server_type == 'smtp') {
-                $mail->IsSMTP(); //Enable SMTP
-          $mail->SMTPAuth = true; //SMTP Authentication
-          $mail->Host = $this->mail_server; //SMTP Host
-          //Defaults: Non-Encrypted = 25, SSL = 465, TLS = 587
-          $mail->SMTPSecure = $this->mail_security; // Sets the prefix to the server
-          $mail->Port = $this->mail_port; //SMTP Port
-          //SMTP user auth
-          $mail->Username = $this->mail_user; //SMTP Username
-          $mail->Password = $this->mail_pw; //SMTP Password
-          //********************
-          $mail->SMTPDebug = 0; //Set to 0 to disable debugging (for production)
-
-          $mail->SMTPOptions = array(
-              'ssl' => array(
-                  'verify_peer' => false,
-                  'verify_peer_name' => false,
-                  'allow_self_signed' => true
-              )
-          );
-            }
-
-            $mail->AddBCC($to_email, $username);
-
-
+            $this->mail->AddBCC($to_email, $username);
             //Set the subject line
-            $mail->Subject = $this->site_name . ' Password Reset';
+            $this->mail->Subject = $this->site_name . ' Password Reset';
 
             include $this->base_dir."/login/partials/mailtemplates/resetemail.php";
 
-
             //Set the body of the message
-            $mail->Body = $reset_template;
-            $mail->AltBody = $this->reset_email . $this->signin_url;
+            $this->mail->Body = $reset_template;
+            $this->mail->AltBody = $this->reset_email . $this->signin_url;
 
             //Sends email and logs the response to mail_log table
             ob_start();
-            $status = $mail->Send();
+            $status = $this->mail->Send();
+
             $debugMsg = ob_get_contents();
             ob_get_clean();
 
             $emailToLog = array("email"=>$to_email);
 
             self::logResponse($debugMsg, $emailToLog, 'Password Reset', $status);
+
+            if (!$status) {
+                throw new \Exception("Email failed to send, please contact $this->admin_email to resolve this issue");
+            }
 
             $resp['status'] = true;
             $resp['message'] = "Password reset sent! Check your email";
@@ -433,7 +432,7 @@ class MailHandler extends AppConfig
                     }
                     //If server supports authentication, do it (even if no encryption)
                     if (is_array($e) && array_key_exists('AUTH', $e)) {
-                        if ($smtp->authenticate($this->mail_user, $this->mail_pw)) {
+                        if ($smtp->authenticate($this->mail_user, CryptoHandler::decryptString($this->mail_pw))) {
                             $resp['status'] = 'true';
                             $resp['message'] = "Successful Connection!";
 

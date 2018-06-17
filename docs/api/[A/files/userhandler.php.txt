@@ -27,7 +27,7 @@ class UserHandler extends DbConn
             foreach ($userarr as $user) {
 
                 // encrypt password
-                $pw = PasswordHandler::encryptPw($user['pw']);
+                $pw = PasswordHandler::hashPw($user['pw']);
 
                 // prepare sql and bind parameters
                 $stmt = $db->conn->prepare("

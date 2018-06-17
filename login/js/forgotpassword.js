@@ -18,7 +18,7 @@ $(document).ready(function () {
         dataType: "JSON",
         success: function (json) {
 
-        if(json.status == 1){
+        if(json.status === true){
 
             $("#message").fadeOut(0, function (){
                 $(this).html("<div class=\"alert alert-success\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>"+json.response+"</div>").fadeIn();

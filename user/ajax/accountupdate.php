@@ -29,7 +29,7 @@ try {
 
 
                     if ($pwvalid['status'] == true) {
-                        $_POST['password'] = PHPLogin\PasswordHandler::encryptPw($_POST['password1']);
+                        $_POST['password'] = PHPLogin\PasswordHandler::hashPw($_POST['password1']);
 
                         unset($_POST['password1']);
                         unset($_POST['password2']);

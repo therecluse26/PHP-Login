@@ -109,7 +109,7 @@ class AppConfig extends DbConn
     {
         if ($auth->isSuperAdmin() || $auth->hasPermission('Edit Site Config')) {
             try {
-                $sql = "SELECT setting, value, description, type, category FROM ".$this->tbl_app_config." where type != 'hidden' order by -sortorder desc";
+                $sql = "SELECT setting, value, description, type, category, options FROM ".$this->tbl_app_config." where type != 'hidden' order by -sortorder desc";
 
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute();
@@ -142,6 +142,12 @@ class AppConfig extends DbConn
     {
         try {
             foreach ($settingArray as $setting => $value) {
+                if ($setting == 'mail_pw') {
+                    CryptoHandler::generateKey();
+
+                    $value = CryptoHandler::encryptString($value);
+                }
+
                 try {
                     $sql = "UPDATE ".$this->tbl_app_config." SET value = :value WHERE setting = :setting";
 

@@ -24,11 +24,11 @@ $(document).ready(function(){
             if (json.status == true) {
 
                 $('input').attr('disabled','disabled');
-
                 $("#message").fadeOut(0, function (){
                   $(this).html(json.message).fadeIn();
                 })
                 $('#submit').hide();
+
             } else {
 
                 $("#message").fadeOut(0, function (){

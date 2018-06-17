@@ -21,7 +21,8 @@
         "components/bootstrap": "^3",
         "firebase/php-jwt": "^5.0",
         "phpmailer/phpmailer": "^5.2",
-        "fengyuanchen/cropper": "dev-master"
+        "fengyuanchen/cropper": "dev-master",
+        "defuse/php-encryption": "^2.2"
     },
     "config": {
         "vendor-dir": "vendor",

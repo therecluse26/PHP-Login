@@ -59,22 +59,26 @@ if ($settingsArr['status'] === true) {
             $setting[1] = htmlspecialchars($setting[1], ENT_QUOTES);
             $setting[2] = htmlspecialchars($setting[2], ENT_QUOTES);
 
+            if ($setting[0] == 'mail_pw') {
+                $setting[1] = PHPLogin\CryptoHandler::decryptString($setting[1]);
+            }
+
             //Input Type
             switch ($setting[3]) {
 
             case "textarea":
-                echo "<div class='col-sm-6'>
-                      <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button>
-                      <br><textarea id='{$setting[0]}' class='form-control textarea' rows='4' name='{$setting[0]}'>{$setting[1]}</textarea>
-                      </div>";
-                break;
+              echo "<div class='col-sm-6'>
+                    <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button>
+                    <br><textarea id='{$setting[0]}' class='form-control textarea' rows='4' name='{$setting[0]}'>{$setting[1]}</textarea>
+                    </div>";
+              break;
 
             case "password":
-                echo "<div class='col-sm-6'>
-                      <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button>
-                      <br><input type='password' class='form-control password' name='{$setting[0]}' value='{$setting[1]}'></input><br>
-                      </div>";
-                break;
+              echo "<div class='col-sm-6'>
+                    <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button>
+                    <br><input type='password' class='form-control password' name='{$setting[0]}' value='{$setting[1]}'></input><br>
+                    </div>";
+              break;
 
             case "boolean":
                 if ($setting[1] == 'true') {
@@ -95,48 +99,47 @@ if ($settingsArr['status'] === true) {
                 break;
 
             case "number":
-                echo "<div class='col-sm-6'>
-                      <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
-                      <input type='number' class='form-control boolean' name='{$setting[0]}' value='{$setting[1]}'></input><br>
-                      </div>";
-                break;
+              echo "<div class='col-sm-6'>
+                    <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
+                    <input type='number' class='form-control' name='{$setting[0]}' value='{$setting[1]}'></input><br>
+                    </div>";
+              break;
 
-            case "email":
-            echo "<div class='col-sm-6'>
-                  <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
-                  <input type='email' class='form-control boolean' name='{$setting[0]}' value='{$setting[1]}'></input><br>
-                  </div>";
-                break;
-
-            case "url":
-            echo "<div class='col-sm-6'>
-                  <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
-                  <input type='url' class='form-control boolean' name='{$setting[0]}' value='{$setting[1]}'></input><br>
-                  </div>";
-                break;
+            case "select":
+              $options = explode(';', $setting[5]);
+              echo "<div class='col-sm-6'>
+                    <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
+                    <select class='form-control' name='{$setting[0]}' value='{$setting[1]}'>";
+                  foreach ($options as $opt) {
+                      if ($setting[1] == $opt) {
+                          echo "<option value='{$opt}' selected>{$opt}</option>";
+                      } else {
+                          echo "<option value='{$opt}'>{$opt}</option>";
+                      }
+                  }
+              echo "</select><br>
+                    </div>";
+              break;
 
             case "timezone":
-
-                echo "<div class='col-sm-6'>
-                      <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
-                      <select class='form-control' name='{$setting[0]}' value='{$setting[1]}'>";
-
-                  foreach (timezone_identifiers_list() as $timezone) {
-                      if ($setting[1] == $timezone) {
-                          echo "<option value='$timezone' selected>$timezone</option>";
-                      } else {
-                          echo "<option value='$timezone'>$timezone</option>";
-                      }
-                  };
-
-                echo "</select><br></div>";
-                break;
+              echo "<div class='col-sm-6'>
+                    <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
+                    <select class='form-control' name='{$setting[0]}' value='{$setting[1]}'>";
+                foreach (timezone_identifiers_list() as $timezone) {
+                    if ($setting[1] == $timezone) {
+                        echo "<option value='$timezone' selected>$timezone</option>";
+                    } else {
+                        echo "<option value='$timezone'>$timezone</option>";
+                    }
+                };
+              echo "</select><br></div>";
+              break;
 
             default:
-                echo "<div class='col-sm-6'>
-                      <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
-                      <input class='form-control' name='{$setting[0]}' value='{$setting[1]}'></input><br>
-                      </div>";
+              echo "<div class='col-sm-6'>
+                    <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
+                    <input class='form-control' name='{$setting[0]}' value='{$setting[1]}'></input><br>
+                    </div>";
         }
         }
         echo '</div>';

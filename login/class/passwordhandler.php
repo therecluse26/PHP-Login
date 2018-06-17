@@ -19,7 +19,7 @@ class PasswordHandler extends DbConn
    *
    * @return string Hashed password
    */
-    public static function encryptPw($password): string
+    public static function hashPw($password): string
     {
         $pwresp = password_hash($password, PASSWORD_DEFAULT);
         return $pwresp;
@@ -52,7 +52,7 @@ class PasswordHandler extends DbConn
         try {
             $resp = array();
 
-            $password = self::encryptPw($password_raw);
+            $password = self::hashPw($password_raw);
 
             $expire = 1;
             $db = new DbConn;
