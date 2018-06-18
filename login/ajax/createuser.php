@@ -6,7 +6,10 @@ try {
     $newuser = str_replace(' ', '', $_POST['newuser']);
 
     if ($newuser == '') {
-        throw new Exception('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Must enter a username</div><div id="returnVal" style="display:none;">false</div>');
+        throw new Exception('<div class="alert alert-danger alert-dismissable">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                Must enter a username</div><div id="returnVal" style="display:none;">false
+                              </div>');
     }
 
     $newemail = $_POST['email'];
@@ -19,7 +22,10 @@ try {
     $pwresp = PHPLogin\PasswordHandler::validatePolicy($pw1, $pw2, (bool) $config["password_policy_enforce"], (int) $config["password_min_length"]);
 
     if (!filter_var($newemail, FILTER_VALIDATE_EMAIL) == true) {
-        echo '<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Must provide a valid email address</div><div id="returnVal" style="display:none;">false</div>';
+        echo '<div class="alert alert-danger alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                Must provide a valid email address</div><div id="returnVal" style="display:none;">false
+              </div>';
     } else {
         //Validation passed
         if (isset($_POST['newuser']) && !empty(str_replace(' ', '', $_POST['newuser'])) && $pwresp['status'] == 1) {
@@ -29,7 +35,13 @@ try {
 
             //Success
             if ($response == 1) {
-                echo '<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'. $config['signup_thanks'] .'</div><div id="returnVal" style="display:none;">true</div><form action="'.$config['base_url'].'/login/index.php"><button class="btn btn-success">Login</button></form><div id="returnVal" style="display:none;">true</div>';
+                echo '<div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>'. $config['signup_thanks'] .'
+                      </div>
+                      <div id="returnVal" style="display:none;">true</div>
+                        <form action="'.$config['base_url'].'/login/index.php">
+                        <button class="btn btn-success">Login</button></form><div id="returnVal" style="display:none;">true
+                      </div>';
 
                 try { //Send verification email
                     $m = new PHPLogin\MailHandler;

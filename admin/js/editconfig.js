@@ -2,12 +2,12 @@ $(document).ready(function (e) {
     function intervalTrigger() {
         window.setInterval(function(){
         $("#message").fadeOut();
-        }, 8000);
+      }, 20000);
     }
     var trigid = intervalTrigger();
 
-    //Test Email
-    $("#testemail").click(function () {
+    //Test Email Authentication
+    $("#testemailauth").click(function () {
 
         $.ajax({
             url: "ajax/email_testsettings.php",
@@ -30,6 +30,78 @@ $(document).ready(function (e) {
                                   <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">\
                                     &times;\
                                   </button>"+json.message+"</div>"
+                                ).fadeIn();
+                });
+            },
+            error: function(err){
+
+              $("#message").fadeOut(0, function () {
+
+                    if (err.responseJSON.status == 'true') {
+                        var alertType = "success";
+                    } else {
+                        var alertType = "danger";
+                    }
+
+                    $(this).html("<div class=\"alert alert-"+alertType+" alert-dismissable\">\
+                                  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">\
+                                    &times;\
+                                  </button>"+err.responseJSON.message+"</div>"
+                                ).fadeIn();
+                });
+            },
+            beforeSend: function () {
+
+                window.clearInterval(trigid);
+
+                $("#message").fadeOut(0, function () {
+                    $(this).html("<p class='text-center'><img src='../login/images/ajax-loader.gif'></p>").fadeIn();
+                });
+            }
+        });
+    });
+
+    //Test Email Settings
+    $("#sendemailtest").click(function () {
+
+        $.ajax({
+            url: "ajax/email_sendtestemail.php",
+            type: "GET",
+            data: "t=1&csrf_token="+ $('meta[name="csrf_token"]').attr("value"),
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            success: function (json) {
+
+                $("#message").fadeOut(0, function () {
+
+                    if (json.status == true) {
+                        var alertType = "success";
+                    } else {
+                        var alertType = "danger";
+                    }
+
+                    $(this).html("<div class=\"alert alert-"+alertType+" alert-dismissable\">\
+                                  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">\
+                                    &times;\
+                                  </button>"+json.message+"</div>"
+                                ).fadeIn();
+                });
+            },
+            error: function(err){
+
+              $("#message").fadeOut(0, function () {
+
+                    if (err.responseJSON.status == 'true') {
+                        var alertType = "success";
+                    } else {
+                        var alertType = "danger";
+                    }
+
+                    $(this).html("<div class=\"alert alert-"+alertType+" alert-dismissable\">\
+                                  <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">\
+                                    &times;\
+                                  </button>"+err.responseJSON.message+"</div>"
                                 ).fadeIn();
                 });
             },

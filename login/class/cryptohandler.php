@@ -19,11 +19,16 @@ class CryptoHandler
      */
     public static function encryptString(string $raw_string, string $key_file = __DIR__.'/../../.keystore'): string
     {
-        $file = fopen($key_file, "r");
-        $key = unserialize(fread($file, "10000"));
-        fclose($file);
-        $enc_string = \Defuse\Crypto\Crypto::encrypt($raw_string, $key);
-        return $enc_string;
+        try {
+            $file = fopen($key_file, "r");
+            $key = unserialize(fread($file, "10000"));
+            fclose($file);
+            $enc_string = \Defuse\Crypto\Crypto::encrypt($raw_string, $key);
+            return $enc_string;
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return '';
+        }
     }
     /**
    * Decrypts string stored in .keystore file and returns plaintext string
@@ -33,21 +38,31 @@ class CryptoHandler
    */
     public static function decryptString(string $enc_string, string $key_file = __DIR__.'/../../.keystore'): string
     {
-        $file = fopen($key_file, "r");
-        $key = unserialize(fread($file, "10000"));
-        fclose($file);
-        $plaintext = \Defuse\Crypto\Crypto::decrypt($enc_string, $key);
-        return $plaintext;
+        try {
+            $file = fopen($key_file, "r");
+            $key = unserialize(fread($file, "10000"));
+            fclose($file);
+            $plaintext = \Defuse\Crypto\Crypto::decrypt($enc_string, $key);
+            return $plaintext;
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return '';
+        }
     }
     /**
-     * Generates encryption key and stores in .keystore file
+     * Generates encryption key and securely stores in .keystore file
      * @param string $path .keystore file path
      */
     public static function generateKey(string $key_file = __DIR__.'/../../.keystore'): void
     {
-        $key = \Defuse\Crypto\Key::createNewRandomKey();
-        $file = fopen($key_file, 'w+');
-        fwrite($file, serialize($key));
-        fclose($file);
+        try {
+            $key = \Defuse\Crypto\Key::createNewRandomKey();
+            $file = fopen($key_file, 'w+');
+            fwrite($file, serialize($key));
+            fclose($file);
+            chmod($key_file, 0600);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+        }
     }
 }

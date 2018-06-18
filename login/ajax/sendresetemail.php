@@ -47,14 +47,12 @@ try {
         //Mail reset link w/token to user
         $mail = new PHPLogin\MailHandler;
 
-        $mailResult = $mail->sendResetMail($reset_url, $user['email'], $user['username']);
+        $resp = $mail->sendResetMail($reset_url, $user['email'], $user['username']);
 
-        $resp['status'] = $mailResult['status'];
-        $resp['response'] = $mailResult['message'];
         echo json_encode($resp);
     }
 } catch (Exception $f) {
-    $resp['status'] = 0;
+    $resp['status'] = false;
     $resp['response'] = $f->getMessage();
     echo json_encode($resp);
 }

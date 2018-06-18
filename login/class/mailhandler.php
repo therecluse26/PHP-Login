@@ -29,7 +29,6 @@ class MailHandler extends AppConfig
                             'Host'=>$this->mail_server,
                             'sendType'=>$this->mail_sendtype,
                             'authType'=>$this->mail_authtype,
-                            'SMTPAuth'=>true,
                             'SMTPSecure'=>$this->mail_security,
                             'Port'=>$this->mail_port,
                             'Username'=>$this->mail_user,
@@ -40,38 +39,56 @@ class MailHandler extends AppConfig
                                                         'verify_peer_name'=>false,
                                                         'allow_self_signed'=>true
                                                       ]
-                                            ],
-                            'oauthUserEmail'=>$this->oath_user_email,
-                            'oauthClientId'=>$this->oauth_client_id,
-                            'oauthClientSecret'=>$this->oauth_client_secret,
-                            'oauthRefreshToken'=>$this->oauth_refresh_token
+                                            ]
                           ];
 
         $this->mail_config = array_merge($default_config, $config);
 
         $this->mail = new \PHPMailer;
 
-        if ($this->mail_config['sendType'] == 'SMTP') {
+        switch ($this->mail_config['sendType']) {
+          case 'SMTP':
             $this->mail->IsSMTP();
-            $this->mail->SMTPAuth = $this->mail_config['SMTPAuth'];
+            $this->mail->SMTPAuth = true;
             $this->mail->Host = $this->mail_config['Host'];
             $this->mail->SMTPSecure = $this->mail_config['SMTPSecure'];
             $this->mail->Port = $this->mail_config['Port'];
             $this->mail->SMTPDebug = 2; //Leave this set to 2; mail debug gets logged to mail_log db table
             $this->mail->SMTPOptions = $this->mail_config['SMTPOptions'];
-        } elseif ($this->mail_config['sendType'] == 'mail()') {
-            $this->mail->isSendmail();
-        }
 
-        switch ($this->mail_authtype) {
-          case "Basic":
-            $this->mail->Username = $this->mail_config['Username'];
-            $this->mail->Password = CryptoHandler::decryptString($this->mail_config['Password']);
+            switch ($this->mail_authtype) {
+              case "None":
+              break;
+
+              case "LOGIN":
+                $this->mail->SMTPAuth = true;
+                $this->mail->AuthType = $this->mail_authtype;
+                $this->mail->Username = $this->mail_config['Username'];
+                $this->mail->Password = CryptoHandler::decryptString($this->mail_config['Password']);
+                break;
+
+              case "PLAIN":
+                $this->mail->SMTPAuth = true;
+                $this->mail->AuthType = $this->mail_authtype;
+                $this->mail->Username = $this->mail_config['Username'];
+                $this->mail->Password = CryptoHandler::decryptString($this->mail_config['Password']);
+                break;
+
+            }
             break;
 
+          case 'sendmail':
+            $this->mail->isSendmail();
+            break;
+
+          case 'mail()':
+            $this->mail->isMail();
+            break;
+
+          case 'qmail':
+            $this->mail->isQmail();
+            break;
         }
-
-
 
         $this->mail->isHTML($this->mail_config['isHTML']);
         $this->mail->CharSet = $this->mail_config['CharSet'];
@@ -88,59 +105,56 @@ class MailHandler extends AppConfig
      *
      * @return array
      */
-    public function sendMail($userarr, $type)
+    public function sendMail(array $userarr, string $type): array
     {
-        $resp = array();
+        try {
+            $resp = array();
 
-        if ($type == 'Verify') {
-            $af = new AdminFunctions;
-            $admins = $af->adminEmailList();
+            if ($type == 'Verify') {
+                $af = new AdminFunctions;
+                $admins = $af->adminEmailList();
 
-            foreach ($userarr as $usr) {
-                $uid_64 = base64_encode($usr['id']);
+                foreach ($userarr as $usr) {
+                    $uid_64 = base64_encode($usr['id']);
 
-                $verifyurl = $this->base_url . "/login/verifyuser.php?v=1&uid=" . $uid_64;
+                    $verifyurl = $this->base_url . "/login/verifyuser.php?v=1&uid=" . $uid_64;
 
-                $this->mail->AddBCC($usr['email'], $usr['username']);
+                    $this->mail->AddBCC($usr['email'], $usr['username']);
 
-                if ($this->admin_verify == 'true') {
-                    foreach ($admins as $admin) {
-                        $this->mail->AddBCC($admin['email'], $usr['username']);
+                    if ($this->admin_verify == 'true') {
+                        foreach ($admins as $admin) {
+                            $this->mail->AddBCC($admin['email'], $usr['username']);
+                        }
                     }
                 }
+
+                include $this->base_dir."/login/partials/mailtemplates/verifyemail.php";
+                //Set the subject line
+                $this->mail->Subject = $usr['username']. ' Account Verification';
+                //Set the body of the message
+                $this->mail->Body = $verify_template;
+
+                if ($this->admin_verify == true) {
+                    $this->mail->AltBody = $this->verify_email_admin;
+                } else {
+                    $this->mail->AltBody = $this->verify_email_noadmin . $verifyurl;
+                }
+            } elseif ($type == 'Active') {
+                foreach ($userarr as $usr) {
+                    $this->mail->AddBCC($usr['email'], $usr['username']);
+                }
+
+                include $this->base_dir."/login/partials/mailtemplates/activeemail.php";
+
+                //Set the subject line
+                $this->mail->Subject = $this->site_name . ' Account Created!';
+
+                //Set the body of the message
+                $this->mail->Body = $active_template;
+                $this->mail->AltBody  =  $this->active_email . $this->signin_url;
             }
 
-            include $this->base_dir."/login/partials/mailtemplates/verifyemail.php";
-
-            //Set the subject line
-            $this->mail->Subject = $usr['username']. ' Account Verification';
-
-            //Set the body of the message
-            $this->mail->Body = $verify_template;
-
-            if ($this->admin_verify == true) {
-                $this->mail->AltBody = $this->verify_email_admin;
-            } else {
-                $this->mail->AltBody = $this->verify_email_noadmin . $verifyurl;
-            }
-        } elseif ($type == 'Active') {
-            foreach ($userarr as $usr) {
-                $this->mail->AddBCC($usr['email'], $usr['username']);
-            }
-
-            include $this->base_dir."/login/partials/mailtemplates/activeemail.php";
-
-            //Set the subject line
-            $this->mail->Subject = $this->site_name . ' Account Created!';
-
-            //Set the body of the message
-            $this->mail->Body = $active_template;
-            $this->mail->AltBody  =  $this->active_email . $this->signin_url;
-        };
-
-        try {
-
-          //Sends email and logs the response to mail_log table
+            //Sends email and logs the response to mail_log table
             ob_start();
             $status = $this->mail->Send();
             $debugMsg = ob_get_contents();
@@ -149,12 +163,14 @@ class MailHandler extends AppConfig
 
             $resp['status'] = true;
             $resp['message'] = '';
-
             return $resp;
         } catch (\phpmailerException $e) {
             $resp['status'] = false;
             $resp['message'] = $e->errorMessage();
-
+            return $resp;
+        } catch (\Exception $e) {
+            $resp['status'] = false;
+            $resp['message'] = $e->getMessage();
             return $resp;
         }
     }
@@ -196,17 +212,19 @@ class MailHandler extends AppConfig
             self::logResponse($debugMsg, $emailToLog, 'Password Reset', $status);
 
             if (!$status) {
-                throw new \Exception("Email failed to send, please contact $this->admin_email to resolve this issue");
+                throw new \Exception("Email failed to send, please contact <a href='mailto:$this->admin_email'>$this->admin_email</a> to resolve this issue");
             }
 
             $resp['status'] = true;
             $resp['message'] = "Password reset sent! Check your email";
             return $resp;
         } catch (\phpmailerException $e) {
+            http_response_code(500);
             $resp['status'] = false;
             $resp['message'] = $e->errorMessage();
             return $resp;
         } catch (\Exception $e) {
+            http_response_code(500);
             $resp['status'] = false;
             $resp['message'] = $e->getMessage();
             return $resp;
@@ -383,77 +401,134 @@ class MailHandler extends AppConfig
      */
     public function testMailSettings()
     {
-        if ($this->mail_server == '') {
-            $resp['status'] = 'false';
-            $resp['message'] = "No mail server specified!";
+        $resp = array();
 
-            $this->updateMultiSettings(array('email_working'=>'false'));
+        /*
+         * This uses the SMTP class alone to check that a connection can be made to an SMTP server,
+         * authenticate, then disconnect
+         */
+        ob_start();
+        if ($this->mail_sendtype == 'SMTP') {
+            date_default_timezone_set('Etc/UTC');
 
-            return $resp;
-        } else {
-            $resp = array();
+            require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
 
-            /*
-             * This uses the SMTP class alone to check that a connection can be made to an SMTP server,
-             * authenticate, then disconnect
-             */
-
-            if ($this->mail_server_type == 'smtp') {
-                date_default_timezone_set('Etc/UTC');
-
-                require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
-
-                $smtp = new \SMTP;
-                //Enable connection-level debug output
-                //$smtp->do_debug = SMTP::DEBUG_CONNECTION;
-                try {
-                    //Connect to an SMTP server
-                    if (!$smtp->connect($this->mail_server, $this->mail_port)) {
-                        throw new \Exception('Connect failed');
+            $smtp = new \SMTP;
+            //Enable connection-level debug output
+            $smtp->do_debug = \SMTP::DEBUG_CONNECTION;
+            $smtp->Debugoutput = 'error_log';
+            try {
+                //Connect to an SMTP server
+                if (!$smtp->connect($this->mail_server, $this->mail_port)) {
+                    throw new \Exception('Connect failed');
+                }
+                //Say hello
+                if (!$smtp->hello(gethostname())) {
+                    throw new \Exception('EHLO failed: ' . $smtp->getError()['error']);
+                }
+                //Get the list of ESMTP services the server offers
+                $e = $smtp->getServerExtList();
+                //If server can do TLS encryption, use it
+                if (is_array($e) && array_key_exists('STARTTLS', $e)) {
+                    $tlsok = $smtp->startTLS();
+                    if (!$tlsok) {
+                        throw new \Exception('Failed to start encryption: ' . $smtp->getError()['error']);
                     }
-                    //Say hello
+                    //Repeat EHLO after STARTTLS
                     if (!$smtp->hello(gethostname())) {
-                        throw new \Exception('EHLO failed: ' . $smtp->getError()['error']);
+                        throw new \Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
                     }
-                    //Get the list of ESMTP services the server offers
+                    //Get new capabilities list, which will usually now include AUTH if it didn't before
                     $e = $smtp->getServerExtList();
-                    //If server can do TLS encryption, use it
-                    if (is_array($e) && array_key_exists('STARTTLS', $e)) {
-                        $tlsok = $smtp->startTLS();
-                        if (!$tlsok) {
-                            throw new \Exception('Failed to start encryption: ' . $smtp->getError()['error']);
-                        }
-                        //Repeat EHLO after STARTTLS
-                        if (!$smtp->hello(gethostname())) {
-                            throw new \Exception('EHLO (2) failed: ' . $smtp->getError()['error']);
-                        }
-                        //Get new capabilities list, which will usually now include AUTH if it didn't before
-                        $e = $smtp->getServerExtList();
-                    }
-                    //If server supports authentication, do it (even if no encryption)
-                    if (is_array($e) && array_key_exists('AUTH', $e)) {
+                }
+                //If server supports authentication, do it (even if no encryption)
+                if (is_array($e) && array_key_exists('AUTH', $e)) {
+                    if ($this->mail_authtype != 'None') {
                         if ($smtp->authenticate($this->mail_user, CryptoHandler::decryptString($this->mail_pw))) {
                             $resp['status'] = 'true';
                             $resp['message'] = "Successful Connection!";
 
-                            $this->updateMultiSettings(array('email_working'=>'false'));
-
-                            return $resp;
+                            $this->updateMultiSettings(array('email_working'=>'true'));
                         } else {
+                            //Failed
+                            $this->updateMultiSettings(array('email_working'=>'false'));
                             throw new \Exception('Authentication failed: ' . $smtp->getError()['error']);
                         }
-                    }
-                } catch (\Exception $e) {
-                    $resp['status'] = 'false';
-                    $resp['message'] = 'SMTP error: ' . $e->getMessage();
+                    } elseif ($this->mail_authtype == 'None') {
+                        $resp['status'] = 'true';
+                        $resp['message'] = "Successful Connection!";
 
-                    $this->updateMultiSettings(array('email_working'=>'false'));
+                        $this->updateMultiSettings(array('email_working'=>'true'));
+                    }
+                    $resp['debug'] = ob_get_contents();
+                    ob_get_clean();
+                    $smtp->do_debug = \SMTP::DEBUG_OFF;
 
                     return $resp;
                 }
-                //Whatever happened, close the connection.
-                $smtp->quit(true);
+            } catch (\Exception $e) {
+                $resp['debug'] = ob_get_contents();
+                ob_get_clean();
+                $smtp->do_debug = \SMTP::DEBUG_OFF;
+                error_log(print_r($resp, true));
+                http_response_code(500);
+                $resp['status'] = 'false';
+                $resp['message'] = 'SMTP error: ' . $e->getMessage();
+
+                $this->updateMultiSettings(array('email_working'=>'false'));
+
+                return $resp;
             }
+            //Whatever happened, close the connection.
+            $smtp->quit(true);
+        } elseif ($this->mail_sendtype == 'mail()') {
+        }
+    }
+
+    /**
+     * Sends test email to administrator
+     *
+     * @return array
+     */
+    public function sendTestEmail(): array
+    {
+        try {
+            $resp = array();
+            $this->mail->AddBCC($this->admin_email, 'Admin');
+            include $this->base_dir."/login/partials/mailtemplates/testemail.php";
+
+            //Set the subject line
+            $this->mail->Subject = $this->site_name . ' Email Test';
+
+            //Set the body of the message
+            $this->mail->Body = $test_email_template;
+
+            //Sends email and logs the response to mail_log table
+            ob_start();
+            $status = $this->mail->Send();
+            $debugMsg = ob_get_contents();
+            ob_get_clean();
+            self::logResponse($debugMsg, ['email'=>$this->admin_email], 'Test', $status);
+
+            $resp['status'] = $status;
+
+            if ($status === true) {
+                $resp['message'] = 'Send function worked properly, please check <b>'.$this->admin_email.'</b> (including spam folder if necessary) to verify functionality';
+            } else {
+                $resp['message'] = 'An error occurred, check the <a href="'.$this->base_url.'/admin/mail.php">mail log</a> for more details';
+            }
+
+            return $resp;
+        } catch (\phpmailerException $e) {
+            http_response_code(500);
+            $resp['status'] = false;
+            $resp['message'] = $e->errorMessage();
+            return $resp;
+        } catch (\Exception $e) {
+            http_response_code(500);
+            $resp['status'] = false;
+            $resp['message'] = $e->getMessage();
+            return $resp;
         }
     }
 }

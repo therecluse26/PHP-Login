@@ -162,7 +162,8 @@ if ($settingsArr['status'] === true) {
 </div>
 
 <button class='btn btn-success' id="savebtn">Save</button>
-<button class='btn btn-info' id='testemail'>Test Email Config</button>
+<button class='btn btn-info' id='testemailauth'>Check Email Settings</button>
+<button class='btn btn-warning' id='sendemailtest'>Send Test Email to Admin</button>
 
 </div>
 <br><br><br>

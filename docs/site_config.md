@@ -20,7 +20,7 @@ Configuration Settings
 - `timezone` - Timezone of website
 
 ### `Mailer` tab
-- 	`mail_server_type` - Type of mail server. `smtp` is default and the only tested value.
+- 	`mail_send_type` - Type of mail send method. `SMTP` is default and should be used in most circumstances.
 -  `mail_server` - Mail server address. Ex: `stmp.website.com`
 -  `mail_user` - Email server user. Ex: `user@website.com`
 -  `mail_pw` - Password of email server user
