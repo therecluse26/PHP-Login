@@ -4,7 +4,7 @@ PHP-Login
 
 `PHP-Login` is a simple login and signup system built with PHP, MySQL (with PDO), jQuery and Bootstrap 3. It is meant to be a starting point for PHP developers to build sites from and includes basic user management classes and methods.
 
-\* *If you want to aid future development, please consider helping out by supporting the project on* [Patreon](https://www.patreon.com/therecluse26)
+\* *If you want to aid future development and hosting, please consider helping out by supporting the project on* [Patreon](https://www.patreon.com/therecluse26)
 
 Technologies used:
 ------------------
@@ -93,3 +93,13 @@ Documentation
 \* *Full API documentation can be found by nagivating to:* `{yoursite.com}/docs/api/index.html`
 
 [Change Log](docs/changelog.md)
+
+Contribution
+------------
+There are numerous ways that you can help by contributing to PHP-Login
+
+**Support** - We'd like to get a website up and running, and to cover hosting costs,
+**Bug Reports** - 
+**Security** - Please responsibly disclose any security vulnerabilities that you find in the library privately before disclosing them via a bug report
+**Development** - There's a lot of ideas and that we'd like to implement (as well as fixing bugs and hardening security) in the future, and not enough developers at the current time to get them done before the end of the universe, so if you're interested in developing on the project, shoot us a message!
+**Frontend Design/Dev** - While this project is intended to be a basic starting-off point without making too many assumptions about how it's meant to be styled, we'd like to implement alternate frontend frameworks as options at install time, and we need people with expertise in

@@ -12,8 +12,7 @@ vendor*
 login/dbconf.php
 composer.lock
 install/cache
-install/db
+install/db/migrations/**
 test/
-phinx.yml
 migrations.yml
 .keystore

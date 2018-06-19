@@ -1,0 +1,35 @@
+paths:
+    migrations: '%%PHINX_CONFIG_DIR%%/migrations'
+    seeds: '%%PHINX_CONFIG_DIR%%/seeds'
+
+environments:
+    default_migration_table: phinxlog
+    default_database: development
+    production:
+        adapter: mysql
+        host: 0.0.0.0
+        name: phplogin
+        user: root
+        pass: root
+        port: 8889
+        charset: utf8
+
+    development:
+        adapter: mysql
+        host: 0.0.0.0
+        name: phplogin_dev
+        user: root
+        pass: root
+        port: 8889
+        charset: utf8
+
+    testing:
+        adapter: mysql
+        host: 0.0.0.0
+        name: phplogin_test
+        user: root
+        pass: root
+        port: 8889
+        charset: utf8
+
+version_order: creation
