@@ -251,9 +251,9 @@ class RoleHandler extends DbConn
     {
         try {
             $sql = "SELECT r.id, r.name FROM ".$this->tbl_member_roles." mr
-                  INNER JOIN ".$this->tbl_roles." r on mr.role_id = r.id
-                  INNER JOIN ".$this->tbl_members." m on mr.member_id = m.id
-                  WHERE m.id = :member_id";
+                    INNER JOIN ".$this->tbl_roles." r on mr.role_id = r.id
+                    INNER JOIN ".$this->tbl_members." m on mr.member_id = m.id
+                    WHERE m.id = :member_id";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':member_id', $user_id);
