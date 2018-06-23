@@ -21,10 +21,13 @@ try {
 
 try {
     if ($validToken && ($decoded->pw_reset == "true")) {
+        // Pulls settings
         $config = PHPLogin::pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
 
+        // Pulls user by ID
         $user = PHPLogin\UserHandler::pullUserById($userid);
 
+        // Checks password against validation rules
         $pwresp = PHPLogin\PasswordHandler::validatePolicy($pw1, $pw2, (bool) $config['password_policy_enforce'], (int) $config['password_min_length']);
 
         //Validation passed
