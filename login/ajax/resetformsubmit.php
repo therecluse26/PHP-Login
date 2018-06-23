@@ -21,7 +21,7 @@ try {
 
 try {
     if ($validToken && ($decoded->pw_reset == "true")) {
-        $config = $conf->pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
+        $config = PHPLogin::pullMultiSettings(array("password_policy_enforce", "password_min_length", "signup_thanks", "base_url"));
 
         $user = PHPLogin\UserHandler::pullUserById($userid);
 
