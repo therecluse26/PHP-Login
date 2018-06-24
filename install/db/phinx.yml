@@ -4,10 +4,10 @@ paths:
 
 environments:
     default_migration_table: phinxlog
-    default_database: production
+    default_database: development
     production:
         adapter: mysql
-        host: 0.0.0.0
+        host: localhost
         name: php_loggin
         user: root
         pass: root
@@ -16,7 +16,7 @@ environments:
 
     development:
         adapter: mysql
-        host: 0.0.0.0
+        host: localhost
         name: php_loggin_dev
         user: root
         pass: root
@@ -25,7 +25,7 @@ environments:
 
     testing:
         adapter: mysql
-        host: 0.0.0.0
+        host: localhost
         name: php_loggin_test
         user: root
         pass: root

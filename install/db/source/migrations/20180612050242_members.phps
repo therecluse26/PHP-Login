@@ -7,7 +7,7 @@ class Members extends AbstractMigration
 {
     public function up()
     {
-        $members = $this->table('{$tblprefix}members', ['id' => false]);
+        $members = $this->table('{$tblprefix}members', ['id' => false, 'primary_key' => 'id']);
         $members->addColumn('id', 'char', ['limit' => 23])
             ->addColumn('username', 'string', ['limit' => 65])
             ->addColumn('password', 'string', ['limit' => 255])

@@ -1,7 +1,7 @@
 <?php
 
-$tbl_prefix = 'TESTING___';
-$db_host = '0.0.0.0';
+$tbl_prefix = '';
+$db_host = 'localhost';
 $db_name = 'php_loggin';
 $db_user = 'root';
 $db_pass = 'root';
@@ -12,9 +12,12 @@ try {
     $conn = new \PDO('mysql:host='.$db_host.';charset=utf8', $db_user, $db_pass);
     $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $conn->prepare("CREATE SCHEMA $db_name;");
+    $stmt = $conn->prepare("CREATE SCHEMA IF NOT EXISTS {$db_name};");
     $stmt->execute();
-
+    $stmt = $conn->prepare("CREATE SCHEMA IF NOT EXISTS {$db_name}_dev;");
+    $stmt->execute();
+    $stmt = $conn->prepare("CREATE SCHEMA IF NOT EXISTS {$db_name}_test;");
+    $stmt->execute();
 
     // Fills config template with variables
     $config_source = file_get_contents('source/phinx_source.yml');
