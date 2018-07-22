@@ -20,7 +20,10 @@ if (str_replace(' ', '', $this->mainlogo) == '') {
 <!-- BOOTSTRAP NAV LINKS GO HERE. USE <li> items with <a> links inside of <ul> -->
 
 <?php
-
+    
+// SIGN IN / USER SETTINGS BUTTON
+$auth = new PHPLogin\AuthorizationHandler;
+    
 if (!is_array($barmenu)) {
     // If no menu array is specified as override, try to fallback on menu file
     $menu_file = dirname(__FILE__) . "/barmenu.php";
@@ -57,8 +60,7 @@ if (is_array($barmenu)) {
 ?>
 
 <?php
-// SIGN IN / USER SETTINGS BUTTON
-$auth = new PHPLogin\AuthorizationHandler;
+
 
 // Pulls either username or first/last name (if filled out)
 if ($auth->isLoggedIn()) {
