@@ -8,12 +8,12 @@ class Members extends AbstractSeed
     {
         $data = [
             [
-                'body'    => 'foo',
-                'created' => date('Y-m-d H:i:s'),
-            ],
-            [
-                'body'    => 'bar',
-                'created' => date('Y-m-d H:i:s'),
+                'id'    => '21072721585b2001256a2ac',
+                'username' => 'therecluse26',
+                'password' => '$2y$10$uJ7r5iDWt/O16dg6pZcI7O0cO1dsAZTREoIBnUsCy6SR6nxZl001O',
+                'email' => 'braddmagyar@gmail.com',
+                'verified' => 1,
+                'banned' => 1
             ]
         ];
 

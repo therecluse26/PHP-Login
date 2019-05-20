@@ -1,20 +1,33 @@
 <?php
 
-
 use Phinx\Seed\AbstractSeed;
 
 class MemberRoles extends AbstractSeed
 {
-    /**
-     * Run Method.
-     *
-     * Write your database seeder using this method.
-     *
-     * More information on writing seeders is available here:
-     * http://docs.phinx.org/en/latest/seeding.html
-     */
+    public function getDependencies()
+    {
+        return [
+              'Members',
+              'Roles'
+          ];
+    }
+
     public function run()
     {
+        $data = [
+            [
+                'id'    => 1,
+                'member_id' => '21072721585b2001256a2ac',
+                'role_id' => 1
+            ]
+        ];
 
+        $this->execute('SET FOREIGN_KEY_CHECKS = 0;');
+
+        $member_roles = $this->table('member_roles');
+        $member_roles->insert($data)
+              ->save();
+
+        $this->execute('SET FOREIGN_KEY_CHECKS = 1;');
     }
 }

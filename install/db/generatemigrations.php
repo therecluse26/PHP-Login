@@ -14,10 +14,6 @@ try {
 
     $stmt = $conn->prepare("CREATE SCHEMA IF NOT EXISTS {$db_name};");
     $stmt->execute();
-    $stmt = $conn->prepare("CREATE SCHEMA IF NOT EXISTS {$db_name}_dev;");
-    $stmt->execute();
-    $stmt = $conn->prepare("CREATE SCHEMA IF NOT EXISTS {$db_name}_test;");
-    $stmt->execute();
 
     // Fills config template with variables
     $config_source = file_get_contents('source/phinx_source.yml');

@@ -251,7 +251,6 @@ $(document).ready(function() {
 });
 /****************************/
 
-
 function deleteRole(id, btn_id){
   var idJSON = "[" + JSON.stringify(id) + "]";
   $.ajax({
@@ -267,7 +266,6 @@ function deleteRole(id, btn_id){
     }
   });
 }
-
 
 $("#newRoleForm").submit(function(event){
     event.preventDefault();
