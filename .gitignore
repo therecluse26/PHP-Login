@@ -16,3 +16,5 @@ install/db/migrations/**
 test/
 migrations.yml
 .keystore
+.idea
+
