@@ -1,6 +1,6 @@
 <?php
 /**
-* AJAX page for role deletion in roles.php
+* AJAX page for permissions deletion in permissions.php
 **/
 require '../../vendor/autoload.php';
 try {
@@ -16,7 +16,7 @@ try {
 
         foreach ($ids as $id) {
             try {
-                //Deletes role
+                //Deletes permission
                 $permission_required = $permission->checkPermissionRequired($id);
 
                 if ($permission_required['status']) {

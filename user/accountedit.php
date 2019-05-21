@@ -43,7 +43,7 @@ $usr = PHPLogin\UserHandler::pullUserById($uid);
                     </div>
             </form>
             </div>
-            <input id="emailorig" value="<?php echo $usr['email']; ?>" hidden disabled></input>
+            <input id="emailorig" value="<?php echo $usr['email']; ?>" hidden disabled>
         </div>
         <div class="col-sm-4"></div>
     </div>

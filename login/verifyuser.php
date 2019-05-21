@@ -14,11 +14,11 @@ $uid_decoded = base64_decode($_GET['uid']);
 $idarr = array($uid_decoded);
 $uids = json_encode($idarr);
 
-$userarr = PHPLogin\UserData::userDataPull($uids, 0);
+$userarr = PHPLogin\UserData::userDataPull($uids, false);
 
 try {
     //Updates the verify column on user
-    $vresponse = PHPLogin\UserHandler::verifyUser($userarr, 1);
+    $vresponse = PHPLogin\UserHandler::verifyUser($userarr, true);
 
     //Success
     if ($vresponse['status'] == true) {

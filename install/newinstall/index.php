@@ -67,27 +67,27 @@ if ($serveruser != $fileowner) {
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <label for="dbhost" id="dbhost">Database Hostname</label>
-                        <input name="dbhost" id="dbhost" class="form-control" placeholder="Database Hostname" required></input>
+                        <input name="dbhost" id="dbhost" class="form-control" placeholder="Database Hostname" required>
                         <br>
                     </div>
                     <div class="col-sm-6">
                         <label for="dbuser" id="dbuser">DB User</label>
-                        <input name="dbuser" id="dbuser" class="form-control" placeholder="Username" required></input>
+                        <input name="dbuser" id="dbuser" class="form-control" placeholder="Username" required>
                         <br>
                     </div>
                     <div class="col-sm-6">
                         <label for="dbpw" id="dbpw">DB Password</label>
-                        <input name="dbpw" id="dbpw" class="form-control" placeholder="Password"></input>
+                        <input name="dbpw" id="dbpw" class="form-control" placeholder="Password">
                         <br>
                     </div>
                     <div class="col-sm-6">
                         <label for="dbname" id="dbname">DB Name</label>
-                        <input name="dbname" id="dbname" class="form-control" placeholder="Database Name" required></input>
+                        <input name="dbname" id="dbname" class="form-control" placeholder="Database Name" required>
                         <br>
                     </div>
                     <div class="col-sm-6">
                         <label for="tblprefix" id="tblprefix">DB Table Prefix</label>
-                        <input name="tblprefix" id="tblprefix" class="form-control" placeholder="Table prefix"></input>
+                        <input name="tblprefix" id="tblprefix" class="form-control" placeholder="Table prefix">
                         <br>
                     </div>
 
@@ -98,42 +98,42 @@ if ($serveruser != $fileowner) {
                     <div class="col-sm-6">
 
                         <label for="base_dir" id="valstatus">Root Install Path:</label>
-                        <input name="base_dir" id="base_dir" class="form-control" placeholder="Site Root Directory" value=<?php echo $currdir; ?> required></input>
+                        <input name="base_dir" id="base_dir" class="form-control" placeholder="Site Root Directory" value=<?php echo $currdir; ?> required>
                         <br>
                     </div>
                     <div class="col-sm-6">
                         <label for="base_url" id="valstatus">Base Url:</label>
-                        <input name="base_url" id="base_url" class="form-control" placeholder="Site Base Url" value=<?php echo $baseurl; ?> required></input>
+                        <input name="base_url" id="base_url" class="form-control" placeholder="Site Base Url" value=<?php echo $baseurl; ?> required>
                         <br>
                     </div>
                     <div class="col-sm-6">
 
                         <label for="superadmin">Superadmin Username:</label>
-                        <input name="superadmin" id="superadmin" class="form-control" placeholder="Superadmin username" required></input>
+                        <input name="superadmin" id="superadmin" class="form-control" placeholder="Superadmin username" required>
                         <br>
                     </div>
 
                     <div class="col-sm-6">
 
                         <label for="saemail">Superadmin Email:</label>
-                        <input type="email" name="saemail" id="saemail" class="form-control" placeholder="Superadmin Email" required></input>
+                        <input type="email" name="saemail" id="saemail" class="form-control" placeholder="Superadmin Email" required>
                         <br>
                     </div>
 
                     <div class="col-sm-6">
                         <label for="sapw">New Password:</label>
-                        <input type="password" name="sapw" id="sapw" class="form-control" placeholder="Superadmin Password" required></input>
+                        <input type="password" name="sapw" id="sapw" class="form-control" placeholder="Superadmin Password" required>
                         <br>
                     </div>
                     <div class="col-sm-6">
                         <label for="sapw2">Repeat Password:</label>
-                        <input type="password" name="sapw2" id="sapw2" class="form-control" placeholder="Superadmin Password" required></input>
+                        <input type="password" name="sapw2" id="sapw2" class="form-control" placeholder="Superadmin Password" required>
                         <br>
                     </div>
 
         <div class="col-sm-6">
 
-            <input id="submitbtn" type="submit" class="btn btn-primary"></input>
+            <input id="submitbtn" type="submit" class="btn btn-primary">
             </form>
 
         </div>

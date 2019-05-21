@@ -87,26 +87,26 @@ if ($serveruser != $fileowner) {
             <form class="manInstForm form-horizontal" id="manInstForm" action="#">
                 <div class="form-group">
                     <label for="base_dir">Base Directory</label>
-                    <input class="form-control" name="base_dir" id="base_dir" placeholder="Base Directory" value="<?php echo $basedir; ?>" required></input>
+                    <input class="form-control" name="base_dir" id="base_dir" placeholder="Base Directory" value="<?php echo $basedir; ?>" required>
                     <br>
                     <label for="base_url">Base Website URL</label>
-                    <input class="form-control" name="base_url" id="base_url" placeholder="Base URL" value="<?php echo $baseurl; ?>" required></input>
+                    <input class="form-control" name="base_url" id="base_url" placeholder="Base URL" value="<?php echo $baseurl; ?>" required>
                 </div>
                 <div class="form-group">
-                    <input class="form-control" name="db_host" id="db_host" placeholder="Database Host" required></input>
-                    <input class="form-control" name="db_name" id="db_name" placeholder="Database Name" required></input>
-                    <input class="form-control" name="db_user" id="db_user" placeholder="Database User" required></input>
-                    <input class="form-control" name="db_pw" id="db_pw" placeholder="Database Password" required></input>
+                    <input class="form-control" name="db_host" id="db_host" placeholder="Database Host" required>
+                    <input class="form-control" name="db_name" id="db_name" placeholder="Database Name" required>
+                    <input class="form-control" name="db_user" id="db_user" placeholder="Database User" required>
+                    <input class="form-control" name="db_pw" id="db_pw" placeholder="Database Password" required>
 
-                    <input class="form-control" name="site_name" id="site_name" placeholder="Website Name" required></input>
-                    <input class="form-control" name="curl_enabled" id="curl_enabled" placeholder="Curl Enabled" value="<?php echo $curl_enabled;?>" style="display:none;"></input>
-                    <input class="form-control" name="mail_server" id="mail_server" placeholder="Mail Server" required></input>
-                    <input class="form-control" name="mail_user" id="mail_user" placeholder="Mail Username" required></input>
-                    <input class="form-control" name="mail_pw" id="mail_pw" placeholder="Mail Password" required></input>
-                    <input class="form-control" name="sa_user" id="sa_user" placeholder="Superadmin Username" required></input>
-                    <input class="form-control" name="sa_password" id="sa_password" placeholder="Password" required></input>
-                    <input type="email" class="form-control" name="sa_email" id="sa_email" placeholder="Superadmin Email" required></input>
-                    <input class="form-control" name="sa_id" id="sa_id" placeholder="Superadmin Id" value="<?php echo $sa_id; ?>" style="display:none;"></input>
+                    <input class="form-control" name="site_name" id="site_name" placeholder="Website Name" required>
+                    <input class="form-control" name="curl_enabled" id="curl_enabled" placeholder="Curl Enabled" value="<?php echo $curl_enabled;?>" style="display:none;">
+                    <input class="form-control" name="mail_server" id="mail_server" placeholder="Mail Server" required>
+                    <input class="form-control" name="mail_user" id="mail_user" placeholder="Mail Username" required>
+                    <input class="form-control" name="mail_pw" id="mail_pw" placeholder="Mail Password" required>
+                    <input class="form-control" name="sa_user" id="sa_user" placeholder="Superadmin Username" required>
+                    <input class="form-control" name="sa_password" id="sa_password" placeholder="Password" required>
+                    <input type="email" class="form-control" name="sa_email" id="sa_email" placeholder="Superadmin Email" required>
+                    <input class="form-control" name="sa_id" id="sa_id" placeholder="Superadmin Id" value="<?php echo $sa_id; ?>" style="display:none;">
                     <br>
                     <button class="btn btn-primary" type="button" id="pwGenBtn">Generate Configuration</button>
                 </div>

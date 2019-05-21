@@ -76,7 +76,7 @@ if ($settingsArr['status'] === true) {
             case "password":
               echo "<div class='col-sm-6'>
                     <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button>
-                    <br><input type='password' class='form-control password' name='{$setting[0]}' value='{$setting[1]}'></input><br>
+                    <br><input type='password' class='form-control password' name='{$setting[0]}' value='{$setting[1]}'><br>
                     </div>";
               break;
 
@@ -101,7 +101,7 @@ if ($settingsArr['status'] === true) {
             case "number":
               echo "<div class='col-sm-6'>
                     <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
-                    <input type='number' class='form-control' name='{$setting[0]}' value='{$setting[1]}'></input><br>
+                    <input type='number' class='form-control' name='{$setting[0]}' value='{$setting[1]}'><br>
                     </div>";
               break;
 
@@ -138,7 +138,7 @@ if ($settingsArr['status'] === true) {
             default:
               echo "<div class='col-sm-6'>
                     <button type='button' class='btn btn-primary text' data-toggle='tooltip' data-placement='right' title='{$setting[2]}'>{$setting[0]}</button><br>
-                    <input class='form-control' name='{$setting[0]}' value='{$setting[1]}'></input><br>
+                    <input class='form-control' name='{$setting[0]}' value='{$setting[1]}'><br>
                     </div>";
         }
         }

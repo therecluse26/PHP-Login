@@ -20,7 +20,7 @@ include 'misc/pagehead.php';
                 </div>
                 <div class="form-group">
                     <div class="checkbox">
-                        <input id="remember"  type="checkbox"> Remember Me</input>
+                        <input id="remember"  type="checkbox"> Remember Me
                     </div>
                 </div>
             </form>

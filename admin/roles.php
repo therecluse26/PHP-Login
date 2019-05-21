@@ -47,14 +47,14 @@ $x = 0;
         <div class="modal-body">
           <form id="newRoleForm">
             <label for="Name">Role Name</label>
-            <input class="form-control" name="roleName" id="new_RoleName"></input>
+            <input class="form-control" name="roleName" id="new_RoleName">
             <label for="Description">Role Description</label>
-            <input class="form-control" name="roleDescription" id="new_RoleDescription"></input>
+            <input class="form-control" name="roleDescription" id="new_RoleDescription">
         </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-danger float-left" data-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-success" id="submitNewRole"></input>
+          <input type="submit" class="btn btn-success" id="submitNewRole">
         </form>
         </div>
       </div>
@@ -71,16 +71,16 @@ $x = 0;
         </div>
         <div class="modal-body">
           <form id="editRoleForm">
-            <input type="hidden" id="edit_role_id"></input>
+            <input type="hidden" id="edit_role_id">
             <label for="editRoleName">Role Name</label>
-            <input class="form-control" name="editRoleName" id="edit_RoleName"></input>
+            <input class="form-control" name="editRoleName" id="edit_RoleName">
             <label for="editRoleDescription">Role Description</label>
-            <input class="form-control" name="editRoleDescription" id="edit_RoleDescription"></input>
+            <input class="form-control" name="editRoleDescription" id="edit_RoleDescription">
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger float-left" data-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-success" id="updateRole"></input>
+          <input type="submit" class="btn btn-success" id="updateRole">
         </form>
         </div>
       </div>

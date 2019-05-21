@@ -48,18 +48,18 @@ $x = 0;
         </div>
         <div class="modal-body">
           <form id="newPermissionForm">
-            <input type="hidden" id="permission_id"></input>
+            <input type="hidden" id="permission_id">
             <label for="permissionName">Permission Name</label>
-            <input class="form-control" name="permissionName" id="new_PermissionName"></input>
+            <input class="form-control" name="permissionName" id="new_PermissionName">
             <label for="permissionDescription">Description</label>
-            <input class="form-control" name="permissionDescription" id="new_PermissionDescription"></input>
+            <input class="form-control" name="permissionDescription" id="new_PermissionDescription">
             <label for="permissionCategory">Category</label>
-            <input class="form-control" name="permissionCategory" id="new_PermissionCategory"></input>
+            <input class="form-control" name="permissionCategory" id="new_PermissionCategory">
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger float-left" data-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-success" id="submitNewPermission"></input>
+          <input type="submit" class="btn btn-success" id="submitNewPermission">
         </form>
         </div>
       </div>
@@ -77,18 +77,18 @@ $x = 0;
         </div>
         <div class="modal-body">
           <form id="editPermissionForm">
-            <input type="hidden" id="edit_permission_id"></input>
+            <input type="hidden" id="edit_permission_id">
             <label for="editPermissionName">Permission Name</label>
-            <input class="form-control" name="editPermissionName" id="edit_PermissionName"></input>
+            <input class="form-control" name="editPermissionName" id="edit_PermissionName">
             <label for="editPermissionDescription">Permission Description</label>
-            <input class="form-control" name="editPermissionDescription" id="edit_PermissionDescription"></input>
+            <input class="form-control" name="editPermissionDescription" id="edit_PermissionDescription">
             <label for="editpermissionCategory">Category</label>
-            <input class="form-control" name="editPermissionCategory" id="edit_PermissionCategory"></input>
+            <input class="form-control" name="editPermissionCategory" id="edit_PermissionCategory">
         </div>
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger float-left" data-dismiss="modal">Close</button>
-          <input type="submit" class="btn btn-success" id="updatePermission"></input>
+          <input type="submit" class="btn btn-success" id="updatePermission">
         </form>
         </div>
       </div>

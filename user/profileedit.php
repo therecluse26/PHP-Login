@@ -31,7 +31,7 @@ if (@get_headers($usr['UserImage'])[0] == 'HTTP/1.1 404 Not Found' || $usr['User
                             <br/>
                             <input type="file" name="userimage" id="userimage" accept="image/*" class="custom-file-input" />
                             <div id="imgholder"> <img id="imgthumb" class="img-thumbnail" src="<?php echo $imgpath."?i=".rand(5, 30000);?>" /> </div>
-                            <input id="base64image" hidden></input>
+                            <input id="base64image" hidden>
                             <br/> </div>
                         <div class="col-sm-6">
                             <label for="firstname" class="label label-default">First Name</label>
