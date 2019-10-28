@@ -14,7 +14,7 @@ include "login/misc/pagehead.php";
 
 if ($auth->isLoggedIn()) {
     echo '<div class="jumbotron text-center"><h1>Hi, '.$_SESSION['username'].'!</h1>
-    <p>Click on your username in the top right corner to expose menu options</p></div>
+    <p>Click on your username in the top right corner to expose menu option</p></div>
     <div class="col-lg-2"></div><div class="col-lg-8">
     <h2>Menu Items:</h2>
 
