@@ -1,6 +1,7 @@
 <?php
 
 // Define the buttons in the menu bar
+if ($auth->isLoggedIn()) {
 $barmenu = array(
     "Homepage" => "index.php",
     "Private Page" => "page_2.php",
@@ -10,3 +11,4 @@ $barmenu = array(
         "Site Root" => "/"),
     "Admin Page" => "page_4.php",
 );
+}
